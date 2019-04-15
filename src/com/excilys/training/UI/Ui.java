@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.excilys.training.controller.Controller;
+
 public class Ui {
 
 	public static void main(final String[] args) {
@@ -19,7 +21,16 @@ public class Ui {
 		Scanner sc = new Scanner(System.in);
 		String str = sc.nextLine();
 		System.out.println("Vous avez saisi : " + str);
+		int choix = Integer.parseInt(str);
 		
+		 Controller c = new Controller();
+		 switch(choix) {
+		 
+		 //ListComputers
+		 case 1 :
+			 System.out.println(c.listComputers());
+		 
+		 }
 		
 	}
 }
