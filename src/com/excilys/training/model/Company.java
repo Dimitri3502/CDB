@@ -6,7 +6,7 @@ package com.excilys.training.model;
  */
 
 public class Company {
-	private int id;
+	private long id;
 	private String Name;
 
 	public Company(int id, String name) {
@@ -15,11 +15,15 @@ public class Company {
 		Name = name;
 	}
 
-	public int getId() {
+	public Company() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
