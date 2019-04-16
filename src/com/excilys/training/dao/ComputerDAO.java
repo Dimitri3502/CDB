@@ -14,9 +14,13 @@ import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
 public class ComputerDAO extends DAO<Computer>{
-	
+    private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
+    private static final String SQL_FIND_ALL = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY A.id";
+    private static final String SQL_CREATE = "INSERT INTO computer (name, introduced,discontinued,company_id) VALUES (?,?,?,?)";
+    private static final String SQL_UPDATE = "UPDATE computer SET(name, introduced,discontinued,company_id) VALUES (?,?,?,?) WHERE id=?";
+    private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 
-	public static Computer populate(ResultSet rs) {
+	public Computer populate(ResultSet rs) {
     	Computer aComputer = new Computer();
         try {
         	aComputer.setId(rs.getLong("id"));
@@ -27,7 +31,14 @@ public class ComputerDAO extends DAO<Computer>{
             if (rs.getDate("discontinued")!=null) {
             aComputer.setDiscontinuedDate(rs.getDate("discontinued").toLocalDate());
             }
-            aComputer.setCompany(CompanyDAO.getById(rs.getLong("company_id")));
+            Company aCompany = new Company();
+            if (rs.getString("company_id")!=null) {
+            	aCompany.setId(rs.getLong("company_id"));
+            }
+            if (rs.getString("company_name")!=null) {
+            	aCompany.setName(rs.getString("company_name"));
+            }
+            aComputer.setCompany(aCompany);
             
         } catch (SQLException ex) {
             Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
@@ -39,7 +50,7 @@ public class ComputerDAO extends DAO<Computer>{
         List<Computer> computers = new ArrayList<Computer>();
         try {
             Connection cnx = DbConn.getConnection();
-            PreparedStatement stmt = cnx.prepareStatement("SELECT * FROM computer ORDER BY id");
+            PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
             	Computer aComputer = populate(rs);
