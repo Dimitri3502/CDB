@@ -21,9 +21,13 @@ public class ComputerDAO extends DAO<Computer>{
         try {
         	aComputer.setId(rs.getLong("id"));
             aComputer.setName(rs.getString("name"));
-//            aComputer.setIntroducedDate(rs.getDate("introduced").toLocalDate());
-//            aComputer.setDiscontinuedDate(rs.getDate("discontinued").toLocalDate());
-//            aComputer.setCompany(CompanyDAO.getById(rs.getLong("company_id")));
+            if (rs.getDate("introduced")!=null) {
+            	aComputer.setIntroducedDate(rs.getDate("introduced").toLocalDate());
+            }
+            if (rs.getDate("discontinued")!=null) {
+            aComputer.setDiscontinuedDate(rs.getDate("discontinued").toLocalDate());
+            }
+            aComputer.setCompany(CompanyDAO.getById(rs.getLong("company_id")));
             
         } catch (SQLException ex) {
             Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);

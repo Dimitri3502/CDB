@@ -13,7 +13,6 @@ private ComputerDAO computerDAO;
 		computerDAO = new ComputerDAO();
 		List<Computer> theComputerList = computerDAO.getAll();
 		return theComputerList.toString();
-
 	}
 
 	public String showComputer(int id) {
