@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 
 import com.excilys.training.model.Company;
 
-public class CompanyDAO extends DAO<Company>{
+public class CompanyDAO extends Dao<Company>{
 
 	@Override
 	public List<Company> getAll() {

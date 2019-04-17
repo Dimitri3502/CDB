@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.excilys.training.model.Computer;
 
-public abstract class DAO<T> {
+public abstract class Dao<T> {
    
   /**
   * Méthode de création

@@ -1,0 +1,11 @@
+	@Override
+	public Company dtoToModel(CompanyDTO CompanyDTO) {
+		Company theCompany = new Company();
+		return theCompany;
+	}
+
+	@Override
+	public CompanyDTO modelToDto(Company Company) {
+		CompanyDTO theCompanyDTO = new CompanyDTO();
+		return theCompanyDTO;
+	}

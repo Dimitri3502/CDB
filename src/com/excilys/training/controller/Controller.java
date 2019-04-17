@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.excilys.training.UI.Ui;
+import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.CompanyService;
@@ -36,35 +37,35 @@ public class Controller {
 
 		// ListComputers
 		case 1:
-			String theComputerList = computerService.listComputers();
-			System.out.println(theComputerList);
+			List<ComputerDTO> theComputerDaoList = computerService.getAll();
+			System.out.println(theComputerDaoList);
 			break;
 			
 		case 2:
-			companyService.listCompanies();
+			List<CompanyDTO> theCompanyList = companyService.getAll();
+			System.out.println(theCompanyList);
 			break;
 			
 		case 3:
 			vue.showComputer();
-			String str = vue.readInputs();
-			int id = Integer.parseInt(str);
-			computerService.showComputer(id);
+			String id = vue.readInputs();
+			computerService.findById(id);
 			break;
 			
 		case 4:
 			Map<String, String> inputsCreateComputer = vue.createComputer();
 			//creer dto
 			ComputerDTO computerDTO = new ComputerDTO();
-			computerService.createComputer(computerDTO);
+			computerService.create(computerDTO);
 			break;
 			
-		case 5:
-			computerService.updateComputer();
-			break;
-			
-		case 6:
-			computerService.deleteComputer();
-			break;
+//		case 5:
+//			computerService.update();
+//			break;
+//			
+//		case 6:
+//			computerService.delete();
+//			break;
 
 		}
 	}

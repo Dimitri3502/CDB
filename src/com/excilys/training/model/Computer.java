@@ -7,16 +7,13 @@ import java.util.Date;
  * @author dimitri
  *
  */
-public class Computer {
-	private long id;
+public class Computer extends Model{
+
 	private String name;
 	private LocalDate introducedDate;
 	private LocalDate discontinuedDate;
 	private Company company;
 
-	public Computer() {
-		// TODO Auto-generated constructor stub
-	}
 
 	public String getName() {
 		return name;
@@ -51,13 +48,13 @@ public class Computer {
 		this.company = company;
 	}
 
-	public long getId() {
-		return id;
+	@Override
+	public String toString() {
+		return "Computer [name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
+				+ discontinuedDate + ", company=" + company + "]";
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
+
 
 	
 }

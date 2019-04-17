@@ -1,42 +1,29 @@
 package com.excilys.training.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.excilys.training.dao.ComputerDAO;
+import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Computer;
 
-public class ComputerService {
-private ComputerDAO computerDAO;
+public class ComputerService extends Service<ComputerDTO, Computer> {
 	
-	public String listComputers() {
-		computerDAO = new ComputerDAO();
+
+	public ComputerService(Mapper<ComputerDTO, Computer> m, Dao<Computer> d) {
+		super(m, d);
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public List<ComputerDTO> getAll() {
+		ComputerDAO computerDAO = new ComputerDAO();
 		List<Computer> theComputerList = computerDAO.getAll();
-		return theComputerList.toString();
-	}
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());;
 
-	public String showComputer(int id) {
-//		String theComputer = computerDAO.getComputer();
-		return null;
-
-	}
-
-	public String createComputer(ComputerDTO computerDTO) {
-//		Computer theComputer = ComputerMapper.
-//		computerDAO.createComputer();
-		return null;
-
-	}
-
-	public String updateComputer() {
-
-		return null;
-
-	}
-
-	public String deleteComputer() {
-
-		return null;
-
+		return theComputerDtoList;
 	}
 }
