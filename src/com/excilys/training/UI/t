@@ -1,11 +1,19 @@
-	@Override
-	public Company dtoToModel(CompanyDTO CompanyDTO) {
-		Company theCompany = new Company();
-		return theCompany;
-	}
-
-	@Override
-	public CompanyDTO modelToDto(Company Company) {
-		CompanyDTO theCompanyDTO = new CompanyDTO();
-		return theCompanyDTO;
-	}
+public Company populate(ResultSet rs) {
+    	Company aCompany = new Company();
+        try {
+        	aCompany.setId(rs.getLong("id"));
+            aCompany.setName(rs.getString("name"));
+            if (rs.getDate("introduced")!=null) {
+            	aCompany.setIntroducedDate(rs.getDate("introduced").toLocalDate());
+            }
+            if (rs.getDate("discontinued")!=null) {
+            aCompany.setDiscontinuedDate(rs.getDate("discontinued").toLocalDate());
+            }
+            Company aCompany = new Company();
+            if (rs.getString("company_id")!=null) {
+            	aCompany.setId(rs.getLong("company_id"));
+            }
+            if (rs.getString("company_name")!=null) {
+            	aCompany.setName(rs.getString("company_name"));
+            }
+            aCompany.setCompany(aCompany);

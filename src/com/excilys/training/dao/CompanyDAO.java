@@ -11,13 +11,44 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.excilys.training.model.Company;
+import com.excilys.training.model.Computer;
 
 public class CompanyDAO extends Dao<Company>{
+    private static final String SQL_FIND_BY_ID = "SELECT id, name FROM company WHERE id = ?";
+    private static final String SQL_FIND_ALL = "SELECT id, name FROM company";
+    private static final String SQL_CREATE = "INSERT INTO company (name) VALUES (?)";
+    private static final String SQL_UPDATE = "UPDATE company SET(name) VALUES (?) WHERE id=?";
+    private static final String SQL_DELETE = "DELETE FROM company WHERE id=?";
 
+    public Company populate(ResultSet rs) {
+    	Company aCompany = new Company();
+        try {
+        	aCompany.setId(rs.getLong("id"));
+            aCompany.setName(rs.getString("name"));
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return aCompany;
+    }
+            
 	@Override
 	public List<Company> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+        List<Company> companies = new ArrayList<Company>();
+        try {
+            Connection cnx = DbConn.getConnection();
+            PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+            	Company aCompany = populate(rs);
+            	companies.add(aCompany);
+
+            }
+            cnx.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return companies;
 	}
 
 	@Override
