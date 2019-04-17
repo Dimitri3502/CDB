@@ -1,19 +1,16 @@
-public Company populate(ResultSet rs) {
-    	Company aCompany = new Company();
-        try {
-        	aCompany.setId(rs.getLong("id"));
-            aCompany.setName(rs.getString("name"));
-            if (rs.getDate("introduced")!=null) {
-            	aCompany.setIntroducedDate(rs.getDate("introduced").toLocalDate());
-            }
-            if (rs.getDate("discontinued")!=null) {
-            aCompany.setDiscontinuedDate(rs.getDate("discontinued").toLocalDate());
-            }
-            Company aCompany = new Company();
-            if (rs.getString("company_id")!=null) {
-            	aCompany.setId(rs.getLong("company_id"));
-            }
-            if (rs.getString("company_name")!=null) {
-            	aCompany.setName(rs.getString("company_name"));
-            }
-            aCompany.setCompany(aCompany);
+		Computer Computer = new Computer();
+		try {
+			Connection cnx = DbConn.getConnection();
+			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
+			stmt.setLong(1, id);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Computer.setName(rs.getString("name"));
+				Computer.setId(rs.getLong("id"));
+			}
+			cnx.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return Computer;
+	}

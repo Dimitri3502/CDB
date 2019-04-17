@@ -1,13 +1,32 @@
 package com.excilys.training.mapper;
 
+import java.time.LocalDate;
+
+import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
 public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
+	
+	public ComputerMapper(CompanyDAO companyDAO) {
+		super();
+		this.companyDAO = companyDAO;
+	}
 
+	private CompanyDAO companyDAO;
+	
+	
+	
 	@Override
 	public Computer dtoToModel(ComputerDTO computerDTO) {
 		Computer theComputer = new Computer();
+		theComputer.setName(computerDTO.getName());
+		theComputer.setIntroducedDate(LocalDate.parse(computerDTO.getIntroducedDate()));
+		theComputer.setDiscontinuedDate(LocalDate.parse(computerDTO.getDiscontinuedDate()));
+		Company company = companyDAO.findById(Long.parseLong(computerDTO.getIdCompany()));
+		
+		theComputer.setCompany(company);
 		return theComputer;
 	}
 

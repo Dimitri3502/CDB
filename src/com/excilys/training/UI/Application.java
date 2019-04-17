@@ -19,7 +19,7 @@ public class Application {
 		CompanyDAO companyDAO = new CompanyDAO();
 		CompanyService companyService = new CompanyService(companyMapper, companyDAO);
 
-		ComputerMapper computerMapper = new ComputerMapper();
+		ComputerMapper computerMapper = new ComputerMapper(companyDAO);
 		ComputerDAO computerDAO = new ComputerDAO();
 		ComputerService computerService = new ComputerService(computerMapper, computerDAO);
 		

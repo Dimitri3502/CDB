@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.excilys.training.dto.ComputerDTO;
+
 
 public class Ui {
 
@@ -42,26 +44,30 @@ public class Ui {
 				+ "\n" + "Votre choix : ");
 	}
 	
-	public Map<String, String> createComputer() {
-		Map<String, String> inputsCreateComputer = new HashMap<String, String>();
+	public ComputerDTO createComputer() {
+		ComputerDTO computerDTO = new ComputerDTO();
 		
 		//get the name
 		System.out.println("Actions : CreateComputer"
 				+ "\n" + "Entrez le nom de l'ordinateur : ");
 		String theName = readInputs();
-		inputsCreateComputer.put("name", theName);
+		computerDTO.setName(theName);
 		
 		//get the introducedDate
-		System.out.println("Entrez la date d'introduction de l'ordinateur sous le format dd/mm/yy: ");
+		System.out.println("Entrez la date d'introduction de l'ordinateur sous le format yyyy-mm-dd: ");
 		String theIntroducedDate = readInputs();
-		inputsCreateComputer.put("introducedDate", theIntroducedDate);
-		
+		computerDTO.setIntroducedDate(theIntroducedDate);
+
+		//get the discontinuedDate
+		System.out.println("Entrez la date d'expiration de l'ordinateur sous le format yyyy-mm-dd: ");
+		String theDiscontinuedDate = readInputs();
+		computerDTO.setDiscontinuedDate(theDiscontinuedDate);
 		
 		//get the idCompany
 		System.out.println("Entrez l'id du constructeur de l'ordinateur : ");
 		String theIdCompany = readInputs();
-		inputsCreateComputer.put("idCompany", theIdCompany);
+		computerDTO.setIdCompany(theIdCompany);
 		
-		return inputsCreateComputer;
+		return computerDTO;
 	}
 }

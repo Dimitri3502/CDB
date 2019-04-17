@@ -56,7 +56,7 @@ public class CompanyDAO extends Dao<Company>{
 		Company Company = new Company();
 		try {
 			Connection cnx = DbConn.getConnection();
-			PreparedStatement stmt = cnx.prepareStatement("SELECT * FROM Company where id=?");
+			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -70,9 +70,8 @@ public class CompanyDAO extends Dao<Company>{
 		return Company;
 	}
 	@Override
-	public boolean create(Company obj) {
-		// TODO Auto-generated method stub
-		return false;
+	public long create(Company obj) {
+		return 0;
 	}
 
 	@Override

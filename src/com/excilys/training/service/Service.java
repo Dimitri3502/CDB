@@ -18,7 +18,7 @@ public abstract class Service<T extends Dto, U extends Model>{
 		this.dao = d;
 	}
 	
-	public boolean create(T dtoObject) {
+	public long create(T dtoObject) {
 		return this.dao.create(this.mapper.dtoToModel(dtoObject));
 	};
 	

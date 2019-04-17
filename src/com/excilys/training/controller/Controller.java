@@ -38,25 +38,25 @@ public class Controller {
 		// ListComputers
 		case 1:
 			List<ComputerDTO> theComputerDaoList = computerService.getAll();
-			System.out.println(theComputerDaoList);
+			theComputerDaoList.forEach(System.out::println);
 			break;
 			
 		case 2:
 			List<CompanyDTO> theCompanyList = companyService.getAll();
-			System.out.println(theCompanyList);
+			theCompanyList.forEach(System.out::println);
 			break;
 			
 		case 3:
 			vue.showComputer();
 			String id = vue.readInputs();
-			computerService.findById(id);
+			ComputerDTO computerDTO = computerService.findById(id);
+			System.out.println(computerDTO);
 			break;
 			
 		case 4:
-			Map<String, String> inputsCreateComputer = vue.createComputer();
+			ComputerDTO inputsCreateComputer = vue.createComputer();
 			//creer dto
-			ComputerDTO computerDTO = new ComputerDTO();
-			computerService.create(computerDTO);
+			computerService.create(inputsCreateComputer);
 			break;
 			
 //		case 5:

@@ -13,7 +13,7 @@ public abstract class Dao<T> {
   * @param obj
   * @return boolean 
   */
-  public abstract boolean create(T obj);
+  public abstract long create(T obj);
 
   /**
   * Méthode pour effacer
