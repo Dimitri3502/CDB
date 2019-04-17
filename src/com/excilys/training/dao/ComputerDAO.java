@@ -18,7 +18,7 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
 	private static final String SQL_FIND_ALL = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY A.id";
 	private static final String SQL_CREATE = "INSERT INTO computer (name, introduced,discontinued,company_id) VALUES (?,?,?,?)";
-	private static final String SQL_UPDATE = "UPDATE computer SET(name, introduced,discontinued,company_id) VALUES (?,?,?,?) WHERE id=?";
+	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?,discontinued = ?,company_id = ? WHERE id = ?";
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 
 	public Computer populate(ResultSet rs) {
@@ -105,8 +105,23 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
-	public boolean update(Computer obj) {
-		// TODO Auto-generated method stub
+	public boolean update(Computer computer) {
+		try {
+			Connection cnx = DbConn.getConnection();
+			PreparedStatement stmt;
+			stmt = cnx.prepareStatement(SQL_UPDATE);
+			stmt.setString(1, computer.getName());
+			stmt.setDate(2, Date.valueOf(computer.getIntroducedDate()));
+			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
+			stmt.setLong(4, computer.getCompany().getId());
+			stmt.setLong(5, computer.getId());
+			System.out.println(stmt);
+			stmt.executeUpdate();
+
+			cnx.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		return false;
 	}
 
@@ -145,5 +160,4 @@ public class ComputerDAO extends Dao<Computer> {
 		return aComputer;
 
 	}
-
 }

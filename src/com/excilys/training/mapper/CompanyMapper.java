@@ -8,13 +8,15 @@ public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 	@Override
 	public Company dtoToModel(CompanyDTO companyDTO) {
 		Company theCompany = new Company();
+		theCompany.setId(Long.parseLong(companyDTO.getId()));
+		theCompany.setName(companyDTO.getName());
 		return theCompany;
 	}
 
 	@Override
 	public CompanyDTO modelToDto(Company company) {
 		CompanyDTO theCompanyDTO = new CompanyDTO();
-		theCompanyDTO.setId(company.getId());
+		theCompanyDTO.setId(Long.toString(company.getId()));
 		theCompanyDTO.setName(company.getName());
 		return theCompanyDTO;
 	}

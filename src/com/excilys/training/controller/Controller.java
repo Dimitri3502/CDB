@@ -28,6 +28,7 @@ public class Controller {
 			vue.showActions();
 			int choix = vue.readInputInt();
 			if (choix==0) {
+				System.out.println("Attention à la marche en descendant du train");
 				break;
 			}
 			runChoice(choix);
@@ -68,7 +69,10 @@ public class Controller {
 			vue.updateComputer();
 			String idUpdate = vue.readInputs();
 			ComputerDTO computerDTOtoUpdate = computerService.findById(idUpdate);
-			computerService.update(computerDTOtoUpdate);
+			System.out.println("Ordiateur a modifier : " + computerDTOtoUpdate.toString());
+			ComputerDTO inputsNewComputer = vue.createComputer();
+			inputsNewComputer.setId(idUpdate);
+			computerService.update(inputsNewComputer);
 			break;
 			
 		case 6: 

@@ -19,7 +19,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	@Override
 	public Computer dtoToModel(ComputerDTO computerDTO) {
 		Computer theComputer = new Computer();
-		theComputer.setId(computerDTO.getId());
+		theComputer.setId(Long.parseLong(computerDTO.getId()));
 		theComputer.setName(computerDTO.getName());
 		if (computerDTO.getIntroducedDate() != null) {
 			theComputer.setIntroducedDate(LocalDate.parse(computerDTO.getIntroducedDate()));
@@ -36,7 +36,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	@Override
 	public ComputerDTO modelToDto(Computer computer) {
 		ComputerDTO theComputerDTO = new ComputerDTO();
-		theComputerDTO.setId(computer.getId());
+		theComputerDTO.setId(Long.toString(computer.getId()));
 		theComputerDTO.setName(computer.getName());
 		if (computer.getIntroducedDate() != null) {
 			theComputerDTO.setIntroducedDate(computer.getIntroducedDate().toString());
