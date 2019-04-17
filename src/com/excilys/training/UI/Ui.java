@@ -14,6 +14,7 @@ public class Ui {
 	public void showActions() {
 
 		System.out.println("Actions : "
+				+ "\n" + "0 : Fermer l'application"
 				+ "\n" + "1 : ListComputers"
 				+ "\n" + "2 : ListCompanies"  
 				+ "\n" + "3 : ShowComputer"
@@ -77,4 +78,12 @@ public class Ui {
 		
 		return computerDTO;
 	}
+
+	public void updateComputer() {
+
+		System.out.println("Actions : updateComputer"
+				+ "\n" + "Entrez l'id de l'ordinateur à modifier"
+				+ "\n" + "Votre choix : ");
+	}
+	
 }

@@ -27,6 +27,9 @@ public class Controller {
 		while (true) {
 			vue.showActions();
 			int choix = vue.readInputInt();
+			if (choix==0) {
+				break;
+			}
 			runChoice(choix);
 		}
 	}
@@ -34,7 +37,8 @@ public class Controller {
 	public void runChoice(int choix) {
 
 		switch (choix) {
-
+			
+		
 		// ListComputers
 		case 1:
 			List<ComputerDTO> theComputerDaoList = computerService.getAll();
@@ -56,20 +60,24 @@ public class Controller {
 		case 4:
 			ComputerDTO inputsCreateComputer = vue.createComputer();
 			//creer dto
-			computerService.create(inputsCreateComputer);
+			long idCreate = computerService.create(inputsCreateComputer);
+			System.out.println("Ordinateur creer avec l'id : " + idCreate);
 			break;
 			
-//		case 5:
-//			computerService.update();
-//			break;
+		case 5:
+			vue.updateComputer();
+			String idUpdate = vue.readInputs();
+			ComputerDTO computerDTOtoUpdate = computerService.findById(idUpdate);
+			computerService.update(computerDTOtoUpdate);
+			break;
 			
-		case 6:
+		case 6: 
 			vue.deleteComputer();
 			String idDelete = vue.readInputs();
 			ComputerDTO computerDTOtoDelete = computerService.findById(idDelete);
 			computerService.delete(computerDTOtoDelete);
 			break;
-
+		
 		}
 	}
 

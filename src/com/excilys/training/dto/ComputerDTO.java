@@ -34,7 +34,7 @@ public class ComputerDTO extends Dto{
 	}
 	@Override
 	public String toString() {
-		return "ComputerDTO [name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
+		return "ComputerDTO [id = " + id + ", name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
 				+ discontinuedDate + ", idCompany=" + idCompany + "]";
 	}
 

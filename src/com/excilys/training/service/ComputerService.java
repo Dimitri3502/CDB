@@ -16,7 +16,7 @@ public class ComputerService extends Service<ComputerDTO, Computer> {
 	public ComputerService(Mapper<ComputerDTO, Computer> m, Dao<Computer> d) {
 		super(m, d);
 		// TODO Auto-generated constructor stub
-	}
+	} 
 
 	@Override
 	public List<ComputerDTO> getAll() {

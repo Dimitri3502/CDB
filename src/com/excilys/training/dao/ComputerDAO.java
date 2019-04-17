@@ -58,7 +58,7 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 
 			}
-			cnx.close();
+			cnx.close(); 
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
