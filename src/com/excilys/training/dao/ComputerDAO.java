@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,7 @@ public class ComputerDAO extends Dao<Computer> {
 		try {
 			Connection cnx = DbConn.getConnection();
 			PreparedStatement stmt;
-			stmt = cnx.prepareStatement("SQL_CREATE");
+			stmt = cnx.prepareStatement(SQL_CREATE,Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
 			stmt.setDate(2, Date.valueOf(computer.getIntroducedDate()));
 			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
@@ -81,7 +82,6 @@ public class ComputerDAO extends Dao<Computer> {
 			ResultSet rs = stmt.getGeneratedKeys();
 			if (rs.next()) {
 				lastInsertedId = rs.getLong(1);
-
 			}
 			cnx.close();
 		} catch (SQLException ex) {
@@ -92,8 +92,16 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean delete(Computer obj) {
-		// TODO Auto-generated method stub
-		return false;
+        try {
+            Connection cnx = DbConn.getConnection();
+            PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
+            stmt.setLong(1, obj.getId());
+            stmt.executeUpdate();
+            cnx.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+		return true;
 	}
 
 	@Override

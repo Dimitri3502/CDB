@@ -44,6 +44,13 @@ public class Ui {
 				+ "\n" + "Votre choix : ");
 	}
 	
+	public void deleteComputer() {
+
+		System.out.println("Actions : deleteComputer"
+				+ "\n" + "Entrez l'id de l'ordinateur à supprimer"
+				+ "\n" + "Votre choix : ");
+	}
+	
 	public ComputerDTO createComputer() {
 		ComputerDTO computerDTO = new ComputerDTO();
 		

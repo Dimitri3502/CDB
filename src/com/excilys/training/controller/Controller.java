@@ -62,10 +62,13 @@ public class Controller {
 //		case 5:
 //			computerService.update();
 //			break;
-//			
-//		case 6:
-//			computerService.delete();
-//			break;
+			
+		case 6:
+			vue.deleteComputer();
+			String idDelete = vue.readInputs();
+			ComputerDTO computerDTOtoDelete = computerService.findById(idDelete);
+			computerService.delete(computerDTOtoDelete);
+			break;
 
 		}
 	}
