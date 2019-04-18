@@ -6,7 +6,6 @@ import java.util.Map;
 import com.excilys.training.UI.Ui;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.model.Computer;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 
@@ -62,9 +61,9 @@ public class Controller {
 		
 		// 	create Computer
 		case 4:
-			ComputerDTO inputsCreateComputer = vue.createComputer();
-			//creer dto
-			long idCreate = computerService.create(inputsCreateComputer);
+			Map<String, String> inputsCreateComputer = vue.createComputer();
+			ComputerDTO computerDTOCreate = this.inputsToComputerDTO(inputsCreateComputer);
+			long idCreate = computerService.create(computerDTOCreate);
 			System.out.println("Ordinateur creer avec l'id : " + idCreate);
 			break;
 		
@@ -74,9 +73,10 @@ public class Controller {
 			String idUpdate = vue.readInputs();
 			ComputerDTO computerDTOtoUpdate = computerService.findById(idUpdate);
 			System.out.println("Ordiateur a modifier : " + computerDTOtoUpdate.toString());
-			ComputerDTO inputsNewComputer = vue.createComputer();
-			inputsNewComputer.setId(idUpdate);
-			computerService.update(inputsNewComputer);
+			Map<String, String> inputsNewComputer = vue.createComputer();
+			ComputerDTO computerDTOUpdate = this.inputsToComputerDTO(inputsNewComputer);
+			computerDTOUpdate.setId(idUpdate);
+			computerService.update(computerDTOUpdate);
 			break;
 		
 		// delete Computer
@@ -88,6 +88,19 @@ public class Controller {
 			break;
 		
 		}
+	}
+	
+	public ComputerDTO inputsToComputerDTO(Map<String, String> inputsCreateComputer) {
+		//creer dto
+		ComputerDTO computerDTOCreate = new ComputerDTO();
+		computerDTOCreate.setName(inputsCreateComputer.get("name"));
+		computerDTOCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
+		computerDTOCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(inputsCreateComputer.get("idCompany"));
+		computerDTOCreate.setCompanyDTO(companyDTO);
+		return computerDTOCreate;
+		
 	}
 
 }

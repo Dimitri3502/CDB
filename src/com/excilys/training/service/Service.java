@@ -1,6 +1,5 @@
 package com.excilys.training.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import com.excilys.training.dao.Dao;

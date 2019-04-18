@@ -4,14 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.excilys.training.model.Company;
-import com.excilys.training.model.Computer;
 
 public class CompanyDAO extends Dao<Company>{
     private static final String SQL_FIND_BY_ID = "SELECT id, name FROM company WHERE id = ?";

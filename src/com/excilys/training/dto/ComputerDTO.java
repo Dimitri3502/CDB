@@ -1,7 +1,5 @@
 package com.excilys.training.dto;
 
-import java.util.Date;
-
 public class ComputerDTO extends Dto{
 	private String name;
 	private String introducedDate;

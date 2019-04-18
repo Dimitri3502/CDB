@@ -1,7 +1,6 @@
 package com.excilys.training.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * @author dimitri

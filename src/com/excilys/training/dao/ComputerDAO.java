@@ -1,11 +1,11 @@
 package com.excilys.training.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -115,7 +115,6 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
-			System.out.println(stmt);
 			stmt.executeUpdate();
 
 			cnx.close();

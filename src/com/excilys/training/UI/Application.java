@@ -1,9 +1,5 @@
 package com.excilys.training.UI;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
-
 import com.excilys.training.controller.Controller;
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.ComputerDAO;

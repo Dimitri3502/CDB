@@ -1,10 +1,6 @@
 package com.excilys.training.dao;
 
-import java.sql.Connection;
 import java.util.Collection;
-import java.util.List;
-
-import com.excilys.training.model.Computer;
 
 public abstract class Dao<T> {
    
