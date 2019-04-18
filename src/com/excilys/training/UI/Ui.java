@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 
 
@@ -74,7 +75,9 @@ public class Ui {
 		//get the idCompany
 		System.out.println("Entrez l'id du constructeur de l'ordinateur : ");
 		String theIdCompany = readInputs();
-		computerDTO.setIdCompany(theIdCompany);
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(theIdCompany);
+		computerDTO.setCompanyDTO(companyDTO);
 		
 		return computerDTO;
 	}

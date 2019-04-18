@@ -17,8 +17,11 @@ public class CompanyDTO extends Dto{
 
 	@Override
 	public String toString() {
-		return "CompanyDTO [name=" + name + "]";
+		return "CompanyDTO [id=" + id + ", name=" + name + "]";
 	}
+
+
+
 
 	
 }

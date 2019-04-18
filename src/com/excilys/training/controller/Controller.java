@@ -40,31 +40,35 @@ public class Controller {
 		switch (choix) {
 			
 		
-		// ListComputers
+		// List Computers
 		case 1:
 			List<ComputerDTO> theComputerDaoList = computerService.getAll();
 			theComputerDaoList.forEach(System.out::println);
 			break;
 			
+		// List Companies
 		case 2:
 			List<CompanyDTO> theCompanyList = companyService.getAll();
 			theCompanyList.forEach(System.out::println);
 			break;
-			
+		
+		// show Computer
 		case 3:
 			vue.showComputer();
 			String id = vue.readInputs();
 			ComputerDTO computerDTO = computerService.findById(id);
 			System.out.println(computerDTO);
 			break;
-			
+		
+		// 	create Computer
 		case 4:
 			ComputerDTO inputsCreateComputer = vue.createComputer();
 			//creer dto
 			long idCreate = computerService.create(inputsCreateComputer);
 			System.out.println("Ordinateur creer avec l'id : " + idCreate);
 			break;
-			
+		
+		// update Computer
 		case 5:
 			vue.updateComputer();
 			String idUpdate = vue.readInputs();
@@ -74,7 +78,8 @@ public class Controller {
 			inputsNewComputer.setId(idUpdate);
 			computerService.update(inputsNewComputer);
 			break;
-			
+		
+		// delete Computer
 		case 6: 
 			vue.deleteComputer();
 			String idDelete = vue.readInputs();

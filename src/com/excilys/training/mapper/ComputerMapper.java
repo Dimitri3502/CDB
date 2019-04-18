@@ -3,6 +3,7 @@ package com.excilys.training.mapper;
 import java.time.LocalDate;
 
 import com.excilys.training.dao.CompanyDAO;
+import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
@@ -27,7 +28,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		if (computerDTO.getDiscontinuedDate() != null) {
 			theComputer.setDiscontinuedDate(LocalDate.parse(computerDTO.getDiscontinuedDate()));
 		}
-		Company company = companyDAO.findById(Long.parseLong(computerDTO.getIdCompany()));
+		Company company = companyDAO.findById(Long.parseLong(computerDTO.getCompanyDTO().getId()));
 
 		theComputer.setCompany(company);
 		return theComputer;
@@ -44,7 +45,9 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		if (computer.getDiscontinuedDate() != null) {
 			theComputerDTO.setDiscontinuedDate(computer.getDiscontinuedDate().toString());
 		}
-		theComputerDTO.setIdCompany(Long.toString(computer.getCompany().getId()));
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId(Long.toString(computer.getCompany().getId()));
+		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
 	}
 

@@ -6,7 +6,7 @@ public class ComputerDTO extends Dto{
 	private String name;
 	private String introducedDate;
 	private String discontinuedDate;
-	private String idCompany;
+	private CompanyDTO companyDTO;
 	
 	public String getName() {
 		return name;
@@ -26,16 +26,17 @@ public class ComputerDTO extends Dto{
 	public void setDiscontinuedDate(String discontinuedDate) {
 		this.discontinuedDate = discontinuedDate;
 	}
-	public String getIdCompany() {
-		return idCompany;
+
+	public CompanyDTO getCompanyDTO() {
+		return companyDTO;
 	}
-	public void setIdCompany(String idCompany) {
-		this.idCompany = idCompany;
+	public void setCompanyDTO(CompanyDTO companyDTO) {
+		this.companyDTO = companyDTO;
 	}
 	@Override
 	public String toString() {
 		return "ComputerDTO [id = " + id + ", name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
-				+ discontinuedDate + ", idCompany=" + idCompany + "]";
+				+ discontinuedDate + ", CompanyDTO=" + companyDTO.toString() + "]";
 	}
 
 }
