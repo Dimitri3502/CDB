@@ -85,9 +85,11 @@ public class Ui {
 				+ "\n" + "Votre choix : ");
 	}
 	public void menuNextPage() {
-		System.out.println("menuNextPage"
+		System.out.println(" "
+				+ "\n" + "Pagination"
 				+ "\n" + "0 : retour menu"
-				+ "\n" + "1 : page suivante");
+				+ "\n" + "1 : page suivante"
+				+ "\n" + "2 : page precedente");
 	}
 	
 }

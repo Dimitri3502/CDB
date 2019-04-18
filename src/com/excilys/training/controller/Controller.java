@@ -49,28 +49,46 @@ public class Controller {
 
 		// List Computers
 		case 1:
-			
-			
+
 			try {
-				List<ComputerDTO> theComputerDaoList;
-				theComputerDaoList = computerService.getAll(10, 10);
-				theComputerDaoList.forEach(System.out::println);
-				vue.menuNextPage();
+				boolean returnMenu = false;
+				int n = 1;
+				while (!returnMenu) {
+					List<ComputerDTO> theComputerDaoList;
+					theComputerDaoList = computerService.getAll(10, n);
+					theComputerDaoList.forEach(System.out::println);
+					vue.menuNextPage();
+					String choix2 = vue.readInputs();
+					switch (choix2) {
+					case "0":
+						returnMenu = true;
+						break;
+					case "1":
+						n+=10;
+						break;
+					case "2":
+						n-=10;
+						break;
+						}
+					
+					
+
+				}
+
 			} catch (InvalidDiscontinuedDate e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
 			}
-			
-			
+
 			break;
 
 		// List Companies
 		case 2:
-			
+
 			List<CompanyDTO> theCompanyList;
-			theCompanyList = companyService.getAll(10,10);
+			theCompanyList = companyService.getAll(10, 10);
 			theCompanyList.forEach(System.out::println);
-			
+
 			break;
 
 		// show Computer
@@ -95,6 +113,7 @@ public class Controller {
 		default:
 
 		}
+
 	}
 
 	private ComputerDTO inputsToComputerDTO(Map<String, String> inputsCreateComputer) {
@@ -109,7 +128,7 @@ public class Controller {
 		return computerDTOCreate;
 
 	}
- 
+
 	private void updateComputer() {
 		try {
 			vue.updateComputer();
@@ -127,7 +146,7 @@ public class Controller {
 	}
 
 	private void showComputer() {
-		
+
 		try {
 			vue.showComputer();
 			String id = vue.readInputs();
@@ -137,7 +156,7 @@ public class Controller {
 		} catch (NotFoundException | InvalidDiscontinuedDate e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 	}
 
 	private void createComputer() {
