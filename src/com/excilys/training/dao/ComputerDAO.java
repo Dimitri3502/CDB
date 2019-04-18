@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.excilys.training.exception.ComputerNotFoundException;
+import com.excilys.training.exception.InvalidDiscontinuedDate;
+import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
@@ -21,7 +24,7 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?,discontinued = ?,company_id = ? WHERE id = ?";
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 
-	public Computer populate(ResultSet rs) {
+	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
 		Computer aComputer = new Computer();
 		try {
 			aComputer.setId(rs.getLong("id"));
@@ -47,7 +50,7 @@ public class ComputerDAO extends Dao<Computer> {
 		return aComputer;
 	}
 
-	public List<Computer> getAll() {
+	public List<Computer> getAll() throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
 		try {
 			Connection cnx = DbConn.getConnection();
@@ -125,15 +128,16 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
-	public Computer findById(long id) {
-		Computer aComputer = new Computer();
-		try {
-			Connection cnx = DbConn.getConnection();
+	public Computer findById(long id) throws ComputerNotFoundException, InvalidDiscontinuedDate{
+		
+		
+		try (Connection cnx = DbConn.getConnection()) {	
+			
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-
+			if (rs.next()) {
+				Computer aComputer = new Computer();
 				aComputer.setId(rs.getLong("id"));
 				aComputer.setName(rs.getString("name"));
 				if (rs.getDate("introduced") != null) {
@@ -150,13 +154,17 @@ public class ComputerDAO extends Dao<Computer> {
 					aCompany.setName(rs.getString("company_name"));
 				}
 				aComputer.setCompany(aCompany);
+				return aComputer;
 			}
-			cnx.close();
+			else {
+				throw new ComputerNotFoundException(id);
+			}
 
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return aComputer;
+		return null;
+		
 
 	}
 }

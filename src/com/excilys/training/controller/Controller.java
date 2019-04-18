@@ -6,7 +6,10 @@ import java.util.Map;
 import com.excilys.training.UI.Ui;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.exception.ComputerNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
+import com.excilys.training.exception.InvalidDiscontinuedDate;
+import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 
@@ -46,22 +49,32 @@ public class Controller {
 
 		// List Computers
 		case 1:
-			List<ComputerDTO> theComputerDaoList = computerService.getAll();
-			theComputerDaoList.forEach(System.out::println);
+			
+			
+			try {
+				List<ComputerDTO> theComputerDaoList;
+				theComputerDaoList = computerService.getAll();
+				theComputerDaoList.forEach(System.out::println);
+			} catch (InvalidDiscontinuedDate e) {
+				// TODO Auto-generated catch block
+				System.out.println(e.getMessage());
+			}
+			
+			
 			break;
 
 		// List Companies
 		case 2:
-			List<CompanyDTO> theCompanyList = companyService.getAll();
+			
+			List<CompanyDTO> theCompanyList;
+			theCompanyList = companyService.getAll();
 			theCompanyList.forEach(System.out::println);
+			
 			break;
 
 		// show Computer
 		case 3:
-			vue.showComputer();
-			String id = vue.readInputs();
-			ComputerDTO computerDTO = computerService.findById(id);
-			System.out.println(computerDTO);
+			showComputer();
 			break;
 
 		// create Computer
@@ -71,40 +84,19 @@ public class Controller {
 
 		// update Computer
 		case 5:
-			try {
-				vue.updateComputer();
-				String idUpdate = vue.readInputs();
-				ComputerDTO computerDTOtoUpdate = computerService.findById(idUpdate);
-				System.out.println("Ordiateur a modifier : " + computerDTOtoUpdate.toString());
-				Map<String, String> inputsNewComputer = vue.createComputer();
-				ComputerDTO computerDTOUpdate = this.inputsToComputerDTO(inputsNewComputer);
-				computerDTOUpdate.setId(idUpdate);
-				computerService.update(computerDTOUpdate);
-			} catch (InvalidDateValueException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			updateComputer();
 			break;
 
 		// delete Computer
 		case 6:
-			try {
-				vue.deleteComputer();
-				String idDelete = vue.readInputs();
-				ComputerDTO computerDTOtoDelete = computerService.findById(idDelete);
-				computerService.delete(computerDTOtoDelete);
-				System.out.println("T'es un gogole toi");
-			} catch (InvalidDateValueException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			deleteComputer();
 			break;
 		default:
 
 		}
 	}
 
-	public ComputerDTO inputsToComputerDTO(Map<String, String> inputsCreateComputer) {
+	private ComputerDTO inputsToComputerDTO(Map<String, String> inputsCreateComputer) {
 		// creer dto
 		ComputerDTO computerDTOCreate = new ComputerDTO();
 		computerDTOCreate.setName(inputsCreateComputer.get("name"));
@@ -117,6 +109,36 @@ public class Controller {
 
 	}
 
+	private void updateComputer() {
+		try {
+			vue.updateComputer();
+			String idUpdate = vue.readInputs();
+			ComputerDTO computerDTOtoUpdate = computerService.findById(idUpdate);
+			System.out.println("Ordiateur a modifier : " + computerDTOtoUpdate.toString());
+			Map<String, String> inputsNewComputer = vue.createComputer();
+			ComputerDTO computerDTOUpdate = this.inputsToComputerDTO(inputsNewComputer);
+			computerDTOUpdate.setId(idUpdate);
+			computerService.update(computerDTOUpdate);
+		} catch (InvalidDateValueException | NotFoundException | InvalidDiscontinuedDate e1) {
+			// TODO Auto-generated catch block
+			System.out.println(e1.getMessage());
+		}
+	}
+
+	private void showComputer() {
+		
+		try {
+			vue.showComputer();
+			String id = vue.readInputs();
+			ComputerDTO computerDTO;
+			computerDTO = computerService.findById(id);
+			System.out.println(computerDTO);
+		} catch (NotFoundException | InvalidDiscontinuedDate e) {
+			System.out.println(e.getMessage());
+		}
+		
+	}
+
 	private void createComputer() {
 		Map<String, String> inputsCreateComputer = vue.createComputer();
 		ComputerDTO computerDTOCreate = this.inputsToComputerDTO(inputsCreateComputer);
@@ -124,11 +146,24 @@ public class Controller {
 		try {
 			long idCreate = computerService.create(computerDTOCreate);
 			System.out.println("Ordinateur creer avec l'id : " + idCreate);
-		} catch (InvalidDateValueException e) {
+		} catch (InvalidDateValueException | InvalidDiscontinuedDate e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 
+	}
+
+	private void deleteComputer() {
+		try {
+			vue.deleteComputer();
+			String idDelete = vue.readInputs();
+			ComputerDTO computerDTOtoDelete = computerService.findById(idDelete);
+			computerService.delete(computerDTOtoDelete);
+			System.out.println("T'es un gogole toi");
+		} catch (InvalidDateValueException | NotFoundException | InvalidDiscontinuedDate e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
 	}
 
 }

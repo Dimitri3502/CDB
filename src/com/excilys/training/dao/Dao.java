@@ -2,6 +2,9 @@ package com.excilys.training.dao;
 
 import java.util.Collection;
 
+import com.excilys.training.exception.InvalidDiscontinuedDate;
+import com.excilys.training.exception.NotFoundException;
+
 public abstract class Dao<T> {
    
   /**
@@ -29,14 +32,17 @@ public abstract class Dao<T> {
   * Méthode de recherche des informations
   * @param key
   * @return T
+ * @throws NotFoundException 
+ * @throws InvalidDiscontinuedDate 
   */
-  public abstract T findById(long id);
+  public abstract T findById(long id) throws NotFoundException, InvalidDiscontinuedDate;
 
   /**
   * Méthode de recherche des informations
   * @return List<T>
+ * @throws InvalidDiscontinuedDate 
   */
-  public abstract Collection<T> getAll();
+  public abstract Collection<T> getAll() throws InvalidDiscontinuedDate;
 
 
   }

@@ -5,6 +5,8 @@ import java.util.List;
 import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.Dto;
 import com.excilys.training.exception.InvalidDateValueException;
+import com.excilys.training.exception.InvalidDiscontinuedDate;
+import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Model;
 
@@ -18,23 +20,23 @@ public abstract class Service<T extends Dto, U extends Model>{
 		this.dao = d;
 	}
 	
-	public long create(T dtoObject) throws InvalidDateValueException {
+	public long create(T dtoObject) throws InvalidDateValueException, InvalidDiscontinuedDate {
 		return this.dao.create(this.mapper.dtoToModel(dtoObject));
 	};
 	
-	public boolean update(T dtoObject) throws InvalidDateValueException {
+	public boolean update(T dtoObject) throws InvalidDateValueException, InvalidDiscontinuedDate {
 		return this.dao.update(this.mapper.dtoToModel(dtoObject));
 	};
 	
-	public boolean delete(T dtoObject) throws InvalidDateValueException {
+	public boolean delete(T dtoObject) throws InvalidDateValueException, InvalidDiscontinuedDate {
 		return this.dao.delete(this.mapper.dtoToModel(dtoObject));
 	};
 	
-	public T findById(String id) {
+	public T findById(String id) throws NotFoundException, InvalidDiscontinuedDate {
 		return this.mapper.modelToDto(this.dao.findById(this.mapper.idToInt(id)));
 	};
 	
-	public abstract List<T> getAll();
+	public abstract List<T> getAll() throws InvalidDiscontinuedDate;
 	
 	
 }

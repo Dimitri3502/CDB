@@ -2,6 +2,8 @@ package com.excilys.training.model;
 
 import java.time.LocalDate;
 
+import com.excilys.training.exception.InvalidDiscontinuedDate;
+
 /**
  * @author dimitri
  *
@@ -34,8 +36,12 @@ public class Computer extends Model{
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(LocalDate discontinuedDate) {
-		this.discontinuedDate = discontinuedDate;
+	public void setDiscontinuedDate(LocalDate discontinuedDate) throws InvalidDiscontinuedDate{
+		if (discontinuedDate.isAfter(introducedDate)) {
+			this.discontinuedDate = discontinuedDate;
+		} else {
+			throw new InvalidDiscontinuedDate();
+		}
 	}
 
 

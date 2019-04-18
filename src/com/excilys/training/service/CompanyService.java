@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.CompanyDTO;
+import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Company;
 
@@ -18,7 +19,7 @@ public class CompanyService extends Service<CompanyDTO, Company>{
 
 
 	@Override
-	public List<CompanyDTO> getAll() {
+	public List<CompanyDTO> getAll(){
 		CompanyDAO companyDAO = new CompanyDAO();
 		List<Company> theCompanyList = companyDAO.getAll();
 		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
