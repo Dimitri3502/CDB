@@ -1,6 +1,7 @@
 package com.excilys.training.dao;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.exception.NotFoundException;
@@ -42,7 +43,7 @@ public abstract class Dao<T> {
   * @return List<T>
  * @throws InvalidDiscontinuedDate 
   */
-  public abstract Collection<T> getAll() throws InvalidDiscontinuedDate;
+  public abstract List<T> getAll() throws InvalidDiscontinuedDate;
 
-
+  public abstract List<T> getAll(int limit, int offset) throws InvalidDiscontinuedDate;
   }

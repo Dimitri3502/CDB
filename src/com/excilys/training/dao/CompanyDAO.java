@@ -17,7 +17,8 @@ public class CompanyDAO extends Dao<Company>{
     private static final String SQL_CREATE = "INSERT INTO company (name) VALUES (?)";
     private static final String SQL_UPDATE = "UPDATE company SET(name) VALUES (?) WHERE id=?";
     private static final String SQL_DELETE = "DELETE FROM company WHERE id=?";
-
+    private static final String SQL_FIND_ALL_PAGINED = "SELECT id,name FROM company ORDER BY id LIMIT ? OFFSET ?";
+    
     public Company populate(ResultSet rs) {
     	Company aCompany = new Company();
         try {
@@ -67,6 +68,28 @@ public class CompanyDAO extends Dao<Company>{
 		}
 		return Company;
 	}
+	
+	@Override
+	public List<Company> getAll(int limit, int offset) {
+        List<Company> companies = new ArrayList<Company>();
+        try {
+            Connection cnx = DbConn.getConnection();
+            PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
+            stmt.setLong(1, limit);
+            stmt.setLong(2, offset);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+            	Company aCompany = populate(rs);
+            	companies.add(aCompany);
+
+            }
+            cnx.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return companies;
+	}
+	
 	@Override
 	public long create(Company obj) {
 		return 0;

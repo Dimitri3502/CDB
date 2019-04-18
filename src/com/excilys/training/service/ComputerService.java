@@ -33,9 +33,9 @@ public class ComputerService extends Service<ComputerDTO, Computer> {
 //	};
 
 	@Override
-	public List<ComputerDTO> getAll() throws InvalidDiscontinuedDate{
+	public List<ComputerDTO> getAll(int limit, int offset) throws InvalidDiscontinuedDate{
 		ComputerDAO computerDAO = new ComputerDAO();
-		List<Computer> theComputerList = computerDAO.getAll();
+		List<Computer> theComputerList = computerDAO.getAll(limit, offset);
 		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
 
 		return theComputerDtoList;

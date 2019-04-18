@@ -19,7 +19,7 @@ public abstract class Service<T extends Dto, U extends Model>{
 		this.mapper = m;
 		this.dao = d;
 	}
-	
+	 
 	public long create(T dtoObject) throws InvalidDateValueException, InvalidDiscontinuedDate {
 		return this.dao.create(this.mapper.dtoToModel(dtoObject));
 	};
@@ -36,7 +36,7 @@ public abstract class Service<T extends Dto, U extends Model>{
 		return this.mapper.modelToDto(this.dao.findById(this.mapper.idToInt(id)));
 	};
 	
-	public abstract List<T> getAll() throws InvalidDiscontinuedDate;
+	public abstract List<T> getAll(int limit, int offset) throws InvalidDiscontinuedDate;
 	
 	
 }

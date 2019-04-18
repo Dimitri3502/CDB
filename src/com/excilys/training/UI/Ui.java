@@ -84,5 +84,10 @@ public class Ui {
 				+ "\n" + "Entrez l'id de l'ordinateur à modifier"
 				+ "\n" + "Votre choix : ");
 	}
+	public void menuNextPage() {
+		System.out.println("menuNextPage"
+				+ "\n" + "0 : retour menu"
+				+ "\n" + "1 : page suivante");
+	}
 	
 }

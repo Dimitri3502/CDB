@@ -53,8 +53,9 @@ public class Controller {
 			
 			try {
 				List<ComputerDTO> theComputerDaoList;
-				theComputerDaoList = computerService.getAll();
+				theComputerDaoList = computerService.getAll(10, 10);
 				theComputerDaoList.forEach(System.out::println);
+				vue.menuNextPage();
 			} catch (InvalidDiscontinuedDate e) {
 				// TODO Auto-generated catch block
 				System.out.println(e.getMessage());
@@ -67,7 +68,7 @@ public class Controller {
 		case 2:
 			
 			List<CompanyDTO> theCompanyList;
-			theCompanyList = companyService.getAll();
+			theCompanyList = companyService.getAll(10,10);
 			theCompanyList.forEach(System.out::println);
 			
 			break;
@@ -108,7 +109,7 @@ public class Controller {
 		return computerDTOCreate;
 
 	}
-
+ 
 	private void updateComputer() {
 		try {
 			vue.updateComputer();

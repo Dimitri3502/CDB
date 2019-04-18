@@ -19,9 +19,9 @@ public class CompanyService extends Service<CompanyDTO, Company>{
 
 
 	@Override
-	public List<CompanyDTO> getAll(){
+	public List<CompanyDTO> getAll(int limit, int offset){
 		CompanyDAO companyDAO = new CompanyDAO();
-		List<Company> theCompanyList = companyDAO.getAll();
+		List<Company> theCompanyList = companyDAO.getAll(limit, offset);
 		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
 		
 		return theCompanyDtoList;

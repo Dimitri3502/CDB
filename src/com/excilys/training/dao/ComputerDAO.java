@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_CREATE = "INSERT INTO computer (name, introduced,discontinued,company_id) VALUES (?,?,?,?)";
 	private static final String SQL_UPDATE = "UPDATE computer SET name = ?, introduced = ?,discontinued = ?,company_id = ? WHERE id = ?";
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
+	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 
 	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
 		Computer aComputer = new Computer();
@@ -61,7 +63,7 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 
 			}
-			cnx.close(); 
+			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -74,7 +76,7 @@ public class ComputerDAO extends Dao<Computer> {
 		try {
 			Connection cnx = DbConn.getConnection();
 			PreparedStatement stmt;
-			stmt = cnx.prepareStatement(SQL_CREATE,Statement.RETURN_GENERATED_KEYS);
+			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
 			stmt.setDate(2, Date.valueOf(computer.getIntroducedDate()));
 			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
@@ -95,15 +97,15 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean delete(Computer obj) {
-        try {
-            Connection cnx = DbConn.getConnection();
-            PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
-            stmt.setLong(1, obj.getId());
-            stmt.executeUpdate();
-            cnx.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
-        }
+		try {
+			Connection cnx = DbConn.getConnection();
+			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
+			stmt.setLong(1, obj.getId());
+			stmt.executeUpdate();
+			cnx.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+		}
 		return true;
 	}
 
@@ -128,11 +130,10 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
-	public Computer findById(long id) throws ComputerNotFoundException, InvalidDiscontinuedDate{
-		
-		
-		try (Connection cnx = DbConn.getConnection()) {	
-			
+	public Computer findById(long id) throws ComputerNotFoundException, InvalidDiscontinuedDate {
+
+		try (Connection cnx = DbConn.getConnection()) {
+
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -155,8 +156,7 @@ public class ComputerDAO extends Dao<Computer> {
 				}
 				aComputer.setCompany(aCompany);
 				return aComputer;
-			}
-			else {
+			} else {
 				throw new ComputerNotFoundException(id);
 			}
 
@@ -164,7 +164,27 @@ public class ComputerDAO extends Dao<Computer> {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
-		
 
+	}
+
+	@Override
+	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
+		List<Computer> computers = new ArrayList<Computer>();
+		try {
+			Connection cnx = DbConn.getConnection();
+			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
+			stmt.setLong(1, limit);
+			stmt.setLong(2, offset);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Computer aComputer = populate(rs);
+				computers.add(aComputer);
+
+			}
+			cnx.close();
+		} catch (SQLException ex) {
+			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		return computers;
 	}
 }
