@@ -11,7 +11,8 @@ public class Ui {
 
 	public void showActions() {
 
-		System.out.println("Actions : "
+		System.out.println(" "
+				+ "\n" + "Actions : "
 				+ "\n" + "0 : Fermer l'application"
 				+ "\n" + "1 : ListComputers"
 				+ "\n" + "2 : ListCompanies"  

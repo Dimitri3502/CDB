@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.Dto;
+import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Model;
 
@@ -17,15 +18,15 @@ public abstract class Service<T extends Dto, U extends Model>{
 		this.dao = d;
 	}
 	
-	public long create(T dtoObject) {
+	public long create(T dtoObject) throws InvalidDateValueException {
 		return this.dao.create(this.mapper.dtoToModel(dtoObject));
 	};
 	
-	public boolean update(T dtoObject) {
+	public boolean update(T dtoObject) throws InvalidDateValueException {
 		return this.dao.update(this.mapper.dtoToModel(dtoObject));
 	};
 	
-	public boolean delete(T dtoObject) {
+	public boolean delete(T dtoObject) throws InvalidDateValueException {
 		return this.dao.delete(this.mapper.dtoToModel(dtoObject));
 	};
 	

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
@@ -18,21 +19,28 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	private CompanyDAO companyDAO;
 
 	@Override
-	public Computer dtoToModel(ComputerDTO computerDTO) {
+	public Computer dtoToModel(ComputerDTO computerDTO) throws InvalidDateValueException{
 		Computer theComputer = new Computer();
+		
 		if (computerDTO.getId() != null) {
 			theComputer.setId(Long.parseLong(computerDTO.getId()));
 		}
-		theComputer.setName(computerDTO.getName());
-		if (computerDTO.getIntroducedDate() != null) {
+		
+		if (!computerDTO.getIntroducedDate().matches("\\\\d{4}-\\d{2}-\\d{2}")) {
+			throw new InvalidDateValueException(computerDTO.getIntroducedDate());
+		}
+		if (!computerDTO.getDiscontinuedDate().matches("\\\\d{4}-\\d{2}-\\d{2}")) {
+			throw new InvalidDateValueException(computerDTO.getDiscontinuedDate());
+		}
+		else {
+			theComputer.setName(computerDTO.getName());
 			theComputer.setIntroducedDate(LocalDate.parse(computerDTO.getIntroducedDate()));
-		}
-		if (computerDTO.getDiscontinuedDate() != null) {
 			theComputer.setDiscontinuedDate(LocalDate.parse(computerDTO.getDiscontinuedDate()));
-		}
-		Company company = companyDAO.findById(Long.parseLong(computerDTO.getCompanyDTO().getId()));
+			Company company = companyDAO.findById(Long.parseLong(computerDTO.getCompanyDTO().getId()));
 
-		theComputer.setCompany(company);
+			theComputer.setCompany(company);
+			
+		}
 		return theComputer;
 	}
 
