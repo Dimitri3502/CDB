@@ -20,17 +20,6 @@ public class ComputerService extends Service<ComputerDTO, Computer> {
 		super(m, d);
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-//	public ComputerDTO findById(String id) throws ComputerNotFoundException {
-//		
-//		try {
-//			return super.findById(id);
-//		} catch (NotFoundException e) {
-//			// TODO Auto-generated catch block
-//			throw new ComputerNotFoundException(Long.parseLong(id));
-//		}
-//	};
 
 	@Override
 	public List<ComputerDTO> getAll(int limit, int offset) throws InvalidDiscontinuedDate{
