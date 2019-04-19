@@ -18,11 +18,6 @@ public class Controller {
 	private ComputerService computerService;
 	private Ui vue;
 
-	private static enum State {
-		SHOW_MENU, SHOW_LIST_COMPUTER, SHOW_DETAIL_COMPUTER, DELETE_COMPUTER, CREATE_COMPUTER, SHOW_LIST_COMPANY,
-		UPDATE_COMPUTER, QUIT
-	}
-
 	public Controller(CompanyService companyService, ComputerService computerService, Ui vue) {
 		super();
 		this.companyService = companyService;
@@ -49,37 +44,7 @@ public class Controller {
 
 		// List Computers
 		case 1:
-
-			try {
-				boolean returnMenu = false;
-				int n = 1;
-				while (!returnMenu) {
-					List<ComputerDTO> theComputerDaoList;
-					theComputerDaoList = computerService.getAll(10, n);
-					theComputerDaoList.forEach(System.out::println);
-					vue.menuNextPage();
-					String choix2 = vue.readInputs();
-					switch (choix2) {
-					case "0":
-						returnMenu = true;
-						break;
-					case "1":
-						n+=10;
-						break;
-					case "2":
-						n-=10;
-						break;
-						}
-					
-					
-
-				}
-
-			} catch (InvalidDiscontinuedDate e) {
-				// TODO Auto-generated catch block
-				System.out.println(e.getMessage());
-			}
-
+			listComputers();
 			break;
 
 		// List Companies
@@ -156,7 +121,6 @@ public class Controller {
 		} catch (NotFoundException | InvalidDiscontinuedDate e) {
 			System.out.println(e.getMessage());
 		}
-
 	}
 
 	private void createComputer() {
@@ -170,7 +134,6 @@ public class Controller {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
-
 	}
 
 	private void deleteComputer() {
@@ -186,4 +149,35 @@ public class Controller {
 		}
 	}
 
+	private void listComputers() {
+		try {
+			boolean returnMenu = false;
+			int n = 1;
+			while (!returnMenu) {
+				List<ComputerDTO> theComputerDaoList;
+				theComputerDaoList = computerService.getAll(10, n);
+				theComputerDaoList.forEach(System.out::println);
+				vue.menuNextPage();
+				String choix2 = vue.readInputs();
+				switch (choix2) {
+				// retour
+				case "0":
+					returnMenu = true;
+					break;
+				// page suivante
+				case "1":
+					n += 10;
+					break;
+				// page precedente
+				case "2":
+					n -= 10;
+					break;
+				}
+			}
+
+		} catch (InvalidDiscontinuedDate e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+	}
 }
