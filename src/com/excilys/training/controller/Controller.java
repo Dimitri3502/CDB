@@ -44,16 +44,12 @@ public class Controller {
 
 		// List Computers
 		case 1:
-			listComputers();
+			listPagination("computer");
 			break;
 
 		// List Companies
 		case 2:
-
-			List<CompanyDTO> theCompanyList;
-			theCompanyList = companyService.getAll(10, 10);
-			theCompanyList.forEach(System.out::println);
-
+			listPagination("company");
 			break;
 
 		// show Computer
@@ -149,14 +145,21 @@ public class Controller {
 		}
 	}
 
-	private void listComputers() {
+	private void listPagination(String str) {
 		try {
 			boolean returnMenu = false;
 			int n = 1;
 			while (!returnMenu) {
-				List<ComputerDTO> theComputerDaoList;
-				theComputerDaoList = computerService.getAll(10, n);
-				theComputerDaoList.forEach(System.out::println);
+				if (str=="computer") {
+					List<ComputerDTO> theComputerDaoList;
+					theComputerDaoList = computerService.getAll(10, n);
+					theComputerDaoList.forEach(System.out::println);					
+				}
+				if (str=="company") {
+					List<CompanyDTO> theCompanyList;
+					theCompanyList = companyService.getAll(10, n);
+					theCompanyList.forEach(System.out::println);			
+				}
 				vue.menuNextPage();
 				String choix2 = vue.readInputs();
 				switch (choix2) {
@@ -179,5 +182,11 @@ public class Controller {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());
 		}
+	}
+
+	private void listCompanies() {
+		List<CompanyDTO> theCompanyList;
+		theCompanyList = companyService.getAll(10, 10);
+		theCompanyList.forEach(System.out::println);
 	}
 }
