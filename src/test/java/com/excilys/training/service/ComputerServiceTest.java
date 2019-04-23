@@ -12,21 +12,26 @@ import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.ComputerDAO;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.exception.NotFoundException;
+import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.mapper.ComputerMapper;
 
 class ComputerServiceTest {
 
 	protected static ComputerService computerService;
+	protected static CompanyService companyService;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	
 		ComputerDAO computerDAO = ComputerDAO.getInstance();
 		CompanyDAO companyDAO = CompanyDAO.getInstance();
-		ComputerMapper mapper = ComputerMapper.getInstance(companyDAO);
-		computerService = ComputerService.getInstance(mapper, computerDAO);
+		ComputerMapper computerMapper = ComputerMapper.getInstance(companyDAO);
+		CompanyMapper companyMapper = CompanyMapper.getInstance();
+		computerService = ComputerService.getInstance(computerMapper, computerDAO);
+		companyService = CompanyService.getInstance(companyMapper, companyDAO);
 	}
 
 	@Test
@@ -46,6 +51,15 @@ class ComputerServiceTest {
 		
 	}
 
-
+	@Test
+	void testCreate() throws NotFoundException, InvalidDiscontinuedDate, InvalidDateValueException {
+		
+		CompanyDTO companyDTO = companyService.findById("2");
+		ComputerDTO expected = new ComputerDTO("3","test", "2001-02-03","2001-02-04",companyDTO);
+		long newId = computerService.create(expected);
+		ComputerDTO actual = computerService.findById(Long.toString(newId));
+		assertEquals(expected, actual);
+		
+	}
 
 }

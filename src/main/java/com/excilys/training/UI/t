@@ -1,1 +1,1 @@
-CompanyDAO companyDAO = CompanyDAO.getInstance();
+CompanyMapper CompanyMapper = CompanyMapper.getInstance(companyDAO);
