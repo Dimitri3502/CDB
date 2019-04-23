@@ -1,18 +1,2 @@
-	private static CompanyMapper instance = null;
-	
-	
-	private CompanyMapper(CompanyDAO companyDAO) {
-		super();
-		this.companyDAO = companyDAO;
-	}
-
-	public final static CompanyMapper getInstance(CompanyDAO companyDAO)  {
-		if (CompanyMapper.instance == null) {
-             
-              if (CompanyMapper.instance == null) {
-            	  CompanyMapper.instance = new CompanyMapper(companyDAO);
-              }
-            
-         }
-         return CompanyMapper.instance;
-	}
+			CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
+			company = companyResultSetModelMapper.map(rs);

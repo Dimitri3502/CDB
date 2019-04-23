@@ -36,13 +36,16 @@ public class Computer extends Model{
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(LocalDate discontinuedDate) throws InvalidDiscontinuedDate{
-		if (discontinuedDate.isAfter(introducedDate)) {
+	public void setDiscontinuedDate(LocalDate discontinuedDate){
 			this.discontinuedDate = discontinuedDate;
-		} else {
-			throw new InvalidDiscontinuedDate();
-		}
 	}
+//	public void setDiscontinuedDate(LocalDate discontinuedDate) throws InvalidDiscontinuedDate{
+//		if (discontinuedDate.isAfter(introducedDate)) {
+//			this.discontinuedDate = discontinuedDate;
+//		} else {
+//			throw new InvalidDiscontinuedDate();
+//		}
+//	}
 
 
 	public Company getCompany() {

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
 import com.excilys.training.model.Company;
 
 public class CompanyDAO extends Dao<Company>{
@@ -36,15 +37,15 @@ public class CompanyDAO extends Dao<Company>{
 	}
 	
     public Company populate(ResultSet rs) {
-    	Company aCompany = new Company();
+    	Company company = new Company();
         try {
-        	aCompany.setId(rs.getLong("id"));
-            aCompany.setName(rs.getString("name"));
+			CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
+			company = companyResultSetModelMapper.map(rs);
             
         } catch (SQLException ex) {
             Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return aCompany;
+        return company;
     }
             
 	@Override
@@ -72,10 +73,10 @@ public class CompanyDAO extends Dao<Company>{
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Company.setName(rs.getString("name"));
-				Company.setId(rs.getLong("id"));
+				Company company = new Company();
+				CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
+				company = companyResultSetModelMapper.map(rs);
 			}
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
 		}
