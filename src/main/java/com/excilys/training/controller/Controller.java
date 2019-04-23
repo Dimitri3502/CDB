@@ -148,7 +148,7 @@ public class Controller {
 	private void listPagination(String str) {
 		try {
 			boolean returnMenu = false;
-			int n = 1;
+			int n = 0;
 			while (!returnMenu) {
 				if (str=="computer") {
 					List<ComputerDTO> theComputerDaoList;

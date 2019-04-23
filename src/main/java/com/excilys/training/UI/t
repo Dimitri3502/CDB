@@ -1,2 +1,1 @@
-			CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
-			company = companyResultSetModelMapper.map(rs);
+CompanyDAO companyDAO = CompanyDAO.getInstance();
