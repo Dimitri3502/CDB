@@ -3,21 +3,38 @@ package com.excilys.training.mapper;
 import java.time.LocalDate;
 
 import com.excilys.training.dao.CompanyDAO;
+import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
+import com.excilys.training.service.ComputerService;
 
 public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 
-	public ComputerMapper(CompanyDAO companyDAO) {
+	private static ComputerMapper instance = null;
+	
+	private CompanyDAO companyDAO;
+	
+	private ComputerMapper(CompanyDAO companyDAO) {
 		super();
 		this.companyDAO = companyDAO;
 	}
 
-	private CompanyDAO companyDAO;
+	public final static ComputerMapper getInstance(CompanyDAO companyDAO)  {
+		if (ComputerMapper.instance == null) {
+             
+              if (ComputerMapper.instance == null) {
+            	  ComputerMapper.instance = new ComputerMapper(companyDAO);
+              }
+            
+         }
+         return ComputerMapper.instance;
+	}
+
+	
 
 	@Override
 	public Computer dtoToModel(ComputerDTO computerDTO) throws InvalidDateValueException, InvalidDiscontinuedDate{

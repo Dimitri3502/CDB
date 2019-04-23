@@ -26,6 +26,22 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 
+	private static ComputerDAO instance = null;
+
+	private ComputerDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	public final static ComputerDAO getInstance()  {
+		if (ComputerDAO.instance == null) {
+             
+              if (ComputerDAO.instance == null) {
+            	  ComputerDAO.instance = new ComputerDAO();
+              }
+            
+         }
+         return ComputerDAO.instance;
+	}
+	
 	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
 		Computer aComputer = new Computer();
 		try {

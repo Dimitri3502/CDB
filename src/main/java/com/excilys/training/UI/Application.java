@@ -11,13 +11,13 @@ import com.excilys.training.service.ComputerService;
 public class Application {
 
 	public static void main(final String[] args) {
-		CompanyMapper companyMapper = new CompanyMapper();
-		CompanyDAO companyDAO = new CompanyDAO();
-		CompanyService companyService = new CompanyService(companyMapper, companyDAO);
+		CompanyMapper companyMapper = CompanyMapper.getInstance();
+		CompanyDAO companyDAO = CompanyDAO.getInstance();
+		CompanyService companyService = CompanyService.getInstance(companyMapper, companyDAO);
 
-		ComputerMapper computerMapper = new ComputerMapper(companyDAO);
-		ComputerDAO computerDAO = new ComputerDAO();
-		ComputerService computerService = new ComputerService(computerMapper, computerDAO);
+		ComputerMapper computerMapper = ComputerMapper.getInstance(companyDAO);
+		ComputerDAO computerDAO = ComputerDAO.getInstance();
+		ComputerService computerService = ComputerService.getInstance(computerMapper, computerDAO);
 		
 		Ui vue = new Ui();
 		Controller theController = new Controller(companyService, computerService, vue);

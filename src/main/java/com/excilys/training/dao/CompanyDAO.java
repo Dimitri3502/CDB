@@ -18,7 +18,23 @@ public class CompanyDAO extends Dao<Company>{
     private static final String SQL_UPDATE = "UPDATE company SET(name) VALUES (?) WHERE id=?";
     private static final String SQL_DELETE = "DELETE FROM company WHERE id=?";
     private static final String SQL_FIND_ALL_PAGINED = "SELECT id,name FROM company ORDER BY id LIMIT ? OFFSET ?";
-    
+
+	private static CompanyDAO instance = null;
+
+	private CompanyDAO() {
+		// TODO Auto-generated constructor stub
+	}
+	public final static CompanyDAO getInstance()  {
+		if (CompanyDAO.instance == null) {
+             
+              if (CompanyDAO.instance == null) {
+            	  CompanyDAO.instance = new CompanyDAO();
+              }
+            
+         }
+         return CompanyDAO.instance;
+	}
+	
     public Company populate(ResultSet rs) {
     	Company aCompany = new Company();
         try {

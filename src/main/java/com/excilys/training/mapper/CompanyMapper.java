@@ -5,6 +5,22 @@ import com.excilys.training.model.Company;
 
 public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 
+	private static CompanyMapper instance = null;
+	
+	private CompanyMapper() {
+		super();
+	}
+
+	public final static CompanyMapper getInstance()  {
+		if (CompanyMapper.instance == null) {
+             
+              if (CompanyMapper.instance == null) {
+            	  CompanyMapper.instance = new CompanyMapper();
+              }
+            
+         }
+         return CompanyMapper.instance;
+	}
 	@Override
 	public Company dtoToModel(CompanyDTO companyDTO) {
 		Company theCompany = new Company();

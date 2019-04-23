@@ -12,15 +12,27 @@ import com.excilys.training.model.Company;
 
 public class CompanyService extends Service<CompanyDTO, Company>{
 
-	public CompanyService(Mapper<CompanyDTO, Company> m, Dao<Company> d) {
+	private static CompanyService instance = null;
+
+	private CompanyService(Mapper<CompanyDTO, Company> m, Dao<Company> d) {
 		super(m, d);
 		// TODO Auto-generated constructor stub
+	}
+	public final static CompanyService getInstance(Mapper<CompanyDTO, Company> m, Dao<Company> d)  {
+		if (CompanyService.instance == null) {
+             
+              if (CompanyService.instance == null) {
+            	  CompanyService.instance = new CompanyService(m,d);
+              }
+            
+         }
+         return CompanyService.instance;
 	}
 
 
 	@Override
 	public List<CompanyDTO> getAll(int limit, int offset){
-		CompanyDAO companyDAO = new CompanyDAO();
+		CompanyDAO companyDAO = CompanyDAO.getInstance();
 		List<Company> theCompanyList = companyDAO.getAll(limit, offset);
 		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream().map(s -> mapper.modelToDto(s)).collect(Collectors.toList());
 		
