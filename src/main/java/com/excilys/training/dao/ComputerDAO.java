@@ -70,8 +70,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public List<Computer> getAll() throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try {
-			Connection cnx = DbConn.getConnection();
+		try (Connection cnx = DbConn.getConnection()){
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -79,7 +78,6 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 
 			}
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -89,8 +87,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public long create(Computer computer) {
 		Long lastInsertedId = null;
-		try {
-			Connection cnx = DbConn.getConnection();
+		try (Connection cnx = DbConn.getConnection()){
 			PreparedStatement stmt;
 			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
@@ -104,7 +101,6 @@ public class ComputerDAO extends Dao<Computer> {
 			if (rs.next()) {
 				lastInsertedId = rs.getLong(1);
 			}
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -113,12 +109,10 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean delete(Computer obj) {
-		try {
-			Connection cnx = DbConn.getConnection();
+		try (Connection cnx = DbConn.getConnection()){
 			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
 			stmt.setLong(1, obj.getId());
 			stmt.executeUpdate();
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -127,8 +121,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean update(Computer computer) {
-		try {
-			Connection cnx = DbConn.getConnection();
+		try (Connection cnx = DbConn.getConnection()){
 			PreparedStatement stmt;
 			stmt = cnx.prepareStatement(SQL_UPDATE);
 			stmt.setString(1, computer.getName());
@@ -137,8 +130,6 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
-
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
 		}
@@ -186,8 +177,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try {
-			Connection cnx = DbConn.getConnection();
+		try (Connection cnx = DbConn.getConnection()){
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
 			stmt.setLong(1, limit);
 			stmt.setLong(2, offset);
@@ -197,7 +187,6 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 
 			}
-			cnx.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
 		}

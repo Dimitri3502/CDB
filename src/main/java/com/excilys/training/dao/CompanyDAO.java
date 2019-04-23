@@ -50,8 +50,7 @@ public class CompanyDAO extends Dao<Company>{
 	@Override
 	public List<Company> getAll() {
         List<Company> companies = new ArrayList<Company>();
-        try {
-            Connection cnx = DbConn.getConnection();
+        try(Connection cnx = DbConn.getConnection()) {
             PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -59,7 +58,6 @@ public class CompanyDAO extends Dao<Company>{
             	companies.add(aCompany);
 
             }
-            cnx.close();
         } catch (SQLException ex) {
             Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,8 +67,7 @@ public class CompanyDAO extends Dao<Company>{
 	@Override
 	public Company findById(long id) {
 		Company Company = new Company();
-		try {
-			Connection cnx = DbConn.getConnection();
+		try(Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -88,8 +85,7 @@ public class CompanyDAO extends Dao<Company>{
 	@Override
 	public List<Company> getAll(int limit, int offset) {
         List<Company> companies = new ArrayList<Company>();
-        try {
-            Connection cnx = DbConn.getConnection();
+        try(Connection cnx = DbConn.getConnection()) {
             PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
             stmt.setLong(1, limit);
             stmt.setLong(2, offset);
@@ -99,7 +95,6 @@ public class CompanyDAO extends Dao<Company>{
             	companies.add(aCompany);
 
             }
-            cnx.close();
         } catch (SQLException ex) {
             Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
         }
