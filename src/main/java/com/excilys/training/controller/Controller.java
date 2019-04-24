@@ -2,28 +2,34 @@ package com.excilys.training.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
-import com.excilys.training.UI.Ui;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.exception.ComputerNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.validator.ComputerDTOValidator;
+import com.excilys.training.validator.Validator;
 
 public class Controller {
+	private static Controller instance;
+	 
+	private final ComputerDTOValidator computerDTOValidator = ComputerDTOValidator.getInstance();
 	private CompanyService companyService;
 	private ComputerService computerService;
-	private Ui vue;
 
-	public Controller(CompanyService companyService, ComputerService computerService, Ui vue) {
-		super();
-		this.companyService = companyService;
-		this.computerService = computerService;
-		this.vue = vue;
-	}
+    private Controller() {
+    }
+
+    public static Controller getInstance() {
+        if (Objects.isNull(instance)) {
+            instance = new Controller();
+        }
+        return instance;
+    }
 
 	public void start() {
 
@@ -77,18 +83,6 @@ public class Controller {
 
 	}
 
-	private ComputerDTO inputsToComputerDTO(Map<String, String> inputsCreateComputer) {
-		// creer dto
-		ComputerDTO computerDTOCreate = new ComputerDTO();
-		computerDTOCreate.setName(inputsCreateComputer.get("name"));
-		computerDTOCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
-		computerDTOCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
-		CompanyDTO companyDTO = new CompanyDTO();
-		companyDTO.setId(inputsCreateComputer.get("idCompany"));
-		computerDTOCreate.setCompanyDTO(companyDTO);
-		return computerDTOCreate;
-
-	}
 
 	private void updateComputer() {
 		try {
@@ -119,13 +113,18 @@ public class Controller {
 		}
 	}
 
-	private void createComputer() {
-		Map<String, String> inputsCreateComputer = vue.createComputer();
-		ComputerDTO computerDTOCreate = this.inputsToComputerDTO(inputsCreateComputer);
-
+	public void createComputer(ComputerDTO computerDTOCreate) {
 		try {
-			long idCreate = computerService.create(computerDTOCreate);
-			System.out.println("Ordinateur creer avec l'id : " + idCreate);
+			final Validator.Result result = computerDTOValidator.check(computerDTOCreate);
+		
+            
+            if (result.isValid()) {
+                computerService.create(computerDTOCreate);
+    			long idCreate = computerService.create(computerDTOCreate);
+    			System.out.println("Ordinateur creer avec l'id : " + idCreate);
+            } else {
+                throw new ValidatorException(result);
+            }
 		} catch (InvalidDateValueException | InvalidDiscontinuedDate e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());

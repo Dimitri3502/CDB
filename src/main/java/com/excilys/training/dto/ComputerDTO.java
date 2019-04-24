@@ -16,6 +16,7 @@ public class ComputerDTO extends Dto{
 		this.discontinuedDate = discontinuedDate;
 		this.companyDTO = companyDTO;
 	}
+	
 	public String getName() {
 		return name;
 	}
