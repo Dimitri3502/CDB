@@ -39,10 +39,10 @@ public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer>
 		computer.setName(rs.getString(COLUMN_NAME));
 		computer.setId(rs.getLong(COLUMN_ID));
 		if (rs.getDate(COLUMN_INTRODUCED) != null) {
-			computer.setIntroducedDate(rs.getDate(COLUMN_INTRODUCED).toLocalDate());
+			computer.setIntroducedDate(rs.getTimestamp(COLUMN_INTRODUCED).toLocalDateTime());
 		}
 		if (rs.getDate(COLUMN_DISCONTINUED) != null) {
-			computer.setDiscontinuedDate(rs.getDate(COLUMN_DISCONTINUED).toLocalDate());
+			computer.setDiscontinuedDate(rs.getTimestamp(COLUMN_DISCONTINUED).toLocalDateTime());
 		}
 		Company aCompany = new Company();
 		if (rs.getString(COLUMN_COMPANY_ID) != null) {

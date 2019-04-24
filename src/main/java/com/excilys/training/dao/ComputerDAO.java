@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -45,7 +46,7 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
-		Computer computer = new Computer();
+		Computer computer = null;
 		try {
 			ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
 			computer = computerResultSetModelMapper.map(rs);
@@ -78,8 +79,8 @@ public class ComputerDAO extends Dao<Computer> {
 			PreparedStatement stmt;
 			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, computer.getName());
-			stmt.setDate(2, Date.valueOf(computer.getIntroducedDate()));
-			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroducedDate()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinuedDate()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.toString();
 			stmt.executeUpdate();
@@ -112,8 +113,8 @@ public class ComputerDAO extends Dao<Computer> {
 			PreparedStatement stmt;
 			stmt = cnx.prepareStatement(SQL_UPDATE);
 			stmt.setString(1, computer.getName());
-			stmt.setDate(2, Date.valueOf(computer.getIntroducedDate()));
-			stmt.setDate(3, Date.valueOf(computer.getDiscontinuedDate()));
+			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroducedDate()));
+			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinuedDate()));
 			stmt.setLong(4, computer.getCompany().getId());
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
@@ -132,11 +133,8 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				
-				Computer computer = new Computer();
 				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
-				computer = computerResultSetModelMapper.map(rs);
-				return computer;
+				return computerResultSetModelMapper.map(rs);
 			} else {
 				throw new ComputerNotFoundException(id);
 			}

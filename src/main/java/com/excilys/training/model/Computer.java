@@ -1,6 +1,7 @@
 package com.excilys.training.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 
@@ -11,8 +12,8 @@ import com.excilys.training.exception.InvalidDiscontinuedDate;
 public class Computer extends Model{
 
 	private String name;
-	private LocalDate introducedDate;
-	private LocalDate discontinuedDate;
+	private LocalDateTime introducedDate;
+	private LocalDateTime discontinuedDate;
 	private Company company;
 
 
@@ -24,19 +25,19 @@ public class Computer extends Model{
 		this.name = name;
 	}
 
-	public LocalDate getIntroducedDate() {
+	public LocalDateTime getIntroducedDate() {
 		return introducedDate;
 	}
 
-	public void setIntroducedDate(LocalDate introducedDate) {
+	public void setIntroducedDate(LocalDateTime introducedDate) {
 		this.introducedDate = introducedDate;
 	}
 
-	public LocalDate getDiscontinuedDate() {
+	public LocalDateTime getDiscontinuedDate() {
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(LocalDate discontinuedDate){
+	public void setDiscontinuedDate(LocalDateTime discontinuedDate){
 			this.discontinuedDate = discontinuedDate;
 	}
 //	public void setDiscontinuedDate(LocalDate discontinuedDate) throws InvalidDiscontinuedDate{

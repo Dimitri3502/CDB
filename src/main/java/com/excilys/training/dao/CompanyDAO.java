@@ -37,7 +37,7 @@ public class CompanyDAO extends Dao<Company>{
 	}
 	
     public Company populate(ResultSet rs) {
-    	Company company = new Company();
+    	Company company = null;
         try {
 			CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
 			company = companyResultSetModelMapper.map(rs);
@@ -67,20 +67,18 @@ public class CompanyDAO extends Dao<Company>{
 
 	@Override
 	public Company findById(long id) {
-		Company Company = new Company();
 		try(Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Company company = new Company();
 				CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
-				company = companyResultSetModelMapper.map(rs);
+				return companyResultSetModelMapper.map(rs);
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		return Company;
+		return null;
 	}
 	
 	@Override

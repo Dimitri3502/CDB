@@ -54,9 +54,10 @@ class ComputerServiceTest {
 	@Test
 	void testCreate() throws NotFoundException, InvalidDiscontinuedDate, InvalidDateValueException {
 		
-		CompanyDTO companyDTO = companyService.findById("2");
+		CompanyDTO companyDTO = new CompanyDTO("2", null);
 		ComputerDTO expected = new ComputerDTO("3","test", "2001-02-03","2001-02-04",companyDTO);
 		long newId = computerService.create(expected);
+		expected.setId(Long.toString(newId));
 		ComputerDTO actual = computerService.findById(Long.toString(newId));
 		assertEquals(expected, actual);
 		

@@ -1,6 +1,8 @@
 package com.excilys.training.mapper;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.Dao;
@@ -52,8 +54,8 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		}
 		else {
 			theComputer.setName(computerDTO.getName());
-			theComputer.setIntroducedDate(LocalDate.parse(computerDTO.getIntroducedDate()));
-			theComputer.setDiscontinuedDate(LocalDate.parse(computerDTO.getDiscontinuedDate()));
+			theComputer.setIntroducedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()),LocalTime.of(12, 00)));
+			theComputer.setDiscontinuedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()),LocalTime.of(12, 00)));
 			Company company = companyDAO.findById(Long.parseLong(computerDTO.getCompanyDTO().getId()));
 
 			theComputer.setCompany(company);
@@ -68,10 +70,10 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		theComputerDTO.setId(Long.toString(computer.getId()));
 		theComputerDTO.setName(computer.getName());
 		if (computer.getIntroducedDate() != null) {
-			theComputerDTO.setIntroducedDate(computer.getIntroducedDate().toString());
+			theComputerDTO.setIntroducedDate(computer.getIntroducedDate().toLocalDate().toString());
 		}
 		if (computer.getDiscontinuedDate() != null) {
-			theComputerDTO.setDiscontinuedDate(computer.getDiscontinuedDate().toString());
+			theComputerDTO.setDiscontinuedDate(computer.getDiscontinuedDate().toLocalDate().toString());
 		}
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(Long.toString(computer.getCompany().getId()));
