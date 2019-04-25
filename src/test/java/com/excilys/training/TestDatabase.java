@@ -6,9 +6,8 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 import com.excilys.training.dao.DbConn;
 

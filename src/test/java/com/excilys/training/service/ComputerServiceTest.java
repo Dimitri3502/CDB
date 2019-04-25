@@ -1,31 +1,25 @@
 package com.excilys.training.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import com.excilys.training.TestDatabase;
-import com.excilys.training.dao.CompanyDAO;
-import com.excilys.training.dao.ComputerDAO;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.exception.InvalidDateValueException;
-import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.NotFoundException;
-import com.excilys.training.mapper.CompanyMapper;
-import com.excilys.training.mapper.ComputerMapper;
 
 class ComputerServiceTest {
 
 	protected static ComputerService computerService;
 	protected static CompanyService companyService;
 
-	@BeforeAll
+	@BeforeEach
 	static void setUpBeforeClass() throws Exception {
 		TestDatabase.getInstance().reload();
 		computerService = ComputerService.getInstance();
@@ -37,7 +31,7 @@ class ComputerServiceTest {
 
 		int limit = 2, offset = 10;
 		List<ComputerDTO> theComputerDtoList = computerService.getAll(limit, offset);
-		assertTrue(theComputerDtoList.size() <= 2, "getAll renvoie null");
+		assertTrue("getAll renvoie null", theComputerDtoList.size() <= 2);
 	}
 
 	@Test

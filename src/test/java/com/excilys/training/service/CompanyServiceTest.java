@@ -1,31 +1,29 @@
 package com.excilys.training.service;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dto.CompanyDTO;
-import com.excilys.training.mapper.CompanyMapper;
 
 class CompanyServiceTest {
 	protected static CompanyService companyService;
 
-	@BeforeAll
+	@BeforeEach
 	static void setUpBeforeClass() throws Exception {
 		companyService = CompanyService.getInstance();
 	}
 
 	@Test
 	void testGetAllIntInt() {
-		
+
 		int limit = 2, offset = 10;
-		List<CompanyDTO>  theCompanyDtoList = companyService.getAll(limit, offset);
-		assertTrue(theCompanyDtoList.size()<=2, "getAll renvoie null");
+		List<CompanyDTO> theCompanyDtoList = companyService.getAll(limit, offset);
+		assertTrue("getAll renvoie null",theCompanyDtoList.size() <= 2);
 	}
 
 //	@Test

@@ -7,6 +7,17 @@ package com.excilys.training.model;
 
 public class Company extends Model{
 	
+	
+
+	public Company(long id, String name) {
+		super(id);
+		Name = name;
+	}
+
+	public Company() {
+		super();
+	}
+
 
 	private String Name;
 
