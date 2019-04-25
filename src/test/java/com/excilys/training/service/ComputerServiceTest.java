@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.excilys.training.TestDatabase;
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.ComputerDAO;
 import com.excilys.training.dto.CompanyDTO;
@@ -26,39 +27,38 @@ class ComputerServiceTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-
+		TestDatabase.getInstance().reload();
 		computerService = ComputerService.getInstance();
 		companyService = CompanyService.getInstance();
 	}
 
 	@Test
 	void testGetAllIntInt() {
-		
+
 		int limit = 2, offset = 10;
-		List<ComputerDTO>  theComputerDtoList = computerService.getAll(limit, offset);
-		assertTrue(theComputerDtoList.size()<=2, "getAll renvoie null");
+		List<ComputerDTO> theComputerDtoList = computerService.getAll(limit, offset);
+		assertTrue(theComputerDtoList.size() <= 2, "getAll renvoie null");
 	}
 
 	@Test
 	void testFindById() {
 		Optional<ComputerDTO> actual = computerService.findById(3L);
-		CompanyDTO companyDTO = new CompanyDTO("2",null);
-		ComputerDTO expected = new ComputerDTO("3","CM-200",null,null,companyDTO);
+		CompanyDTO companyDTO = new CompanyDTO("2", null);
+		ComputerDTO expected = new ComputerDTO("3", "CM-200", null, null, companyDTO);
 		assertEquals(expected, actual.get());
-		
+
 	}
 
 	@Test
 	void testCreate() {
-		
+
 		CompanyDTO companyDTO = new CompanyDTO("2", null);
-		ComputerDTO expected = new ComputerDTO("3","test", "2001-02-03","2001-02-04",companyDTO);
+		ComputerDTO expected = new ComputerDTO("3", "test", "2001-02-03", "2001-02-04", companyDTO);
 		long newId = computerService.create(expected);
 		expected.setId(Long.toString(newId));
 		Optional<ComputerDTO> actual = computerService.findById(newId);
 		assertEquals(expected, actual.get());
-		
+
 	}
-	
 
 }
