@@ -1,16 +1,14 @@
 package com.excilys.training.validator;
 
+import static com.excilys.training.validator.ValidatorUtils.isBlank;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.excilys.training.dto.CompanyDTO;
-import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
-
-import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
 public class ComputerUiValidator extends Validator<ComputerDTOUi>{
     private static ComputerUiValidator instance;
@@ -57,10 +55,10 @@ public class ComputerUiValidator extends Validator<ComputerDTOUi>{
             errors.put("name", "Le nom ne peut pas être vide");
         }
         if (checkDateFail(toValidate.getIntroducedDate())) {
-            errors.put("introduced", "introduced est mal formée");
+            errors.put("introduced", "La date d'introduction de l'ordinateur est mal formée");
         }
         if (checkDateFail(toValidate.getDiscontinuedDate())) {
-            errors.put("discontinued", "discontinued est mal formée");
+            errors.put("discontinued", "La date d'expiration de l'ordinateur est mal formée");
         }
         if (checkIdFail(toValidate.getCompanyId())) {
             errors.put("companyId", "l'id du fabriquant est mal formé");

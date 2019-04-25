@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -101,10 +102,12 @@ public class ComputerDAO extends Dao<Computer> {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
 			stmt.setLong(1, obj.getId());
 			stmt.executeUpdate();
+			return true;
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			return false;
 		}
-		return true;
+		
 	}
 
 	@Override
@@ -125,7 +128,7 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
-	public Computer findById(long id) throws ComputerNotFoundException, InvalidDiscontinuedDate {
+	public Optional<Computer> findById(long id) {
 
 		try (Connection cnx = DbConn.getConnection()) {
 
@@ -134,15 +137,16 @@ public class ComputerDAO extends Dao<Computer> {
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
 				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
-				return computerResultSetModelMapper.map(rs);
+				return Optional.of(computerResultSetModelMapper.map(rs));
 			} else {
-				throw new ComputerNotFoundException(id);
+				return Optional.empty();
 			}
 
 		} catch (SQLException ex) {
 			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			throw new RuntimeException(ex); 
 		}
-		return null;
+		
 
 	}
 

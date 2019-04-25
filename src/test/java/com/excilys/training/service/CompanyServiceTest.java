@@ -17,10 +17,7 @@ class CompanyServiceTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-	
-		CompanyDAO companyDAO = CompanyDAO.getInstance();
-		CompanyMapper mapper = CompanyMapper.getInstance();
-		companyService = CompanyService.getInstance(mapper, companyDAO);
+		companyService = CompanyService.getInstance();
 	}
 
 	@Test

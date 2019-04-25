@@ -1,6 +1,6 @@
 package com.excilys.training.exception;
 
-public class InvalidDiscontinuedDate extends Exception{
+public class InvalidDiscontinuedDate extends RuntimeException{
 
 	/**
 	 * 

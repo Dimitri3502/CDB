@@ -3,6 +3,7 @@ package com.excilys.training.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,17 +26,13 @@ class ComputerServiceTest {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-	
-		ComputerDAO computerDAO = ComputerDAO.getInstance();
-		CompanyDAO companyDAO = CompanyDAO.getInstance();
-		ComputerMapper computerMapper = ComputerMapper.getInstance(companyDAO);
-		CompanyMapper companyMapper = CompanyMapper.getInstance();
-		computerService = ComputerService.getInstance(computerMapper, computerDAO);
-		companyService = CompanyService.getInstance(companyMapper, companyDAO);
+
+		computerService = ComputerService.getInstance();
+		companyService = CompanyService.getInstance();
 	}
 
 	@Test
-	void testGetAllIntInt() throws InvalidDiscontinuedDate {
+	void testGetAllIntInt() {
 		
 		int limit = 2, offset = 10;
 		List<ComputerDTO>  theComputerDtoList = computerService.getAll(limit, offset);
@@ -43,23 +40,23 @@ class ComputerServiceTest {
 	}
 
 	@Test
-	void testFindById() throws NotFoundException, InvalidDiscontinuedDate {
-		ComputerDTO actual = computerService.findById("3");
+	void testFindById() {
+		Optional<ComputerDTO> actual = computerService.findById(3L);
 		CompanyDTO companyDTO = new CompanyDTO("2",null);
 		ComputerDTO expected = new ComputerDTO("3","CM-200",null,null,companyDTO);
-		assertEquals(expected, actual);
+		assertEquals(expected, actual.get());
 		
 	}
 
 	@Test
-	void testCreate() throws NotFoundException, InvalidDiscontinuedDate, InvalidDateValueException {
+	void testCreate() {
 		
 		CompanyDTO companyDTO = new CompanyDTO("2", null);
 		ComputerDTO expected = new ComputerDTO("3","test", "2001-02-03","2001-02-04",companyDTO);
 		long newId = computerService.create(expected);
 		expected.setId(Long.toString(newId));
-		ComputerDTO actual = computerService.findById(Long.toString(newId));
-		assertEquals(expected, actual);
+		Optional<ComputerDTO> actual = computerService.findById(newId);
+		assertEquals(expected, actual.get());
 		
 	}
 

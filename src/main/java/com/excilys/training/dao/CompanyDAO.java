@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,14 +67,17 @@ public class CompanyDAO extends Dao<Company>{
 	}
 
 	@Override
-	public Company findById(long id) {
+	public Optional<Company> findById(long id) {
 		try(Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
-				return companyResultSetModelMapper.map(rs);
+				return Optional.of(companyResultSetModelMapper.map(rs));
+			}
+			else {
+				return Optional.empty();
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);

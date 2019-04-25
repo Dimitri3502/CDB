@@ -3,11 +3,14 @@ package com.excilys.training.mapper;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.exception.CompanyNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
@@ -39,28 +42,30 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	
 
 	@Override
-	public Computer dtoToModel(ComputerDTO computerDTO) throws InvalidDateValueException, InvalidDiscontinuedDate{
+	public Computer dtoToModel(ComputerDTO computerDTO) {
 		Computer theComputer = new Computer();
 		
 		if (computerDTO.getId() != null) {
 			theComputer.setId(Long.parseLong(computerDTO.getId()));
 		}
 		
-		if (!computerDTO.getIntroducedDate().matches("\\d{4}-\\d{2}-\\d{2}")) {
-			throw new InvalidDateValueException(computerDTO.getIntroducedDate());
-		}
-		if (!computerDTO.getDiscontinuedDate().matches("\\d{4}-\\d{2}-\\d{2}")) {
-			throw new InvalidDateValueException(computerDTO.getDiscontinuedDate());
-		}
-		else {
-			theComputer.setName(computerDTO.getName());
+        try {
+        	theComputer.setName(computerDTO.getName());
 			theComputer.setIntroducedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()),LocalTime.of(12, 00)));
 			theComputer.setDiscontinuedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()),LocalTime.of(12, 00)));
-			Company company = companyDAO.findById(Long.parseLong(computerDTO.getCompanyDTO().getId()));
-
-			theComputer.setCompany(company);
-			
-		}
+			String companyId = computerDTO.getCompanyDTO().getId();
+			if (companyId != null) {
+				Optional<Company> company = companyDAO.findById(Long.parseLong(companyId));
+				if (company.isEmpty()) {
+					throw new CompanyNotFoundException(Long.parseLong(companyId));
+				}else {
+					theComputer.setCompany(company.get());
+				}
+			}
+        } catch (DateTimeParseException| CompanyNotFoundException e) {
+            e.printStackTrace();
+        }
+        
 		return theComputer;
 	}
 

@@ -1,6 +1,6 @@
 package com.excilys.training.exception;
 
-public class InvalidDateValueException extends Exception {
+public class InvalidDateValueException extends RuntimeException {
 
 	/**
 	 * 
