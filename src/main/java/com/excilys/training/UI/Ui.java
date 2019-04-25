@@ -10,7 +10,6 @@ import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
 import com.excilys.training.validator.ComputerUiValidator;
 import com.excilys.training.validator.Validator;
 
@@ -116,40 +115,12 @@ public class Ui {
 	}
 
 	public void createComputer() {
-		Map<String, String> inputsCreateComputer = new HashMap<String, String>();
-
-		// get the name
-		System.out.println("Actions : CreateComputer" + "\n" + "Entrez le nom de l'ordinateur : ");
-		String theName = readInputs();
-		inputsCreateComputer.put("name", theName);
-
-		// get the introducedDate
-		System.out.println("Entrez la date d'introduction de l'ordinateur sous le format yyyy-mm-dd: ");
-		String theIntroducedDate = readInputs();
-		inputsCreateComputer.put("introducedDate", theIntroducedDate);
-
-		// get the discontinuedDate
-		System.out.println("Entrez la date d'expiration de l'ordinateur sous le format yyyy-mm-dd: ");
-		String theDiscontinuedDate = readInputs();
-		inputsCreateComputer.put("discontinuedDate", theDiscontinuedDate);
-
-		// get the idCompany
-		System.out.println("Entrez l'id du constructeur de l'ordinateur : ");
-		String theIdCompany = readInputs();
-		inputsCreateComputer.put("idCompany", theIdCompany);
-
-		
-		
-        final ComputerDTOUi computerDTOUiCreate = new ComputerDTOUi();
-        computerDTOUiCreate.setName(inputsCreateComputer.get("name"));
-        computerDTOUiCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
-        computerDTOUiCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
-		computerDTOUiCreate.setCompanyId(inputsCreateComputer.get("idCompany"));
+		System.out.println("Actions : CreateComputer");
+		ComputerDTOUi computerDTOUiCreate = getInputsComputer();
 		
         final Validator.Result result = createComputerUIValidator.check(computerDTOUiCreate);
-        if (result.isValid()) {
-        	ComputerDTO computerDTOCreate = ComputerUiDTOMapper.getInstance().uiToDTO(computerDTOUiCreate);
-            controller.createComputer(computerDTOCreate);
+        if (result.isValid()) {        	
+            controller.createComputer(computerDTOUiCreate);
         } else {
             result.values().forEach(System.out::println);
         }
@@ -159,6 +130,20 @@ public class Ui {
 
 		System.out.println(
 				"Actions : updateComputer" + "\n" + "Entrez l'id de l'ordinateur à modifier" + "\n" + "Votre choix : ");
+		long id = readInputLong();
+		System.out.println("Ordiateur a modifier : ");
+		controller.showComputer(id);
+		if (controller.ComputerExist(id)) {
+			ComputerDTOUi computerDTOUi = getInputsComputer();
+			
+	        final Validator.Result result = createComputerUIValidator.check(computerDTOUi);
+	        if (result.isValid()) {        	
+	            controller.updateComputer(id,computerDTOUi);
+	        } else {
+	            result.values().forEach(System.out::println);
+	        }
+		}
+
 	}
 
 	public void menuNextPage() {
@@ -208,6 +193,38 @@ public class Ui {
 					break;
 				}
 			}
+	}
+	public ComputerDTOUi getInputsComputer() {
+		Map<String, String> inputsCreateComputer = new HashMap<String, String>();
+
+		// get the name
+		System.out.println("Entrez le nom de l'ordinateur : ");
+		String theName = readInputs();
+		inputsCreateComputer.put("name", theName);
+
+		// get the introducedDate
+		System.out.println("Entrez la date d'introduction de l'ordinateur sous le format yyyy-mm-dd: ");
+		String theIntroducedDate = readInputs();
+		inputsCreateComputer.put("introducedDate", theIntroducedDate);
+
+		// get the discontinuedDate
+		System.out.println("Entrez la date d'expiration de l'ordinateur sous le format yyyy-mm-dd: ");
+		String theDiscontinuedDate = readInputs();
+		inputsCreateComputer.put("discontinuedDate", theDiscontinuedDate);
+
+		// get the idCompany
+		System.out.println("Entrez l'id du constructeur de l'ordinateur : ");
+		String theIdCompany = readInputs();
+		inputsCreateComputer.put("idCompany", theIdCompany);
+
+		
+		
+        final ComputerDTOUi computerDTOUiCreate = new ComputerDTOUi();
+        computerDTOUiCreate.setName(inputsCreateComputer.get("name"));
+        computerDTOUiCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
+        computerDTOUiCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
+		computerDTOUiCreate.setCompanyId(inputsCreateComputer.get("idCompany"));
+		return computerDTOUiCreate;
 	}
 
 }

@@ -7,10 +7,12 @@ import java.util.Optional;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.dto.ComputerDTOUi;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.exception.ValidatorException;
+import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.ComputerDTOValidator;
@@ -33,22 +35,32 @@ public class Controller {
 		return instance;
 	}
 
-//	public void updateComputer(Long id) {
-//		try {
-//			vue.updateComputer();
-//			String idUpdate = vue.readInputs();
-//			ComputerDTO computerDTOtoUpdate = computerService.findById(id);
-//			System.out.println("Ordiateur a modifier : " + computerDTOtoUpdate.toString());
-//			Map<String, String> inputsNewComputer = vue.createComputer();
-//			ComputerDTO computerDTOUpdate = this.inputsToComputerDTO(inputsNewComputer);
-//			computerDTOUpdate.setId(id);
-//			computerService.update(computerDTOUpdate);
-//		} catch (InvalidDateValueException | NotFoundException | InvalidDiscontinuedDate e1) {
-//			// TODO Auto-generated catch block
-//			System.out.println(e1.getMessage());
-//		}
-//	}
+	public void updateComputer(Long id, ComputerDTOUi computerDTOUi) {
+		ComputerDTO computerDTO = ComputerUiDTOMapper.getInstance().uiToDTO(computerDTOUi);
+		computerDTO.setId(Long.toString(id));
+		final Validator.Result result = computerDTOValidator.check(computerDTO);
 
+		if (result.isValid()) {
+			computerService.update(computerDTO);
+			System.out.println("Ordinateur id : " + id + " modifié");
+		} else {
+			try {
+				throw new ValidatorException(result);
+			} catch (ValidatorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	public boolean ComputerExist(Long id) {
+
+		return computerService.findById(id).isPresent();
+	}
+	public boolean CompanyExist(Long id) {
+
+		return companyService.findById(id).isPresent();
+	}
 	public void showComputer(Long id) {
 
 		Optional<ComputerDTO> computerDTO = computerService.findById(id);
@@ -60,8 +72,9 @@ public class Controller {
 		}
 	}
 
-	public void createComputer(ComputerDTO computerDTOCreate) {
-		try {
+	public void createComputer(ComputerDTOUi computerDTOUiCreate) {
+
+			ComputerDTO computerDTOCreate = ComputerUiDTOMapper.getInstance().uiToDTO(computerDTOUiCreate);
 			final Validator.Result result = computerDTOValidator.check(computerDTOCreate);
 
 			if (result.isValid()) {
@@ -69,15 +82,13 @@ public class Controller {
 				long idCreate = computerService.create(computerDTOCreate);
 				System.out.println("Ordinateur creer avec l'id : " + idCreate);
 			} else {
-				throw new ValidatorException(result);
+				try {
+					throw new ValidatorException(result);
+				} catch (ValidatorException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-		} catch (InvalidDateValueException | InvalidDiscontinuedDate e) {
-			// TODO Auto-generated catch block
-			System.out.println(e.getMessage());
-		} catch (ValidatorException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void deleteComputer(Long id) {
