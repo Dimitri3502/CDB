@@ -1,24 +1,20 @@
 package com.excilys.training.dao;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.excilys.training.exception.ComputerNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
-import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
 public class ComputerDAO extends Dao<Computer> {
@@ -30,7 +26,8 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 
 	private static ComputerDAO instance = null;
-
+	private final Logger logger = LogManager.getLogger(getClass());
+	
 	private ComputerDAO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -52,7 +49,7 @@ public class ComputerDAO extends Dao<Computer> {
 			ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
 			computer = computerResultSetModelMapper.map(rs);
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("populate ", ex);
 		}
 		return computer;
 	}
@@ -68,7 +65,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("getAll Computers failed", ex);
 		}
 		return computers;
 	}
@@ -91,20 +88,20 @@ public class ComputerDAO extends Dao<Computer> {
 				lastInsertedId = rs.getLong(1);
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("create(" + computer.toString() + ")", ex);
 		}
 		return lastInsertedId;
 	}
 
 	@Override
-	public boolean delete(Computer obj) {
+	public boolean delete(Computer computer) {
 		try (Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
-			stmt.setLong(1, obj.getId());
+			stmt.setLong(1, computer.getId());
 			stmt.executeUpdate();
 			return true;
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("delete(" + computer.toString() + ")", ex);
 			return false;
 		}
 		
@@ -122,7 +119,7 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setLong(5, computer.getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("update(" + computer.toString() + ")", ex);
 		}
 		return false;
 	}
@@ -139,11 +136,12 @@ public class ComputerDAO extends Dao<Computer> {
 				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
 				return Optional.of(computerResultSetModelMapper.map(rs));
 			} else {
+				logger.warn("findById(" + id + ") not found");	
 				return Optional.empty();
 			}
 
 		} catch (SQLException ex) {
-			Logger.getLogger(Computer.class.getName()).log(Level.SEVERE, null, ex);
+			logger.warn("Company findById(" + id + ")", ex);
 			throw new RuntimeException(ex); 
 		}
 		
@@ -163,7 +161,7 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+			 logger.warn("findAll(" + offset + "," + limit + ")", ex);
 		}
 		return computers;
 	}

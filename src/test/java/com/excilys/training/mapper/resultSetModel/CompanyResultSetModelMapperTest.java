@@ -28,7 +28,7 @@ public class CompanyResultSetModelMapperTest {
 	}
 
 	@Test
-	public final void testMapResultSet() throws SQLException {
+	public void testMapResultSet() throws SQLException {
 		Long id =2L;
 		String name = "test";
 		Mockito.when(mockResultSet.getLong(COLUMN_ID)).thenReturn(id);

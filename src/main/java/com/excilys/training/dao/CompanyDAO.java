@@ -7,8 +7,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
 import com.excilys.training.model.Company;
@@ -22,6 +23,7 @@ public class CompanyDAO extends Dao<Company>{
     private static final String SQL_FIND_ALL_PAGINED = "SELECT id,name FROM company ORDER BY id LIMIT ? OFFSET ?";
 
 	private static CompanyDAO instance = null;
+	private final Logger logger = LogManager.getLogger(getClass());
 
 	private CompanyDAO() {
 		// TODO Auto-generated constructor stub
@@ -44,7 +46,7 @@ public class CompanyDAO extends Dao<Company>{
 			company = companyResultSetModelMapper.map(rs);
             
         } catch (SQLException ex) {
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        	logger.warn("populate ", ex);
         }
         return company;
     }
@@ -61,7 +63,7 @@ public class CompanyDAO extends Dao<Company>{
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        	logger.warn("getAll Companies failed", ex);
         }
         return companies;
 	}
@@ -77,12 +79,13 @@ public class CompanyDAO extends Dao<Company>{
 				return Optional.of(companyResultSetModelMapper.map(rs));
 			}
 			else {
+				logger.warn("Company findById(" + id + ") not found");	
 				return Optional.empty();
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+		    logger.warn("Company findById(" + id + ")", ex);
+		    return Optional.empty();
 		}
-		return null;
 	}
 	
 	@Override
@@ -99,7 +102,7 @@ public class CompanyDAO extends Dao<Company>{
 
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Company.class.getName()).log(Level.SEVERE, null, ex);
+        	 logger.warn("findAll(" + offset + "," + limit + ")", ex);
         }
         return companies;
 	}

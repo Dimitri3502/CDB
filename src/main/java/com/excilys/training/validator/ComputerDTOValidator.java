@@ -44,7 +44,7 @@ public class ComputerDTOValidator extends Validator<ComputerDTO> {
 
 		final CompanyDTO companyDTO = toValidate.getCompanyDTO();
 
-		if (Objects.nonNull(companyDTO.getId()) && companyService.findById(Long.parseLong(companyDTO.getId())).isEmpty()) {
+		if (Objects.nonNull(companyDTO.getId()) && !companyService.findById(Long.parseLong(companyDTO.getId())).isPresent()) {
 			errors.put("companyId", "Le fabriquant avec l'id " + companyDTO.getId() + " n'existe pas");
 		}
 

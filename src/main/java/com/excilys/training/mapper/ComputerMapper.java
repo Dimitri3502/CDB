@@ -56,7 +56,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			String companyId = computerDTO.getCompanyDTO().getId();
 			if (companyId != null) {
 				Optional<Company> company = companyDAO.findById(Long.parseLong(companyId));
-				if (company.isEmpty()) {
+				if (!company.isPresent()) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				}else {
 					theComputer.setCompany(company.get());

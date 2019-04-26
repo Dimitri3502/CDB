@@ -7,27 +7,26 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
-
 import com.excilys.training.TestDatabase;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 
-class ComputerServiceTest {
+public class ComputerServiceTest {
 
 	protected static ComputerService computerService;
 	protected static CompanyService companyService;
 
-	@BeforeEach
-	static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUpBeforeClass() throws Exception {
 		TestDatabase.getInstance().reload();
 		computerService = ComputerService.getInstance();
 		companyService = CompanyService.getInstance();
 	}
 
 	@Test
-	void testGetAllIntInt() {
+	public void testGetAllIntInt() {
 
 		int limit = 2, offset = 10;
 		List<ComputerDTO> theComputerDtoList = computerService.getAll(limit, offset);
@@ -35,7 +34,7 @@ class ComputerServiceTest {
 	}
 
 	@Test
-	void testFindById() {
+	public void testFindById() {
 		Optional<ComputerDTO> actual = computerService.findById(3L);
 		CompanyDTO companyDTO = new CompanyDTO("2", null);
 		ComputerDTO expected = new ComputerDTO("3", "CM-200", null, null, companyDTO);
@@ -44,7 +43,7 @@ class ComputerServiceTest {
 	}
 
 	@Test
-	void testCreate() {
+	public void testCreate() {
 
 		CompanyDTO companyDTO = new CompanyDTO("2", null);
 		ComputerDTO expected = new ComputerDTO("3", "test", "2001-02-03", "2001-02-04", companyDTO);

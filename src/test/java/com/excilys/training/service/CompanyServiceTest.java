@@ -5,21 +5,21 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.excilys.training.dto.CompanyDTO;
 
-class CompanyServiceTest {
+public class CompanyServiceTest {
 	protected static CompanyService companyService;
 
-	@BeforeEach
-	static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUpBeforeClass() throws Exception {
 		companyService = CompanyService.getInstance();
 	}
 
 	@Test
-	void testGetAllIntInt() {
+	public void testGetAllIntInt() {
 
 		int limit = 2, offset = 10;
 		List<CompanyDTO> theCompanyDtoList = companyService.getAll(limit, offset);
