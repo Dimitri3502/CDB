@@ -1,7 +1,1 @@
-	public int readInputint() {
-		Scanner sc = new Scanner(System.in);
-		int input = sc.nextint();
-		System.out.println("Vous avez saisi : " + input);
-
-		return input;
-	}
+private final ComputerService computerService = ComputerService.getInstance()
