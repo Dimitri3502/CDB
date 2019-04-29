@@ -6,6 +6,21 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DbConn {
+	private static ResourceBundle bundle = ResourceBundle.getBundle("db");
+
+	// assign db parameters
+	private static final String driver = bundle.getString("driver");
+	private static final String url = bundle.getString("url");
+	private static final String user = bundle.getString("user");
+	private static final String password = bundle.getString("password");
+	static {
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Get database connection
@@ -14,19 +29,9 @@ public class DbConn {
 	 * @throws SQLException
 	 */
 	public static Connection getConnection() throws SQLException {
-		Connection conn = null;
-
-		// load the properties file
-		ResourceBundle bundle = ResourceBundle.getBundle("db");
-
-		// assign db parameters
-		final String url = bundle.getString("url");
-		final String user = bundle.getString("user");
-		final String password = bundle.getString("password");
-
 		// create a connection to the database
-		conn = DriverManager.getConnection(url, user, password);
-		return conn;
+		return DriverManager.getConnection(url, user, password);
+
 	}
 
 }

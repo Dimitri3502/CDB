@@ -40,6 +40,10 @@ public final class ComputerService {
 	public long create(ComputerDTO computerDTO){
 		return computerDAO.create(computerMapper.dtoToModel(computerDTO));
 	};
+
+	public long count(){
+		return computerDAO.count();
+	};
 	
 	public boolean update(ComputerDTO computerDTO){
 		return computerDAO.update(computerMapper.dtoToModel(computerDTO));

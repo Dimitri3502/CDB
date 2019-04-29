@@ -82,6 +82,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		}
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(Long.toString(computer.getCompany().getId()));
+		companyDTO.setName(computer.getCompany().getName());
 		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
 	}

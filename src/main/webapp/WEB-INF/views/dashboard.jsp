@@ -20,7 +20,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">121 Computers found</h1>
+			<h1 id="homeTitle">${computersNumber} Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -32,9 +32,8 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.html">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add	Computer</a>
+					<a class="btn btn-default" id="editComputer" href="#"onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
@@ -58,6 +57,7 @@
 							</a>
 						</span></th>
 						<th>Computer name</th>
+						<th>id</th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
 						<th>Discontinued date</th>
@@ -71,8 +71,9 @@
 					<c:forEach var="computer" items="${computers}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
+								class="cb" value="${computer.id}"></td>
 							<td><a href="editComputer.html" onclick="">${computer.name}</a></td>
+							<td>${computer.id}</td>
 							<td>${computer.introducedDate}</td>
 							<td>${computer.discontinuedDate}</td>
 							<td>${computer.companyDTO.name}</td>
@@ -82,21 +83,20 @@
 				</tbody>
 
 			</table>
+			Page ${currentPageNumber} / ${nbPage}
 		</div>
 	</section>
 
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="#" aria-label="Previous"> <span
+				<li><a href="?pageFast=previous" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
-				<li><a href="#">1</a></li>
-				<li><a href="#">2</a></li>
-				<li><a href="#">3</a></li>
-				<li><a href="#">4</a></li>
-				<li><a href="#">5</a></li>
-				<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<c:forEach var="page" items="${pageIds}">
+				<li><a href="?pageid=${page}">${page}</a></li>
+				</c:forEach>
+				<li><a href="?pageFast=next" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
