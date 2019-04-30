@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.excilys.training.dto.ComputerDTOUi;
+import com.excilys.training.dto.ComputerDTO;
 
-public class WebValidator extends Validator<ComputerDTOUi> {
+public class WebValidator extends Validator<ComputerDTO> {
 	private static WebValidator instance;
 
 	private WebValidator() {
@@ -48,7 +48,7 @@ public class WebValidator extends Validator<ComputerDTOUi> {
 	}
 
 	@Override
-	protected Map<String, String> validation(ComputerDTOUi toValidate) {
+	protected Map<String, String> validation(ComputerDTO toValidate) {
 		final HashMap<String, String> errors = new HashMap<>();
 		if (isBlank(toValidate.getName())) {
 			errors.put("computerName", "Le nom ne peut pas être vide");
@@ -59,7 +59,7 @@ public class WebValidator extends Validator<ComputerDTOUi> {
 		if (checkDateFail(toValidate.getDiscontinuedDate())) {
 			errors.put("discontinued", "La date d'expiration doit être entre 1970-01-01 et 2038-01-19");
 		}
-		if (checkIdFail(toValidate.getCompanyId())) {
+		if (checkIdFail(toValidate.getCompanyDTO().getId())) {
 			errors.put("companyId", "l'id du fabriquant est mal formé");
 		}
 		return errors;

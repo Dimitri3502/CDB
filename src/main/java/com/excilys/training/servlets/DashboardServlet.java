@@ -38,7 +38,7 @@ public class DashboardServlet extends HttpServlet {
 
 		String pageId = request.getParameter("pageid");
 		String pageFast = request.getParameter("pageFast");
-		int nbPage = (int) Math.ceil(((double) computersNumber) / LIMIT_COMP_PAGE);
+		int nbPage = (int) Math.ceil(((double) computersNumber) / LIMIT_COMP_PAGE)-1;
 
 		int offset = 0;
 

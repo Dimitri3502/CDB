@@ -1,6 +1,5 @@
 package com.excilys.training.servlets;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.dto.ComputerDTOUi;
 import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
@@ -38,7 +36,6 @@ public class AddComputerServlet extends HttpServlet {
     
 	private final ComputerService computerService = ComputerService.getInstance();
 	private final CompanyService companyService = CompanyService.getInstance();
-	private final ComputerUiDTOMapper computerUiDTOMapper = ComputerUiDTOMapper.getInstance();
 	private final WebValidator webValidator = WebValidator.getInstance();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -94,17 +91,18 @@ public class AddComputerServlet extends HttpServlet {
         String companyId = request.getParameter(CHAMP_COMPANYID);
 
         
-        ComputerDTOUi computerDTOUi = new ComputerDTOUi();
-        computerDTOUi.setName(computerName);
-        computerDTOUi.setIntroducedDate(introduced);
-        computerDTOUi.setDiscontinuedDate(discontinued);
-        computerDTOUi.setCompanyId(("0".equals(companyId)) ? null : companyId);
+        ComputerDTO computerDTO = new ComputerDTO();
+        computerDTO.setName(computerName);
+        computerDTO.setIntroducedDate(introduced);
+        computerDTO.setDiscontinuedDate(discontinued);
+		CompanyDTO companyDTO = new CompanyDTO();
+		companyDTO.setId("0".equals(companyId) ? null : companyId);
+		computerDTO.setCompanyDTO(companyDTO);
         
 
-        final Validator.Result result = webValidator.check(computerDTOUi);
+        final Validator.Result result = webValidator.check(computerDTO);
         Map<String, String> erreurs = result.getError();
 		if (result.isValid()) {
-            ComputerDTO computerDTO = computerUiDTOMapper.uiToDTO(computerDTOUi);
             long id = computerService.create(computerDTO);
             resultat = "Succès de l'inscription.";
         } else {
