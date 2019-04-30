@@ -13,14 +13,14 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard.html"> Application -
+			<a class="navbar-brand" href="dashboard"> Application -
 				Computer Database </a>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${computersNumber} Computers found</h1>
+			<h1 id="homeTitle">${computersNumber}Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
@@ -32,8 +32,9 @@
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer.jsp">Add	Computer</a>
-					<a class="btn btn-default" id="editComputer" href="#"onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a>
+					<a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
 		</div>
@@ -94,9 +95,10 @@
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="page" items="${pageIds}">
-				<li><a href="?pageid=${page}">${page}</a></li>
+					<li><a href="?pageid=${page}">${page}</a></li>
 				</c:forEach>
-				<li><a href="?pageFast=next" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+				<li><a href="?pageFast=next" aria-label="Next"> <span
+						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 

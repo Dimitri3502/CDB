@@ -15,7 +15,8 @@ import com.excilys.training.service.ComputerService;
 
 //@WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
-
+    public static final String VUE = "/WEB-INF/views/dashboard.jsp";
+    
 	private final ComputerService computerService = ComputerService.getInstance();
 	private static final int MAX_PAGE = 10;
 	private static int LIMIT_COMP_PAGE = 10;
@@ -51,9 +52,13 @@ public class DashboardServlet extends HttpServlet {
 			case "next":
 				if (currentPageNumber + MAX_PAGE < nbPage)
 					currentPageNumber += MAX_PAGE;
+				else 
+					currentPageNumber = nbPage;
 				break;
 			case "previous":
-				if (currentPageNumber>MAX_PAGE)
+				if (currentPageNumber-MAX_PAGE<0)
+					currentPageNumber = 0;
+				else
 					currentPageNumber -= MAX_PAGE;
 				break;
 			default:
@@ -77,7 +82,7 @@ public class DashboardServlet extends HttpServlet {
 		request.setAttribute("currentPageNumber", currentPageNumber);
 		request.setAttribute("nbPage", nbPage);
 
-		Utilities.forwardScreen(request, response, "dashboard");
+		Utilities.forwardScreen(request, response, VUE);
 	}
 
 	@Override

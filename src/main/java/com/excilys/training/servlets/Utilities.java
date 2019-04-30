@@ -18,10 +18,10 @@ public class Utilities {
      * @param response
      * @param filename
      */
-    public static void forwardScreen(HttpServletRequest request, HttpServletResponse response, String filename) {
+    public static void forwardScreen(HttpServletRequest request, HttpServletResponse response, String vue) {
         try {
             response.setContentType("text/html;charset=UTF-8");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/views/"+filename + ".jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher(vue);
             response.setHeader("Content-Type", "text/html;charset=UTF-8");
             dispatcher.include(request, response);
         } catch (IOException ex) {

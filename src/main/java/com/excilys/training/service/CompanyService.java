@@ -34,8 +34,8 @@ public class CompanyService {
 		return this.companyDAO.findById(id).map(companyMapper::modelToDto);
 	};
 	
-	public List<CompanyDTO> getAll(int limit, int offset) {
-		List<Company> theCompanyList = companyDAO.getAll(limit, offset);
+	public List<CompanyDTO> getAll() {
+		List<Company> theCompanyList = companyDAO.getAll();
 		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream().map(s -> companyMapper.modelToDto(s))
 				.collect(Collectors.toList());
 

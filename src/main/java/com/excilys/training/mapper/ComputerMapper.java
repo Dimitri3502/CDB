@@ -51,8 +51,10 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		
         try {
         	theComputer.setName(computerDTO.getName());
-			theComputer.setIntroducedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()),LocalTime.of(12, 00)));
-			theComputer.setDiscontinuedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()),LocalTime.of(12, 00)));
+        	if (computerDTO.getIntroducedDate()!=null)
+        		theComputer.setIntroducedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()),LocalTime.of(12, 00)));
+        	if (computerDTO.getDiscontinuedDate()!=null)
+        		theComputer.setDiscontinuedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()),LocalTime.of(12, 00)));
 			String companyId = computerDTO.getCompanyDTO().getId();
 			if (companyId != null) {
 				Optional<Company> company = companyDAO.findById(Long.parseLong(companyId));
