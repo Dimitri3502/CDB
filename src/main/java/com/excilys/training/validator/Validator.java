@@ -29,6 +29,10 @@ public abstract class Validator<T> {
             return errors.get(field);
         }
 
+        public Map<String, String> getError() {
+            return errors;
+        }
+        
         public Set<String> keySet() {
             return errors.keySet();
         }

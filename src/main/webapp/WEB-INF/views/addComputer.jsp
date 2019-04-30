@@ -28,16 +28,19 @@
 								<label for="computerName">Computer name</label> <input
 									type="text" name="computerName" class="form-control" id="computerName"
 									placeholder="Computer name">
+									<span class="erreur">${erreurs['computerName']}</span>
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" name="introduced" class="form-control" id="introduced"
 									placeholder="Introduced date">
+									<span class="erreur">${erreurs['introduced']}</span>
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" name="discontinued" class="form-control" id="discontinued"
 									placeholder="Discontinued date">
+									<span class="erreur">${erreurs['discontinued']}</span>
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -47,7 +50,9 @@
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
 								</select>
+								<span class="erreur">${erreurs['companyId']}</span>
 							</div>
+							<p class="${empty erreurs ? 'succes' : 'erreur'}">${resultat}</p>
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">

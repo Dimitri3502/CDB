@@ -105,7 +105,7 @@ public class Controller {
 	}
 
 	public List<CompanyDTO> getAllCompanyPagined(int limit, int offset) throws InvalidDiscontinuedDate {
-		return companyService.getAll(limit, offset);
+		return companyService.getAll();
 	}
 
 }

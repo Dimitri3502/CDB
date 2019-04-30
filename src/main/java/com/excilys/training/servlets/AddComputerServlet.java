@@ -1,6 +1,8 @@
 package com.excilys.training.servlets;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,6 +15,8 @@ import com.excilys.training.dto.ComputerDTOUi;
 import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.validator.Validator;
+import com.excilys.training.validator.WebValidator;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,10 +32,14 @@ public class AddComputerServlet extends HttpServlet {
     public static final String CHAMP_INTRODUCED = "introduced";
     public static final String CHAMP_DISCONTINUED = "discontinued";
     public static final String CHAMP_COMPANYID = "companyId";
+
+    public static final String ATT_ERREURS  = "erreurs";
+    public static final String ATT_RESULTAT = "resultat";
     
 	private final ComputerService computerService = ComputerService.getInstance();
 	private final CompanyService companyService = CompanyService.getInstance();
 	private final ComputerUiDTOMapper computerUiDTOMapper = ComputerUiDTOMapper.getInstance();
+	private final WebValidator webValidator = WebValidator.getInstance();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -78,18 +86,40 @@ public class AddComputerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get data
+        String resultat;
+        /* Récupération des champs du formulaire. */
         String computerName = request.getParameter(CHAMP_COMPUTERNAME);
         String introduced = request.getParameter(CHAMP_INTRODUCED);
         String discontinued = request.getParameter(CHAMP_DISCONTINUED);
         String companyId = request.getParameter(CHAMP_COMPANYID);
+
+        
         ComputerDTOUi computerDTOUi = new ComputerDTOUi();
         computerDTOUi.setName(computerName);
         computerDTOUi.setIntroducedDate(introduced);
         computerDTOUi.setDiscontinuedDate(discontinued);
-        computerDTOUi.setCompanyId(companyId);
-        ComputerDTO computerDTO = computerUiDTOMapper.uiToDTO(computerDTOUi);
-        long id = computerService.create(computerDTO);
+        computerDTOUi.setCompanyId(("0".equals(companyId)) ? null : companyId);
+        
+
+        final Validator.Result result = webValidator.check(computerDTOUi);
+        Map<String, String> erreurs = result.getError();
+		if (result.isValid()) {
+            ComputerDTO computerDTO = computerUiDTOMapper.uiToDTO(computerDTOUi);
+            long id = computerService.create(computerDTO);
+            resultat = "Succès de l'inscription.";
+        } else {
+            resultat = "Échec de l'inscription.";
+        }
+        
+
+        /* Stockage du résultat et des messages d'erreur dans l'objet request */
+        request.setAttribute( ATT_ERREURS, erreurs );
+        request.setAttribute( ATT_RESULTAT, resultat );
+        
+		List<CompanyDTO> companies = companyService.getAll();
+		request.setAttribute("companies", companies);
+
+        Utilities.forwardScreen(request, response, VUE);
         
         
     }

@@ -9,7 +9,7 @@ public class Company extends Model{
 	
 	
 
-	public Company(long id, String name) {
+	public Company(Long id, String name) {
 		super(id);
 		Name = name;
 	}

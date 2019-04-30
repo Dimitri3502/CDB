@@ -9,6 +9,11 @@ public class ComputerDTO extends Dto{
 	public ComputerDTO() {
 		super();
 	}
+	
+	public ComputerDTO(String name, String introducedDate, String discontinuedDate, CompanyDTO companyDTO) {
+		this(null,name,introducedDate,discontinuedDate,companyDTO);
+	}
+	
 	public ComputerDTO(String id, String name, String introducedDate, String discontinuedDate, CompanyDTO companyDTO) {
 		super(id);
 		this.name = name;

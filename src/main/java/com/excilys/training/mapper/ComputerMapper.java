@@ -16,58 +16,65 @@ import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.ComputerService;
+import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
 public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
+	private final static CompanyMapper companyMapper = CompanyMapper.getInstance();
 
 	private static ComputerMapper instance = null;
-	
+
 	private CompanyDAO companyDAO;
-	
+
 	private ComputerMapper(CompanyDAO companyDAO) {
 		super();
 		this.companyDAO = companyDAO;
 	}
 
-	public final static ComputerMapper getInstance(CompanyDAO companyDAO)  {
+	public final static ComputerMapper getInstance(CompanyDAO companyDAO) {
 		if (ComputerMapper.instance == null) {
-             
-              if (ComputerMapper.instance == null) {
-            	  ComputerMapper.instance = new ComputerMapper(companyDAO);
-              }
-            
-         }
-         return ComputerMapper.instance;
-	}
 
-	
+			if (ComputerMapper.instance == null) {
+				ComputerMapper.instance = new ComputerMapper(companyDAO);
+			}
+
+		}
+		return ComputerMapper.instance;
+	}
 
 	@Override
 	public Computer dtoToModel(ComputerDTO computerDTO) {
 		Computer theComputer = new Computer();
-		
-		if (computerDTO.getId() != null) {
+
+		if (!isBlank(computerDTO.getId())) {
 			theComputer.setId(Long.parseLong(computerDTO.getId()));
 		}
-		
-        try {
-        	theComputer.setName(computerDTO.getName());
-        	if (computerDTO.getIntroducedDate()!=null)
-        		theComputer.setIntroducedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()),LocalTime.of(12, 00)));
-        	if (computerDTO.getDiscontinuedDate()!=null)
-        		theComputer.setDiscontinuedDate(LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()),LocalTime.of(12, 00)));
-			String companyId = computerDTO.getCompanyDTO().getId();
-			if (companyId != null) {
+
+		try {
+			theComputer.setName(computerDTO.getName());
+			if (!isBlank(computerDTO.getIntroducedDate())) {
+				theComputer.setIntroducedDate(
+						LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()), LocalTime.of(12, 00)));
+			}
+			if (!isBlank(computerDTO.getDiscontinuedDate())) {
+				theComputer.setDiscontinuedDate(
+						LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()), LocalTime.of(12, 00)));
+			}
+			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
+				String companyId = computerDTO.getCompanyDTO().getId();
 				Optional<Company> company = companyDAO.findById(Long.parseLong(companyId));
 				if (!company.isPresent()) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
-				}else {
+				} else {
 					theComputer.setCompany(company.get());
 				}
 			}
-        } catch (DateTimeParseException| CompanyNotFoundException e) {
-            e.printStackTrace();
-        }
-        
+			else {
+				theComputer.setCompany(new Company());
+			}
+		} catch (DateTimeParseException | CompanyNotFoundException e) {
+			e.printStackTrace();
+		}
+
 		return theComputer;
 	}
 
@@ -82,9 +89,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		if (computer.getDiscontinuedDate() != null) {
 			theComputerDTO.setDiscontinuedDate(computer.getDiscontinuedDate().toLocalDate().toString());
 		}
-		CompanyDTO companyDTO = new CompanyDTO();
-		companyDTO.setId(Long.toString(computer.getCompany().getId()));
-		companyDTO.setName(computer.getCompany().getName());
+		CompanyDTO companyDTO = companyMapper.modelToDto(computer.getCompany());
 		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
 	}

@@ -32,8 +32,12 @@ public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 	@Override
 	public CompanyDTO modelToDto(Company company) {
 		CompanyDTO theCompanyDTO = new CompanyDTO();
-		theCompanyDTO.setId(Long.toString(company.getId()));
-		theCompanyDTO.setName(company.getName());
+		if (!(company.getId()==null)) {
+			theCompanyDTO.setId(Long.toString(company.getId()));
+		}
+		if (!(company.getName()==null)) {
+			theCompanyDTO.setName(company.getName());
+		}
 		return theCompanyDTO;
 	}
 	

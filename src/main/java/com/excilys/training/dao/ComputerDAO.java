@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -76,11 +75,12 @@ public class ComputerDAO extends Dao<Computer> {
 		Long lastInsertedId = null;
 		try (Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt;
+			SQLComputer sqlComputer = SQLComputer.from(computer);
 			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroducedDate()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinuedDate()));
-			stmt.setLong(4, computer.getCompany().getId());
+			stmt.setString(1, sqlComputer.getName());
+			stmt.setTimestamp(2, sqlComputer.getIntroduced());
+			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
+			stmt.setObject(4, sqlComputer.getCompanyId());
 			stmt.toString();
 			stmt.executeUpdate();
 
@@ -129,12 +129,13 @@ public class ComputerDAO extends Dao<Computer> {
 	public boolean update(Computer computer) {
 		try (Connection cnx = DbConn.getConnection()) {
 			PreparedStatement stmt;
+			SQLComputer sqlComputer = SQLComputer.from(computer);
 			stmt = cnx.prepareStatement(SQL_UPDATE);
-			stmt.setString(1, computer.getName());
-			stmt.setTimestamp(2, Timestamp.valueOf(computer.getIntroducedDate()));
-			stmt.setTimestamp(3, Timestamp.valueOf(computer.getDiscontinuedDate()));
-			stmt.setLong(4, computer.getCompany().getId());
-			stmt.setLong(5, computer.getId());
+			stmt.setString(1, sqlComputer.getName());
+			stmt.setTimestamp(2, sqlComputer.getIntroduced());
+			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
+			stmt.setObject(4, sqlComputer.getId());
+			stmt.setObject(5, computer.getId());
 			stmt.executeUpdate();
 		} catch (SQLException ex) {
 			logger.warn("update(" + computer.toString() + ")", ex);
