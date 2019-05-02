@@ -29,6 +29,10 @@ public class CompanyService {
 		}
 		return instance;
 	}
+
+	public boolean isPresent(Long id) {
+		return findById(id).isPresent();
+	};
 	
 	public Optional<CompanyDTO> findById(Long id) {
 		return this.companyDAO.findById(id).map(companyMapper::modelToDto);

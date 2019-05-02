@@ -9,10 +9,11 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.service.CompanyService;
 
 public class WebValidator extends Validator<ComputerDTO> {
 	private static WebValidator instance;
-
+	private static final CompanyService companyService = CompanyService.getInstance();
 	private WebValidator() {
 	    }
 
@@ -28,8 +29,15 @@ public class WebValidator extends Validator<ComputerDTO> {
 			return false;
 		}
 		try {
-			LocalDate.parse(date);
-			return false;
+			LocalDate dateTocheck = LocalDate.parse(date);
+			LocalDate minDate = LocalDate.of(1970,01,01);
+			LocalDate maxDate = LocalDate.of(2038,01,01);
+			if (dateTocheck.isAfter(minDate) && dateTocheck.isBefore(maxDate)) {
+				return false;
+			} else {
+				return true;
+			}
+			
 		} catch (DateTimeParseException e) {
 			return true;
 		}
@@ -40,8 +48,8 @@ public class WebValidator extends Validator<ComputerDTO> {
 			return false;
 		}
 		try {
-			Long.valueOf(id);
-			return false;
+			Long companyId = Long.valueOf(id);
+			return !companyService.isPresent(companyId);
 		} catch (NumberFormatException e) {
 			return true;
 		}
@@ -60,7 +68,7 @@ public class WebValidator extends Validator<ComputerDTO> {
 			errors.put("discontinued", "La date d'expiration doit être entre 1970-01-01 et 2038-01-19");
 		}
 		if (checkIdFail(toValidate.getCompanyDTO().getId())) {
-			errors.put("companyId", "l'id du fabriquant est mal formé");
+			errors.put("companyId", "Ce fabriquant n'hexiste pas");
 		}
 		return errors;
 	}
