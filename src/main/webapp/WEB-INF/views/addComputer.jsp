@@ -38,7 +38,7 @@
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
-									type="date" name="discontinued" class="form-control" id="discontinued"
+									type="date" min = "2019-02-15" name="discontinued" class="form-control" id="discontinued"
 									placeholder="Discontinued date">
 									<span class="erreur">${erreurs['discontinued']}</span>
 							</div>
@@ -63,5 +63,7 @@
 			</div>
 		</div>
 	</section>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/add.js"></script>
 </body>
 </html>
