@@ -21,6 +21,10 @@ public class DashboardServlet extends HttpServlet {
 	private static final int MAX_PAGE = 10;
 	private int LIMIT_COMP_PAGE = 10;
 	private static int currentPageNumber;
+	private int offset;
+	private List<Integer> pageIds;
+	private Long numberPerPage;
+	private int nbPage;
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,12 +34,33 @@ public class DashboardServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
-		Long computersNumber = computerService.count();
+		numberPerPage = computerService.count();
 
 		String pageId = request.getParameter("pageid");
 		String pageFast = request.getParameter("pageFast");
 		String nbComp = request.getParameter("nbComp");
 		
+		pagination(pageId, pageFast, nbComp);
+
+		List<ComputerDTO> computers = computerService.getAll(LIMIT_COMP_PAGE, offset);
+
+		// Add to request
+		request.setAttribute("computersNumber", numberPerPage);
+		request.setAttribute("computers", computers);
+		request.setAttribute("pageIds", pageIds);
+		request.setAttribute("currentPageNumber", currentPageNumber);
+		request.setAttribute("nbPage", nbPage);
+
+		Utilities.forwardScreen(request, response, VUE);
+	}
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		processRequest(request, response);
+	}
+	
+	private void pagination(String pageId, String pageFast, String nbComp) {
 		// number of computers per page
 		if (!(nbComp == null)) {
 
@@ -53,9 +78,7 @@ public class DashboardServlet extends HttpServlet {
 
 			}
 		}
-		int nbPage = (int) Math.ceil(((double) computersNumber) / LIMIT_COMP_PAGE) - 1;
-
-		int offset = 0;
+		nbPage = (int) Math.ceil(((double) numberPerPage) / LIMIT_COMP_PAGE) - 1;
 
 		if (!(pageId == null)) {
 			currentPageNumber = Integer.parseInt(pageId);
@@ -82,29 +105,12 @@ public class DashboardServlet extends HttpServlet {
 		}
 
 		offset = currentPageNumber * LIMIT_COMP_PAGE;
-		List<Integer> pageIds = new ArrayList<>();
+		pageIds = new ArrayList<>();
 		int len = 0;
 		for (int number = Math.max(0, currentPageNumber - MAX_PAGE / 2); (len < MAX_PAGE)
 				&& (number <= nbPage); ++number) {
 			pageIds.add(number);
 			len = pageIds.size();
 		}
-
-		List<ComputerDTO> computers = computerService.getAll(LIMIT_COMP_PAGE, offset);
-
-		// Add to request
-		request.setAttribute("computersNumber", computersNumber);
-		request.setAttribute("computers", computers);
-		request.setAttribute("pageIds", pageIds);
-		request.setAttribute("currentPageNumber", currentPageNumber);
-		request.setAttribute("nbPage", nbPage);
-
-		Utilities.forwardScreen(request, response, VUE);
-	}
-
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
 	}
 }
