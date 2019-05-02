@@ -18,13 +18,8 @@ public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
 	private final ComputerService computerService = ComputerService.getInstance();
-	private static final int MAX_PAGE = 10;
-	private int LIMIT_COMP_PAGE = 10;
-	private static int currentPageNumber;
-	private int offset;
 	private List<Integer> pageIds;
 	private Long numberPerPage;
-	private int nbPage;
 
 	/**
 	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,22 +29,15 @@ public class DashboardServlet extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
-		numberPerPage = computerService.count();
+		Long totalNumber = computerService.count();
 
-		String pageId = request.getParameter("pageid");
-		String pageFast = request.getParameter("pageFast");
-		String nbComp = request.getParameter("nbComp");
-		
-		pagination(pageId, pageFast, nbComp);
+		Pagination pagination = new Pagination();
+		pagination.doPagination(request, totalNumber);
 
-		List<ComputerDTO> computers = computerService.getAll(LIMIT_COMP_PAGE, offset);
+		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset());
 
 		// Add to request
-		request.setAttribute("computersNumber", numberPerPage);
 		request.setAttribute("computers", computers);
-		request.setAttribute("pageIds", pageIds);
-		request.setAttribute("currentPageNumber", currentPageNumber);
-		request.setAttribute("nbPage", nbPage);
 
 		Utilities.forwardScreen(request, response, VUE);
 	}
@@ -60,57 +48,6 @@ public class DashboardServlet extends HttpServlet {
 		processRequest(request, response);
 	}
 	
-	private void pagination(String pageId, String pageFast, String nbComp) {
-		// number of computers per page
-		if (!(nbComp == null)) {
-
-			switch (nbComp) {
-			case "10":
-				LIMIT_COMP_PAGE = 10;
-				break;
-			case "50":
-				LIMIT_COMP_PAGE = 50;
-				break;
-			case "100":
-				LIMIT_COMP_PAGE = 100;
-				break;
-			default:
-
-			}
-		}
-		nbPage = (int) Math.ceil(((double) numberPerPage) / LIMIT_COMP_PAGE) - 1;
-
-		if (!(pageId == null)) {
-			currentPageNumber = Integer.parseInt(pageId);
-		}
-		// jump 10 pages
-		if (!(pageFast == null)) {
-
-			switch (pageFast) {
-			case "next":
-				if (currentPageNumber + MAX_PAGE < nbPage)
-					currentPageNumber += MAX_PAGE;
-				else
-					currentPageNumber = nbPage;
-				break;
-			case "previous":
-				if (currentPageNumber - MAX_PAGE < 0)
-					currentPageNumber = 0;
-				else
-					currentPageNumber -= MAX_PAGE;
-				break;
-			default:
-
-			}
-		}
-
-		offset = currentPageNumber * LIMIT_COMP_PAGE;
-		pageIds = new ArrayList<>();
-		int len = 0;
-		for (int number = Math.max(0, currentPageNumber - MAX_PAGE / 2); (len < MAX_PAGE)
-				&& (number <= nbPage); ++number) {
-			pageIds.add(number);
-			len = pageIds.size();
-		}
-	}
+	
+	
 }
