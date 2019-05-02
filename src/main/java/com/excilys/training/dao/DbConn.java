@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class DbConn {
-	private static ResourceBundle bundle = ResourceBundle.getBundle("db");
+	
+	// get db.properties
+	private static String environ = System.getenv("dbName");
+	private static ResourceBundle bundle = ResourceBundle.getBundle(environ);
 
 	// assign db parameters
 	private static final String driver = bundle.getString("driver");

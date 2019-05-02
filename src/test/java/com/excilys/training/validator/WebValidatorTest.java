@@ -18,11 +18,6 @@ public class WebValidatorTest {
 		TestDatabase.getInstance().reload();
 		
 	}
-
-	@Test
-	public void testValidationComputerDTO() {
-		fail("Not yet implemented");
-	}
 	
 	@Test
 	public void testCheckDateFail() {

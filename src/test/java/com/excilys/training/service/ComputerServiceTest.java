@@ -36,7 +36,7 @@ public class ComputerServiceTest {
 	@Test
 	public void testFindById() {
 		Optional<ComputerDTO> actual = computerService.findById(3L);
-		CompanyDTO companyDTO = new CompanyDTO("2", null);
+		CompanyDTO companyDTO = new CompanyDTO("2", "Thinking Machines");
 		ComputerDTO expected = new ComputerDTO("3", "CM-200", null, null, companyDTO);
 		assertEquals(expected, actual.get());
 
@@ -45,7 +45,7 @@ public class ComputerServiceTest {
 	@Test
 	public void testCreate() {
 
-		CompanyDTO companyDTO = new CompanyDTO("2", null);
+		CompanyDTO companyDTO = new CompanyDTO("2", "Thinking Machines");
 		ComputerDTO expected = new ComputerDTO("3", "test", "2001-02-03", "2001-02-04", companyDTO);
 		long newId = computerService.create(expected);
 		expected.setId(Long.toString(newId));
