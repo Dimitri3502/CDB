@@ -27,7 +27,7 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" name="computerName" class="form-control" id="computerName"
-									placeholder="Computer name">
+									placeholder="Computer name" required>
 									<span class="erreur">${erreurs['computerName']}</span>
 							</div>
 							<div class="form-group">
