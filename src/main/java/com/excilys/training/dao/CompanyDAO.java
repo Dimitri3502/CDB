@@ -54,7 +54,7 @@ public class CompanyDAO extends Dao<Company>{
 	@Override
 	public List<Company> getAll() {
         List<Company> companies = new ArrayList<Company>();
-        try(Connection cnx = DbConn.getConnection()) {
+        try(Connection cnx = DatabaseManager.getConnectionEnvironment()) {
             PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -70,7 +70,7 @@ public class CompanyDAO extends Dao<Company>{
 
 	@Override
 	public Optional<Company> findById(long id) {
-		try(Connection cnx = DbConn.getConnection()) {
+		try(Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
@@ -91,7 +91,7 @@ public class CompanyDAO extends Dao<Company>{
 	@Override
 	public List<Company> getAll(int limit, int offset) {
         List<Company> companies = new ArrayList<Company>();
-        try(Connection cnx = DbConn.getConnection()) {
+        try(Connection cnx = DatabaseManager.getConnectionEnvironment()) {
             PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
             stmt.setLong(1, limit);
             stmt.setLong(2, offset);

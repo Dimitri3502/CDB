@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;

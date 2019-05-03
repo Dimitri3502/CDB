@@ -57,7 +57,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public List<Computer> getAll() throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -74,7 +74,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public long create(Computer computer) {
 		Long lastInsertedId = null;
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt;
 			SQLComputer sqlComputer = SQLComputer.from(computer);
 			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
@@ -97,7 +97,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public long count() {
 		Long computersNumber = null;
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt;
 			stmt = cnx.prepareStatement(SQL_COUNT);
 			stmt.execute();
@@ -114,7 +114,7 @@ public class ComputerDAO extends Dao<Computer> {
 	
 	@Override
 	public boolean delete(Computer computer) {
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
 			stmt.setLong(1, computer.getId());
 			stmt.executeUpdate();
@@ -128,7 +128,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean update(Computer computer) {
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt;
 			SQLComputer sqlComputer = SQLComputer.from(computer);
 			stmt = cnx.prepareStatement(SQL_UPDATE);
@@ -147,7 +147,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public Optional<Computer> findById(long id) {
 
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
@@ -171,7 +171,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DbConn.getConnection()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
 			stmt.setLong(1, limit);
 			stmt.setLong(2, offset);

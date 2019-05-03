@@ -18,14 +18,7 @@ public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
 	private final ComputerService computerService = ComputerService.getInstance();
-	private List<Integer> pageIds;
-	private Long numberPerPage;
 
-	/**
-	 * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-	 * methods.
-	 *
-	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
