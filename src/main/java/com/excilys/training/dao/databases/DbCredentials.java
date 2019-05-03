@@ -1,4 +1,4 @@
-package com.excilys.training.dao;
+package com.excilys.training.dao.databases;
 
 import java.util.ResourceBundle;
 
@@ -21,11 +21,8 @@ public class DbCredentials {
 	}
 	public DbCredentials(ResourceBundle bundle) {
 		super();
-		this.host = bundle.getString("host");
 		this.user = bundle.getString("user");
 		this.pass = bundle.getString("password");
-		this.dbName = bundle.getString("dbName");
-		this.port = bundle.getString("port");
 		this.driver = bundle.getString("driver");
 		this.url = bundle.getString("url");
 	}

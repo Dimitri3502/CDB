@@ -8,8 +8,8 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import com.excilys.training.dao.DatabaseManager;
-import com.excilys.training.dao.DbConn;
+import com.excilys.training.dao.databases.DatabaseManager;
+import com.excilys.training.dao.databases.DbConn;
 
 public class TestDatabase {
 
@@ -39,6 +39,9 @@ public class TestDatabase {
 				final String nextToken = stringTokenizer.nextToken();
 				statement.execute(nextToken);
 			}
+		}
+		catch (Throwable e){
+			e.printStackTrace();
 		}
 	}
 

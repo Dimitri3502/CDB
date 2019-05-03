@@ -1,7 +1,10 @@
-package com.excilys.training.dao;
+package com.excilys.training.dao.databases;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -9,6 +12,7 @@ import com.zaxxer.hikari.HikariDataSource;
 public class DatabaseAccess {
 	private DbCredentials credentials;
 	private HikariDataSource hikariDataSource;
+	private final Logger logger = LogManager.getLogger(getClass());
 
 	public DatabaseAccess(DbCredentials credentials) {
 		super();
@@ -18,7 +22,7 @@ public class DatabaseAccess {
 	private void setupHikariCP() {
 		final HikariConfig hikariConfig = new HikariConfig();
 		hikariConfig.setMaximumPoolSize(10);
-		hikariConfig.setJdbcUrl(credentials.toURI());
+		hikariConfig.setJdbcUrl(credentials.getUrl());
 		hikariConfig.setUsername(credentials.getUser());
 		hikariConfig.setPassword(credentials.getPass());
 		hikariConfig.setDriverClassName(credentials.getDriver());
@@ -39,7 +43,7 @@ public class DatabaseAccess {
 
 	public Connection getConnection() throws SQLException {
 		if (this.hikariDataSource == null) {
-			System.out.println("not connected");
+			logger.info("Connection à " + credentials.getUrl());
 			setupHikariCP();
 		}
 

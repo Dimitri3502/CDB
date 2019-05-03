@@ -1,4 +1,4 @@
-package com.excilys.training.dao;
+package com.excilys.training.dao.databases;
 
 import java.sql.Connection;
 import java.sql.SQLException;
