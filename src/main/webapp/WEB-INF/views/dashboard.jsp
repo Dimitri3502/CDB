@@ -91,21 +91,21 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?pageFast=previous" aria-label="Previous"> <span
+				<li><a href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}" aria-label="Previous"> <span
 						aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="page" items="${pageIds}">
-					<li><a href="?pageid=${page}">${page}</a></li>
+					<li><a href="?pageid=${page}&&numberPerPage=${numberPerPage}">${page}</a></li>
 				</c:forEach>
-				<li><a href="?pageFast=next" aria-label="Next"> <span
+				<li><a href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}" aria-label="Next"> <span
 						aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button onclick="location.href='?nbComp=10'" type="button" class="btn btn-default">10</button>
-				<button onclick="location.href='?nbComp=50'" type="button" class="btn btn-default">50</button>
-				<button onclick="location.href='?nbComp=100'" type="button" class="btn btn-default">100</button>
+				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10'" type="button" class="btn btn-default">10</button>
+				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50'" type="button" class="btn btn-default">50</button>
+				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100'" type="button" class="btn btn-default">100</button>
 			</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>

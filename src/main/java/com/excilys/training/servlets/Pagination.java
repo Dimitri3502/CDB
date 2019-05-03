@@ -16,28 +16,10 @@ public class Pagination {
 	public void doPagination(HttpServletRequest request, long totalNumber) {
 		// number of computers per page
 		String pageId = request.getParameter("pageid");
-		String pageFast = request.getParameter("pageFast");
-		String nbComp = request.getParameter("nbComp");
+		numberPerPage = 10;
+		if (!(request.getParameter("numberPerPage") == null)) {
+			numberPerPage = Integer.parseInt(request.getParameter("numberPerPage"));
 
-		if (!(nbComp == null)) {
-
-			switch (nbComp) {
-			case "10":
-				numberPerPage = 10;
-				break;
-			case "50":
-				numberPerPage = 50;
-				break;
-			case "100":
-				numberPerPage = 100;
-				break;
-			default:
-				numberPerPage = 10;
-
-			}
-
-		} else {
-			numberPerPage = 10;
 		}
 		nbPage = (int) Math.ceil(((double) totalNumber) / numberPerPage) - 1;
 
@@ -45,22 +27,17 @@ public class Pagination {
 			currentPageNumber = Integer.parseInt(pageId);
 		}
 		// jump 10 pages
-		if (!(pageFast == null)) {
+		if (!(pageId == null)) {
+			int pageIdInt = Integer.parseInt(pageId);
 
-			switch (pageFast) {
-			case "next":
-				if (currentPageNumber + MAX_PAGE < nbPage)
-					currentPageNumber += MAX_PAGE;
-				else
-					currentPageNumber = nbPage;
-				break;
-			case "previous":
-				if (currentPageNumber - MAX_PAGE < 0)
-					currentPageNumber = 0;
-				else
-					currentPageNumber -= MAX_PAGE;
-				break;
-			default:
+			if (pageIdInt > nbPage) {
+				currentPageNumber = nbPage;
+			}
+
+			else if (pageIdInt < 0) {
+				currentPageNumber = 0;
+			} else {
+				currentPageNumber = pageIdInt;
 
 			}
 		}
@@ -77,6 +54,7 @@ public class Pagination {
 		request.setAttribute("pageIds", pageIds);
 		request.setAttribute("currentPageNumber", currentPageNumber);
 		request.setAttribute("nbPage", nbPage);
+		request.setAttribute("numberPerPage", numberPerPage);
 	}
 
 	public int getOffset() {
