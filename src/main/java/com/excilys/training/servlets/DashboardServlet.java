@@ -18,13 +18,13 @@ public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
 	private final ComputerService computerService = ComputerService.getInstance();
+	private final Pagination pagination = Pagination.getInstance();
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
 		Long totalNumber = computerService.count();
 
-		Pagination pagination = new Pagination();
 		pagination.doPagination(request, totalNumber);
 
 		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset());

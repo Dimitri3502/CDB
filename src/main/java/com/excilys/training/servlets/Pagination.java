@@ -6,17 +6,30 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 public class Pagination {
-	private static final int MAX_PAGE = 10;
-	private int numberPerPage;
+	private static Pagination instance = null;
+	
+	private static final int MAX_PAGE = 10; // size of page choice below the table
+	private int numberPerPage = 10; // default value
 	private int currentPageNumber;
 	private int offset;
 	private List<Integer> pageIds;
 	private int nbPage;
 
+	private Pagination() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public static Pagination getInstance() {
+		if (instance == null) {
+			instance = new Pagination();
+		}
+		return instance;
+	}
+	
 	public void doPagination(HttpServletRequest request, long totalNumber) {
 		// number of computers per page
 		String pageId = request.getParameter("pageid");
-		numberPerPage = 10;
+		
 		if (!(request.getParameter("numberPerPage") == null)) {
 			numberPerPage = Integer.parseInt(request.getParameter("numberPerPage"));
 
