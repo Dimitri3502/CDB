@@ -44,6 +44,10 @@ public final class ComputerService {
 	public long count(){
 		return computerDAO.count();
 	};
+
+	public long getLastIdInserted(){
+		return computerDAO.getLastIdInserted();
+	};
 	
 	public boolean update(ComputerDTO computerDTO){
 		return computerDAO.update(computerMapper.dtoToModel(computerDTO));

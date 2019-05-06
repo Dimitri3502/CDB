@@ -26,6 +26,7 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 	private static final String SQL_COUNT = "SELECT COUNT(id) AS count FROM computer";
+	private static final String SQL_LAST_INSERT_ID = "SELECT LAST_INSERT_ID()";
 	
 	private static ComputerDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
@@ -111,6 +112,23 @@ public class ComputerDAO extends Dao<Computer> {
 			logger.warn("count()", ex);
 		}
 		return computersNumber;
+	}
+
+	public long getLastIdInserted() {
+		Long lastIdInserted = null;
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+			PreparedStatement stmt;
+			stmt = cnx.prepareStatement(SQL_LAST_INSERT_ID);
+			stmt.execute();
+
+			ResultSet rs = stmt.getResultSet();
+			if (rs.next()) {
+				lastIdInserted = rs.getLong(1);
+			}
+		} catch (SQLException ex) {
+			logger.warn("getLastIdInserted()", ex);
+		}
+		return lastIdInserted;
 	}
 	
 	@Override
