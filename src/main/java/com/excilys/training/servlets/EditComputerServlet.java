@@ -2,6 +2,7 @@ package com.excilys.training.servlets;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -23,8 +24,9 @@ import com.excilys.training.validator.WebValidator;
 
 
 
-public class AddComputerServlet extends HttpServlet {
-    public static final String VUE = "/WEB-INF/views/addComputer.jsp";
+public class EditComputerServlet extends HttpServlet {
+    public static final String VUE = "/WEB-INF/views/editComputer.jsp";
+    public static final String CHAMP_ID = "id";
     public static final String CHAMP_COMPUTERNAME = "computerName";
     public static final String CHAMP_INTRODUCED = "introduced";
     public static final String CHAMP_DISCONTINUED = "discontinued";
@@ -42,9 +44,14 @@ public class AddComputerServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	String idStr = request.getParameter("id");
+
+    	long id = Long.parseLong(idStr);
+    	ComputerDTO computer = computerService.findById(id).get();
 		List<CompanyDTO> companies = companyService.getAll();
 
 		// Add to request
+		request.setAttribute("computer", computer);
 		request.setAttribute("companies", companies);
     	Utilities.forwardScreen(request, response, VUE);
     }
@@ -55,6 +62,7 @@ public class AddComputerServlet extends HttpServlet {
             throws ServletException, IOException {
         String resultat;
         /* Récupération des champs du formulaire. */
+        String id = request.getParameter(CHAMP_ID);
         String computerName = request.getParameter(CHAMP_COMPUTERNAME);
         String introduced = request.getParameter(CHAMP_INTRODUCED);
         String discontinued = request.getParameter(CHAMP_DISCONTINUED);
@@ -62,6 +70,7 @@ public class AddComputerServlet extends HttpServlet {
 
         
         ComputerDTO computerDTO = new ComputerDTO();
+        computerDTO.setId(id);
         computerDTO.setName(computerName);
         computerDTO.setIntroducedDate(introduced);
         computerDTO.setDiscontinuedDate(discontinued);
@@ -73,10 +82,10 @@ public class AddComputerServlet extends HttpServlet {
         final Validator.Result result = webValidator.check(computerDTO);
         Map<String, String> erreurs = result.getError();
 		if (result.isValid()) {
-            long id = computerService.create(computerDTO);
-            resultat = "Succès de l'inscription.";
+            computerService.update(computerDTO);
+            resultat = "Modification effectuée avec succès.";
         } else {
-            resultat = "Échec de l'inscription.";
+            resultat = "Échec de la modification.";
         }
         
 
