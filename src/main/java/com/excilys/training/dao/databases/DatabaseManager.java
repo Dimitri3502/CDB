@@ -5,10 +5,10 @@ import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public enum DatabaseManager {
-	computer_database_db(new DbCredentials(ResourceBundle.getBundle(System.getenv("dbName")))),
+	computer_database_db(new DbCredentials(ResourceBundle.getBundle("db"))),
 
-	H2_test_db(new DbCredentials(ResourceBundle.getBundle(System.getenv("dbName"))));
-	
+	H2_test_db(new DbCredentials(ResourceBundle.getBundle("dbTest")));
+
 	private DatabaseAccess databaseAccess;
 
 	DatabaseManager(DbCredentials credentials) {
@@ -18,12 +18,13 @@ public enum DatabaseManager {
 	public DatabaseAccess getDatabaseAccess() {
 		return databaseAccess;
 	}
+
 	public static Connection getConnectionEnvironment() throws SQLException {
-		if (System.getenv("dbName").equals("db")){
+		if (System.getenv("dbName").equals("dbTest")) {
+			return H2_test_db.getDatabaseAccess().getConnection();
+		} else {
 			return computer_database_db.getDatabaseAccess().getConnection();
 		}
-		else
-			return H2_test_db.getDatabaseAccess().getConnection();
 	}
 
 	public static void initDatabaseConnnection() {

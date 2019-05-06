@@ -9,7 +9,6 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import com.excilys.training.dao.databases.DatabaseManager;
-import com.excilys.training.dao.databases.DbConn;
 
 public class TestDatabase {
 
@@ -23,7 +22,7 @@ public class TestDatabase {
 	}
 
 	private static void executeScript(String filename) throws SQLException, IOException {
-		try (final Connection connection = DatabaseManager.getConnectionEnvironment();
+		try (final Connection connection = DatabaseManager.H2_test_db.getDatabaseAccess().getConnection();
 				final Statement statement = connection.createStatement();
 				final InputStream resourceAsStream = TestDatabase.class.getClassLoader().getResourceAsStream(filename);
 				final Scanner scanner = new Scanner(resourceAsStream)) {

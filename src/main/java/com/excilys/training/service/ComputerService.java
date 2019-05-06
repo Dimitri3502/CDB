@@ -62,7 +62,12 @@ public final class ComputerService {
 		return computer.map(computerMapper::modelToDto);
 		
 	};
+	public List<ComputerDTO> getAll() {
+		List<Computer> theComputerList = computerDAO.getAll();
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
 
+		return theComputerDtoList;
+	}
 	public List<ComputerDTO> getAll(int limit, int offset) {
 		List<Computer> theComputerList = computerDAO.getAll(limit, offset);
 		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
