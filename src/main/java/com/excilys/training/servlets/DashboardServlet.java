@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.service.ComputerService;
 
-//@WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
+@WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 

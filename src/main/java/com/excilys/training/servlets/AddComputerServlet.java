@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,9 +23,13 @@ import com.excilys.training.validator.WebValidator;
  */
 
 
-
+@WebServlet(name = "AddComputer", urlPatterns = { "/addComputer" })
 public class AddComputerServlet extends HttpServlet {
-    public static final String VUE = "/WEB-INF/views/addComputer.jsp";
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -828447276545120635L;
+	public static final String VUE = "/WEB-INF/views/addComputer.jsp";
     public static final String CHAMP_COMPUTERNAME = "computerName";
     public static final String CHAMP_INTRODUCED = "introduced";
     public static final String CHAMP_DISCONTINUED = "discontinued";
