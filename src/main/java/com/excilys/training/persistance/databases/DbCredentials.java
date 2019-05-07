@@ -1,4 +1,4 @@
-package com.excilys.training.dao.databases;
+package com.excilys.training.persistance.databases;
 
 import java.util.ResourceBundle;
 

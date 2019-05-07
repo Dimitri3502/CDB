@@ -9,8 +9,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.excilys.training.TestDatabase;
-import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.model.Company;
+import com.excilys.training.persistance.CompanyDAO;
 
 import org.mockito.Mockito;
 

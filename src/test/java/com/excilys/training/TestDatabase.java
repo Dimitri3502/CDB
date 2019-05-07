@@ -8,7 +8,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import com.excilys.training.dao.databases.DatabaseManager;
+import com.excilys.training.persistance.databases.DatabaseManager;
 
 public class TestDatabase {
 

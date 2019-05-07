@@ -1,4 +1,4 @@
-package com.excilys.training.dao;
+package com.excilys.training.persistance;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,10 +13,10 @@ import java.util.logging.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.excilys.training.dao.databases.DatabaseManager;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.databases.DatabaseManager;
 
 public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
@@ -154,9 +154,10 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setString(1, sqlComputer.getName());
 			stmt.setTimestamp(2, sqlComputer.getIntroduced());
 			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
-			stmt.setObject(4, sqlComputer.getId());
+			stmt.setObject(4, sqlComputer.getCompanyId());
 			stmt.setObject(5, computer.getId());
 			stmt.executeUpdate();
+			stmt.toString();
 		} catch (SQLException ex) {
 			logger.warn("update(" + computer.toString() + ")", ex);
 		}

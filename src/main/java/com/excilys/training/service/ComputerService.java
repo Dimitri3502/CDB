@@ -4,9 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.excilys.training.dao.CompanyDAO;
-import com.excilys.training.dao.ComputerDAO;
-import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.ComputerNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
@@ -15,6 +12,9 @@ import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.persistance.Dao;
 
 public final class ComputerService {
 	

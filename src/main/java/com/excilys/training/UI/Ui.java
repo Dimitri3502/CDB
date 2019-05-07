@@ -64,16 +64,22 @@ public class Ui {
 		case 6:
 			deleteComputer();
 			break;
+		// delete Computer
+		case 7:
+			deleteCompany();
+			break;
 		default:
 
 		}
 
 	}
+
 	public void showActions() {
 
 		System.out.println(" " + "\n" + "Actions : " + "\n" + "0 : Fermer l'application" + "\n" + "1 : ListComputers"
 				+ "\n" + "2 : ListCompanies" + "\n" + "3 : ShowComputer" + "\n" + "4 : CreateComputer" + "\n"
-				+ "5 : UpdateComputer" + "\n" + "6 : DeleteComputer" + "\n" + "Entrez votre choix : ");
+				+ "5 : UpdateComputer" + "\n" + "6 : DeleteComputer" + "\n" + "7 : DeleteCompany" + "\n"
+				+ "Entrez votre choix : ");
 	}
 
 	public String readInputs() {
@@ -99,7 +105,7 @@ public class Ui {
 
 		return input;
 	}
-	
+
 	public void showComputer() {
 		System.out.println("Actions : ShowComputer" + "\n" + "Entrez l'id de l'ordinateur" + "\n" + "Votre choix : ");
 		Long id = readInputLong();
@@ -114,16 +120,24 @@ public class Ui {
 		controller.deleteComputer(id);
 	}
 
+	public void deleteCompany() {
+
+		System.out.println("Actions : deleteCompany" + "\n" + "Entrez l'id du fabriquant à supprimer" + "\n"
+				+ "Votre choix : ");
+		Long id = readInputLong();
+		controller.deleteCompany(id);
+	}	
+	
 	public void createComputer() {
 		System.out.println("Actions : CreateComputer");
 		ComputerDTOUi computerDTOUiCreate = getInputsComputer();
-		
-        final Validator.Result result = createComputerUIValidator.check(computerDTOUiCreate);
-        if (result.isValid()) {        	
-            controller.createComputer(computerDTOUiCreate);
-        } else {
-            result.values().forEach(System.out::println);
-        }
+
+		final Validator.Result result = createComputerUIValidator.check(computerDTOUiCreate);
+		if (result.isValid()) {
+			controller.createComputer(computerDTOUiCreate);
+		} else {
+			result.values().forEach(System.out::println);
+		}
 	}
 
 	public void updateComputer() {
@@ -135,13 +149,13 @@ public class Ui {
 		controller.showComputer(id);
 		if (controller.ComputerExist(id)) {
 			ComputerDTOUi computerDTOUi = getInputsComputer();
-			
-	        final Validator.Result result = createComputerUIValidator.check(computerDTOUi);
-	        if (result.isValid()) {        	
-	            controller.updateComputer(id,computerDTOUi);
-	        } else {
-	            result.values().forEach(System.out::println);
-	        }
+
+			final Validator.Result result = createComputerUIValidator.check(computerDTOUi);
+			if (result.isValid()) {
+				controller.updateComputer(id, computerDTOUi);
+			} else {
+				result.values().forEach(System.out::println);
+			}
 		}
 
 	}
@@ -150,50 +164,51 @@ public class Ui {
 		System.out.println(" " + "\n" + "Pagination" + "\n" + "0 : retour menu" + "\n" + "1 : page suivante" + "\n"
 				+ "2 : page precedente");
 	}
-	
-	public void listPagination(String str)  {
-			boolean returnMenu = false;
-			int n = 0;
-			while (!returnMenu) {
-				if (str=="computer") {
-					List<ComputerDTO> theComputerDTOList;
-					try {
-						theComputerDTOList = controller.getAllComputerPagined(10,n);
-						theComputerDTOList.forEach(System.out::println);				
-					} catch (InvalidDiscontinuedDate e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-						
+
+	public void listPagination(String str) {
+		boolean returnMenu = false;
+		int n = 0;
+		while (!returnMenu) {
+			if (str == "computer") {
+				List<ComputerDTO> theComputerDTOList;
+				try {
+					theComputerDTOList = controller.getAllComputerPagined(10, n);
+					theComputerDTOList.forEach(System.out::println);
+				} catch (InvalidDiscontinuedDate e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				if (str=="company") {
-					List<CompanyDTO> theCompanyDTOList;
-					try {
-						theCompanyDTOList = controller.getAllCompanyPagined(10,n);
-						theCompanyDTOList.forEach(System.out::println);				
-					} catch (InvalidDiscontinuedDate e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				menuNextPage();
-				String choix2 = readInputs();
-				switch (choix2) {
-				// retour
-				case "0":
-					returnMenu = true;
-					break;
-				// page suivante
-				case "1":
-					n += 10;
-					break;
-				// page precedente
-				case "2":
-					n -= 10;
-					break;
+
+			}
+			if (str == "company") {
+				List<CompanyDTO> theCompanyDTOList;
+				try {
+					theCompanyDTOList = controller.getAllCompanyPagined(10, n);
+					theCompanyDTOList.forEach(System.out::println);
+				} catch (InvalidDiscontinuedDate e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
+			menuNextPage();
+			String choix2 = readInputs();
+			switch (choix2) {
+			// retour
+			case "0":
+				returnMenu = true;
+				break;
+			// page suivante
+			case "1":
+				n += 10;
+				break;
+			// page precedente
+			case "2":
+				n -= 10;
+				break;
+			}
+		}
 	}
+
 	public ComputerDTOUi getInputsComputer() {
 		Map<String, String> inputsCreateComputer = new HashMap<String, String>();
 
@@ -217,12 +232,10 @@ public class Ui {
 		String theIdCompany = readInputs();
 		inputsCreateComputer.put("idCompany", theIdCompany);
 
-		
-		
-        final ComputerDTOUi computerDTOUiCreate = new ComputerDTOUi();
-        computerDTOUiCreate.setName(inputsCreateComputer.get("name"));
-        computerDTOUiCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
-        computerDTOUiCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
+		final ComputerDTOUi computerDTOUiCreate = new ComputerDTOUi();
+		computerDTOUiCreate.setName(inputsCreateComputer.get("name"));
+		computerDTOUiCreate.setIntroducedDate(inputsCreateComputer.get("introducedDate"));
+		computerDTOUiCreate.setDiscontinuedDate(inputsCreateComputer.get("discontinuedDate"));
 		computerDTOUiCreate.setCompanyId(inputsCreateComputer.get("idCompany"));
 		return computerDTOUiCreate;
 	}

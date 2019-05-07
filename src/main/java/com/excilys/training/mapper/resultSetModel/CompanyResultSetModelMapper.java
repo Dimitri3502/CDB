@@ -3,8 +3,8 @@ package com.excilys.training.mapper.resultSetModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.training.dao.CompanyDAO;
 import com.excilys.training.model.Company;
+import com.excilys.training.persistance.CompanyDAO;
 
 public class CompanyResultSetModelMapper extends ResultSetModelMapper<Company> {
 	

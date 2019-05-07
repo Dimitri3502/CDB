@@ -1,22 +1,24 @@
 package com.excilys.training.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.excilys.training.TestDatabase;
 import com.excilys.training.model.Company;
+import com.excilys.training.persistance.CompanyDAO;
 
 public class CompanyDAOTest {
 
 	private CompanyDAO companyDAO = CompanyDAO.getInstance();
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		TestDatabase.getInstance().reload();
 		
 	}
@@ -37,7 +39,14 @@ public class CompanyDAOTest {
 		expected.add(expected1);
 		expected.add(expected2);
 		List<Company> actual = companyDAO.getAll(2, 0);
-		assertEquals(expected, actual);
+		assertEquals(expected, actual); 
 	}
+//	@Test
+//	public final void testDelete() {
+//		Long id=2L;
+//		companyDAO.findById(id);
+//		companyDAO.delete(id);
+//		assertFalse(companyDAO.findById(id).isPresent());
+//	}
 
 }
