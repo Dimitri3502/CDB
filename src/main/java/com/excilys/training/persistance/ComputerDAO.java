@@ -27,10 +27,18 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 	private static final String SQL_COUNT = "SELECT COUNT(id) AS count FROM computer";
 	private static final String SQL_LAST_INSERT_ID = "SELECT LAST_INSERT_ID(id) FROM computer";
-	
+	private static final String SELECT_BY_NAME_OR_COMPANY_QUERY = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,"
+			+ "B.id AS company_id ,B.name AS company_name FROM computer AS A "
+			+ "LEFT JOIN company AS B ON A.company_id = B.id "
+			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
+			+ "ORDER BY :order_by: :order_direction: LIMIT ? OFFSET ?";
+
+	private static String DEFAULT_ORDER_BY = "A.name";
+	private static String DEFAULT_ORDER_DIRECTION = "ASC";
+
 	private static ComputerDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
-	
+
 	private ComputerDAO() {
 		// TODO Auto-generated constructor stub
 	}
@@ -130,7 +138,7 @@ public class ComputerDAO extends Dao<Computer> {
 		}
 		return lastIdInserted;
 	}
-	
+
 	@Override
 	public boolean delete(Computer computer) {
 		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
@@ -142,7 +150,7 @@ public class ComputerDAO extends Dao<Computer> {
 			logger.warn("delete(" + computer.toString() + ")", ex);
 			return false;
 		}
-		
+
 	}
 
 	@Override
@@ -176,15 +184,14 @@ public class ComputerDAO extends Dao<Computer> {
 				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
 				return Optional.of(computerResultSetModelMapper.map(rs));
 			} else {
-				logger.warn("findById(" + id + ") not found");	
+				logger.warn("findById(" + id + ") not found");
 				return Optional.empty();
 			}
 
 		} catch (SQLException ex) {
 			logger.warn("Company findById(" + id + ")", ex);
-			throw new RuntimeException(ex); 
+			throw new RuntimeException(ex);
 		}
-		
 
 	}
 
@@ -201,8 +208,62 @@ public class ComputerDAO extends Dao<Computer> {
 				computers.add(aComputer);
 			}
 		} catch (SQLException ex) {
-			 logger.warn("findAll(" + offset + "," + limit + ")", ex);
+			logger.warn("getAll(" + offset + "," + limit + ")", ex);
 		}
 		return computers;
+	}
+
+	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByEnum orderDirection)
+			throws InvalidDiscontinuedDate {
+
+		List<Computer> computers = new ArrayList<Computer>();
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(orderBy))
+					.replace(":order_direction:", map(orderDirection));
+			PreparedStatement stmt = cnx.prepareStatement(selectByNameOrCompany);
+			name = name != null ? "%" + name + "%" : "%%";
+			stmt.setString(1, name);
+			stmt.setString(2, name);
+			stmt.setLong(3, limit);
+			stmt.setLong(4, offset);
+			stmt.toString();
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Computer aComputer = populate(rs);
+				computers.add(aComputer);
+			}
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+//			logger.warn("getAll(" + offset + ", " + limit + ", " + name + ", " + orderBy + ", " + orderDirection + ")",
+//					ex);
+		}
+		return computers;
+	}
+
+	private String map(OrderByEnum c) {
+		switch (c) {
+		default:
+		case ASC:
+			return "ASC";
+		case DESC:
+			return "DESC";
+		}
+	}
+
+	private String map(OrderByChamp c) {
+		switch (c) {
+		default:
+		case ID:
+			return "id";
+		case NAME:
+			return "name";
+		case INTRODUCED:
+			return "introduced";
+		case DISCONTINUED:
+			return "discontinued";
+		case COMPANY:
+			return "company_name";
+		}
 	}
 }

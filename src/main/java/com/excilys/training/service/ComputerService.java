@@ -15,6 +15,8 @@ import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.ComputerDAO;
 import com.excilys.training.persistance.Dao;
+import com.excilys.training.persistance.OrderByChamp;
+import com.excilys.training.persistance.OrderByEnum;
 
 public final class ComputerService {
 	
@@ -63,15 +65,18 @@ public final class ComputerService {
 		
 	};
 	public List<ComputerDTO> getAll() {
-		List<Computer> theComputerList = computerDAO.getAll();
-		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
-
-		return theComputerDtoList;
+		return allModelToDTO(computerDAO.getAll());
 	}
 	public List<ComputerDTO> getAll(int limit, int offset) {
-		List<Computer> theComputerList = computerDAO.getAll(limit, offset);
-		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
+		return allModelToDTO(computerDAO.getAll(limit, offset));
+	}
 
+	public List<ComputerDTO> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByEnum orderDirection) {
+		return allModelToDTO(computerDAO.getAll(limit, offset, name, orderBy, orderDirection));
+	}
+	
+	private List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
 		return theComputerDtoList;
 	}
 }

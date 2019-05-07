@@ -13,27 +13,27 @@
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
-			<a class="navbar-brand" href="dashboard"> Application -
-				Computer Database </a>
+			<a class="navbar-brand" href="dashboard"> Application - Computer
+				Database </a>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalNumber} Computers found</h1>
+			<h1 id="homeTitle">${totalNumber}Computers found</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
-					<form id="searchForm" action="#" method="GET" class="form-inline">
-
-						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
-							class="btn btn-primary" />
+					<form id="searchForm" action="dashboard" method="GET"
+						class="form-inline">
+						<input type="hidden" name="order_by" value="${orderBy}" />
+						<input type="hidden" name="order_direction" value="${orderDirection}" />
+						<input type="search" id="searchbox" name="search" class="form-control" placeholder="Search name" /> 
+						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add Computer</a>
-					<a class="btn btn-default" id="editComputer" href="#"
+					<a class="btn btn-success" id="addComputer" href="addComputer">Add
+						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();">Edit</a>
 				</div>
 			</div>
@@ -57,7 +57,29 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name</th>
+						<th>Computer name 
+							<c:choose>
+								<c:when test="${orderBy == 'name'}">
+									<c:choose>
+										<c:when test="${orderDirection == 'asc'}">
+											<a
+												href="?pageid=1&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=desc"><i
+												class="fa fa-sort-down"></i></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="?pageid=1&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=asc"><i
+												class="fa fa-sort-up"></i></a>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="?pageid=1&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=desc"><i
+										class="fa fa-sort-down"></i></a>
+								</c:otherwise>
+							</c:choose>
+						</th>
 						<th>id</th>
 						<th>Introduced date</th>
 						<!-- Table header for Discontinued Date -->
@@ -91,21 +113,29 @@
 	<footer class="navbar-fixed-bottom">
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}" aria-label="Previous"> <span
-						aria-hidden="true">&laquo;</span>
+				<li><a
+					href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}"
+					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="page" items="${pageIds}">
 					<li><a href="?pageid=${page}&&numberPerPage=${numberPerPage}">${page}</a></li>
 				</c:forEach>
-				<li><a href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}" aria-label="Next"> <span
-						aria-hidden="true">&raquo;</span>
+				<li><a
+					href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}"
+					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10'" type="button" class="btn btn-default">10</button>
-				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50'" type="button" class="btn btn-default">50</button>
-				<button onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100'" type="button" class="btn btn-default">100</button>
+				<button
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10'"
+					type="button" class="btn btn-default">10</button>
+				<button
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50'"
+					type="button" class="btn btn-default">50</button>
+				<button
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100'"
+					type="button" class="btn btn-default">100</button>
 			</div>
 	</footer>
 	<script src="js/jquery.min.js"></script>
