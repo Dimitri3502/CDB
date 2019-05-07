@@ -37,7 +37,8 @@ public class DashboardServlet extends HttpServlet {
 
 		// Add to request
 		request.setAttribute("computers", computers);
-
+		request.setAttribute("orderBy", orderBy );
+		request.setAttribute("orderDirection", orderDirection);
 		Utilities.forwardScreen(request, response, VUE);
 	}
 

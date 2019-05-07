@@ -57,7 +57,7 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name 
+						<th>Computer name ${orderDirection}
 							<c:choose>
 								<c:when test="${orderBy == 'name'}">
 									<c:choose>
@@ -75,17 +75,83 @@
 								</c:when>
 								<c:otherwise>
 									<a
-										href="?pageid=1&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=desc"><i
-										class="fa fa-sort-down"></i></a>
+										href="?pageid=1&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=asc"><i
+										class="fa fa-sort-up"></i></a>
 								</c:otherwise>
 							</c:choose>
 						</th>
 						<th>id</th>
-						<th>Introduced date</th>
+						<th>Introduced date
+						<c:choose>
+							<c:when test="${orderBy == 'introduced'}">
+									<c:choose>
+										<c:when test="${orderDirection == 'asc'}">
+											<a
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=desc"><i
+												class="fa fa-sort-down"></i></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=asc"><i
+												class="fa fa-sort-up"></i></a>
+										</c:otherwise>
+									</c:choose>
+							</c:when>
+							<c:otherwise>
+								<a
+									href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=desc"><i
+									class="fa fa-sort-down"></i></a>
+							</c:otherwise>
+						</c:choose>
+						</th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
+						<th>Discontinued date
+						<c:choose>
+								<c:when test="${orderBy == 'discontinued'}">
+									<c:choose>
+										<c:when test="${orderDirection == 'asc'}">
+											<a
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=desc"><i
+												class="fa fa-sort-down"></i></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="?page_id&numberPerPage=${numberPerPage}=1&search=${search}&order_by=discontinued&order_direction=asc"><i
+												class="fa fa-sort-up"></i></a>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=desc"><i
+										class="fa fa-sort-down"></i></a>
+								</c:otherwise>
+							</c:choose>
+						</th>
 						<!-- Table header for Company -->
-						<th>Company</th>
+						<th>Company
+						<c:choose>
+								<c:when test="${orderBy == 'company_name'}">
+									<c:choose>
+										<c:when test="${orderDirection == 'asc'}">
+											<a
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=desc"><i
+												class="fa fa-sort-down"></i></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=asc"><i
+												class="fa fa-sort-up"></i></a>
+										</c:otherwise>
+									</c:choose>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=desc"><i
+										class="fa fa-sort-down"></i></a>
+								</c:otherwise>
+							</c:choose>
+						</th>
 
 					</tr>
 				</thead>

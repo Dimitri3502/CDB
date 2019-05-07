@@ -20,7 +20,7 @@ import com.excilys.training.validator.WebValidator;
 /**
  * Servlet implementation class DeleteServlet
  */
-@WebServlet(name = "Delete", urlPatterns = { "/delete" })
+@WebServlet(name = "DeleteComputer", urlPatterns = { "/deleteComputer" })
 public class DeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
