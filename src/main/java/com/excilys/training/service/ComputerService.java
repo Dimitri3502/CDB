@@ -5,18 +5,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.exception.ComputerNotFoundException;
-import com.excilys.training.exception.InvalidDateValueException;
-import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.ComputerMapper;
-import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.ComputerDAO;
-import com.excilys.training.persistance.Dao;
 import com.excilys.training.persistance.OrderByChamp;
-import com.excilys.training.persistance.OrderByEnum;
+import com.excilys.training.persistance.OrderByDirection;
 
 public final class ComputerService {
 	
@@ -42,11 +36,13 @@ public final class ComputerService {
 	public long create(ComputerDTO computerDTO){
 		return computerDAO.create(computerMapper.dtoToModel(computerDTO));
 	};
-
+	 
 	public long count(){
 		return computerDAO.count();
 	};
-
+	public long count(String name){
+		return computerDAO.count(name);
+	};
 	public long getLastIdInserted(){
 		return computerDAO.getLastIdInserted();
 	};
@@ -71,7 +67,7 @@ public final class ComputerService {
 		return allModelToDTO(computerDAO.getAll(limit, offset));
 	}
 
-	public List<ComputerDTO> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByEnum orderDirection) {
+	public List<ComputerDTO> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection) {
 		return allModelToDTO(computerDAO.getAll(limit, offset, name, orderBy, orderDirection));
 	}
 	

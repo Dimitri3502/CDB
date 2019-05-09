@@ -26,15 +26,15 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_DELETE = "DELETE FROM computer WHERE id=?";
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY id LIMIT ? OFFSET ?";
 	private static final String SQL_COUNT = "SELECT COUNT(id) AS count FROM computer";
+	private static final String SQL_COUNT_NAME = "SELECT COUNT(computer.id) AS count FROM computer "
+			+ "LEFT JOIN company ON computer.company_id = company.id "
+			+ "WHERE UPPER(computer.name) LIKE UPPER(?) OR UPPER(company.name) LIKE UPPER(?) ";
 	private static final String SQL_LAST_INSERT_ID = "SELECT LAST_INSERT_ID(id) FROM computer";
 	private static final String SELECT_BY_NAME_OR_COMPANY_QUERY = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,"
 			+ "B.id AS company_id ,B.name AS company_name FROM computer AS A "
 			+ "LEFT JOIN company AS B ON A.company_id = B.id "
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
 			+ "ORDER BY :order_by: :order_direction: LIMIT ? OFFSET ?";
-
-	private static String DEFAULT_ORDER_BY = "A.name";
-	private static String DEFAULT_ORDER_DIRECTION = "ASC";
 
 	private static ComputerDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
@@ -67,8 +67,9 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public List<Computer> getAll() throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
+
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Computer aComputer = populate(rs);
@@ -84,10 +85,9 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public long create(Computer computer) {
 		Long lastInsertedId = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt;
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);) {
 			SQLComputer sqlComputer = SQLComputer.from(computer);
-			stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);
 			stmt.setString(1, sqlComputer.getName());
 			stmt.setTimestamp(2, sqlComputer.getIntroduced());
 			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
@@ -105,11 +105,30 @@ public class ComputerDAO extends Dao<Computer> {
 		return lastInsertedId;
 	}
 
+	public long count(String name) {
+		Long computersNumber = null;
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+			PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT_NAME)) {
+			name = name != null ? "%" + name + "%" : "%%";
+			stmt.setString(1, name);
+			stmt.setString(2, name);
+			stmt.execute();
+
+			ResultSet rs = stmt.getResultSet();
+			if (rs.next()) {
+				computersNumber = rs.getLong(1);
+			}
+		} catch (SQLException ex) {
+			logger.warn("count()", ex);
+		}
+		return computersNumber;
+	}
+
 	public long count() {
 		Long computersNumber = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt;
-			stmt = cnx.prepareStatement(SQL_COUNT);
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT);) {
+
 			stmt.execute();
 
 			ResultSet rs = stmt.getResultSet();
@@ -124,9 +143,9 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public long getLastIdInserted() {
 		Long lastIdInserted = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt;
-			stmt = cnx.prepareStatement(SQL_LAST_INSERT_ID);
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_LAST_INSERT_ID);) {
+
 			stmt.execute();
 
 			ResultSet rs = stmt.getResultSet();
@@ -141,8 +160,9 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean delete(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);) {
+
 			stmt.setLong(1, computer.getId());
 			stmt.executeUpdate();
 			return true;
@@ -155,10 +175,10 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean update(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt;
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_UPDATE);) {
+
 			SQLComputer sqlComputer = SQLComputer.from(computer);
-			stmt = cnx.prepareStatement(SQL_UPDATE);
 			stmt.setString(1, sqlComputer.getName());
 			stmt.setTimestamp(2, sqlComputer.getIntroduced());
 			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
@@ -175,9 +195,9 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public Optional<Computer> findById(long id) {
 
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
 
-			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -198,8 +218,9 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
+
 			stmt.setLong(1, limit);
 			stmt.setLong(2, offset);
 			ResultSet rs = stmt.executeQuery();
@@ -213,7 +234,7 @@ public class ComputerDAO extends Dao<Computer> {
 		return computers;
 	}
 
-	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByEnum orderDirection)
+	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection)
 			throws InvalidDiscontinuedDate {
 
 		List<Computer> computers = new ArrayList<Computer>();
@@ -228,20 +249,19 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setLong(4, offset);
 			stmt.toString();
 			ResultSet rs = stmt.executeQuery();
-
 			while (rs.next()) {
 				Computer aComputer = populate(rs);
 				computers.add(aComputer);
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-//			logger.warn("getAll(" + offset + ", " + limit + ", " + name + ", " + orderBy + ", " + orderDirection + ")",
-//					ex);
+			logger.warn("getAll(" + offset + ", " + limit + ", " + name + ", " + orderBy + ", " + orderDirection + ")",
+					ex);
 		}
 		return computers;
 	}
 
-	private String map(OrderByEnum c) {
+	private String map(OrderByDirection c) {
 		switch (c) {
 		default:
 		case ASC:
