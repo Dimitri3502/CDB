@@ -42,11 +42,13 @@ public final class ComputerService {
 	public long create(ComputerDTO computerDTO){
 		return computerDAO.create(computerMapper.dtoToModel(computerDTO));
 	};
-
+	 
 	public long count(){
 		return computerDAO.count();
 	};
-
+	public long count(String name){
+		return computerDAO.count(name);
+	};
 	public long getLastIdInserted(){
 		return computerDAO.getLastIdInserted();
 	};

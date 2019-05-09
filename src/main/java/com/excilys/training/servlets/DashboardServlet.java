@@ -30,7 +30,7 @@ public class DashboardServlet extends HttpServlet {
 		String orderBy = request.getParameter("order_by");
 		String orderDirection = request.getParameter("order_direction");
 
-		Long totalNumber = computerService.count();
+		Long totalNumber = computerService.count(name);
 		pagination.doPagination(request, totalNumber);
 		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset(),
 				name, mapOrderByChamp(orderBy), mapOrderByEnum(orderDirection));
@@ -38,6 +38,7 @@ public class DashboardServlet extends HttpServlet {
 		// Add to request
 		request.setAttribute("computers", computers);
 		request.setAttribute("orderBy", orderBy );
+		request.setAttribute("search", name );
 		request.setAttribute("orderDirection", orderDirection);
 		Utilities.forwardScreen(request, response, VUE);
 	}
