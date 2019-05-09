@@ -15,6 +15,17 @@ import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.persistance.OrderByChamp;
 import com.excilys.training.persistance.OrderByEnum;
 import com.excilys.training.service.ComputerService;
+import static com.excilys.training.validator.ValidatorUtils.isBlank;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.service.CompanyService;
 
 @WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
@@ -47,6 +58,27 @@ public class DashboardServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		processRequest(request, response);
+	}
+	
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String idsStr = request.getParameter("selection");
+		if (!isBlank(idsStr)) {
+			String str[] = idsStr.split(",");
+			List<String> idsArray = new ArrayList<String>();
+			idsArray = Arrays.asList(str);
+			for(String idStr: idsArray){
+				Long value = Long.parseLong(idStr);
+		        Optional<ComputerDTO> computerDTO = computerService.findById(value);
+		        computerService.delete(computerDTO.get());
+			}
+		}
+		processRequest(request, response);
+        
+
+        
 	}
 
 	private OrderByChamp mapOrderByChamp(String s) {

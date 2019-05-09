@@ -39,7 +39,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="deleteComputer" method="POST">
+		<form id="deleteForm" action="dashboard?pageid=${currentPageNumber}&numberPerPage=${numberPerPage}&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}'" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
