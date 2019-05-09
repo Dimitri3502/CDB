@@ -6,8 +6,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
-import com.excilys.training.dao.CompanyDAO;
-import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.CompanyNotFoundException;
@@ -15,6 +13,8 @@ import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.persistance.Dao;
 import com.excilys.training.service.ComputerService;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 

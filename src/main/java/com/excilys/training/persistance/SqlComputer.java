@@ -1,4 +1,4 @@
-package com.excilys.training.dao;
+package com.excilys.training.persistance;
 
 import java.sql.Timestamp;
 import java.util.Objects;

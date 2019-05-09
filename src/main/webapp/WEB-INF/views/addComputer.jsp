@@ -40,7 +40,7 @@
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" min = "2019-02-15" name="discontinued" class="form-control" id="discontinued"
 									placeholder="Discontinued date">
-									<span class="erreur">${erreurs['discontinued']}</span>
+									<span class="error">${erreurs['discontinued']}</span>
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
@@ -56,7 +56,7 @@
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">
-							or <a href="dashboard" class="btn btn-default">Cancel</a>
+							or <a href="dashboard" class="btn btn-default">Return</a>
 						</div>
 					</form>
 				</div>

@@ -14,8 +14,8 @@
     </Appenders>
     <Loggers>
         <Root level="warn" additivity="true">
-            <AppenderRef ref="fileLogger" />
-<!--             <AppenderRef ref="console"/> -->
+<!--             <AppenderRef ref="fileLogger" /> -->
+            <AppenderRef ref="console"/>
         </Root>
     </Loggers>
 </Configuration>

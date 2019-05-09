@@ -5,9 +5,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
+import com.excilys.training.exception.CompanyNotDeletedException;
+import com.excilys.training.exception.CompanyNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.exception.NotFoundException;
@@ -53,14 +58,17 @@ public class Controller {
 		}
 
 	}
+
 	public boolean ComputerExist(Long id) {
 
 		return computerService.findById(id).isPresent();
 	}
+
 	public boolean CompanyExist(Long id) {
 
 		return companyService.findById(id).isPresent();
 	}
+
 	public void showComputer(Long id) {
 
 		Optional<ComputerDTO> computerDTO = computerService.findById(id);
@@ -74,21 +82,21 @@ public class Controller {
 
 	public void createComputer(ComputerDTOUi computerDTOUiCreate) {
 
-			ComputerDTO computerDTOCreate = ComputerUiDTOMapper.getInstance().uiToDTO(computerDTOUiCreate);
-			final Validator.Result result = computerDTOValidator.check(computerDTOCreate);
+		ComputerDTO computerDTOCreate = ComputerUiDTOMapper.getInstance().uiToDTO(computerDTOUiCreate);
+		final Validator.Result result = computerDTOValidator.check(computerDTOCreate);
 
-			if (result.isValid()) {
-				computerService.create(computerDTOCreate);
-				long idCreate = computerService.create(computerDTOCreate);
-				System.out.println("Ordinateur creer avec l'id : " + idCreate);
-			} else {
-				try {
-					throw new ValidatorException(result);
-				} catch (ValidatorException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (result.isValid()) {
+			computerService.create(computerDTOCreate);
+			long idCreate = computerService.create(computerDTOCreate);
+			System.out.println("Ordinateur creer avec l'id : " + idCreate);
+		} else {
+			try {
+				throw new ValidatorException(result);
+			} catch (ValidatorException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
 	}
 
 	public void deleteComputer(Long id) {
@@ -106,6 +114,21 @@ public class Controller {
 
 	public List<CompanyDTO> getAllCompanyPagined(int limit, int offset) throws InvalidDiscontinuedDate {
 		return companyService.getAll();
+	}
+
+	public void deleteCompany(Long id) {
+		try {
+			Optional<CompanyDTO> companyDTO = companyService.findById(id);
+			companyService.delete(id);
+			System.out.println("Le fabriquant " + companyDTO.get().toString() + " a été supprimé avec succès");
+		} catch (CompanyNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		} catch (CompanyNotDeletedException e) {
+			// TODO Auto-generated catch block
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 }

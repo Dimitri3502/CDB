@@ -1,21 +1,27 @@
 package com.excilys.training.service;
 
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.excilys.training.TestDatabase;
 import com.excilys.training.dto.CompanyDTO;
 
 public class CompanyServiceTest {
-	protected static CompanyService companyService;
+	protected static CompanyService companyService= CompanyService.getInstance();;
 
-	@Before
-	public void setUpBeforeClass() throws Exception {
-		companyService = CompanyService.getInstance();
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		TestDatabase.getInstance().reload();
+		
 	}
 
 	@Test
@@ -26,11 +32,11 @@ public class CompanyServiceTest {
 		assertTrue("getAll renvoie null",theCompanyDtoList.size() <= 2);
 	}
 
-//	@Test
-//	void testFindById() throws NotFoundException, InvalidDiscontinuedDate {
-//		CompanyDTO actual = companyService.findById("2");
-//		CompanyDTO expected = new CompanyDTO("2","Thinking Machines");
-//		assertEquals(1, 1);
-//	}
+	@Test
+	public void testFindById() {
+		Optional<CompanyDTO> actual = companyService.findById(2L);
+		CompanyDTO expected = new CompanyDTO("2","Thinking Machines");
+		assertEquals(actual.get(), expected);
+	}
 
 }

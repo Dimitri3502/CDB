@@ -4,17 +4,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.excilys.training.dao.CompanyDAO;
-import com.excilys.training.dao.ComputerDAO;
-import com.excilys.training.dao.Dao;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.exception.ComputerNotFoundException;
-import com.excilys.training.exception.InvalidDateValueException;
-import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.NotFoundException;
 import com.excilys.training.mapper.ComputerMapper;
-import com.excilys.training.mapper.Mapper;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.persistance.OrderByChamp;
+import com.excilys.training.persistance.OrderByDirection;
 
 public final class ComputerService {
 	
@@ -40,9 +36,15 @@ public final class ComputerService {
 	public long create(ComputerDTO computerDTO){
 		return computerDAO.create(computerMapper.dtoToModel(computerDTO));
 	};
-
+	 
 	public long count(){
 		return computerDAO.count();
+	};
+	public long count(String name){
+		return computerDAO.count(name);
+	};
+	public long getLastIdInserted(){
+		return computerDAO.getLastIdInserted();
 	};
 	
 	public boolean update(ComputerDTO computerDTO){
@@ -58,11 +60,19 @@ public final class ComputerService {
 		return computer.map(computerMapper::modelToDto);
 		
 	};
-
+	public List<ComputerDTO> getAll() {
+		return allModelToDTO(computerDAO.getAll());
+	}
 	public List<ComputerDTO> getAll(int limit, int offset) {
-		List<Computer> theComputerList = computerDAO.getAll(limit, offset);
-		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
+		return allModelToDTO(computerDAO.getAll(limit, offset));
+	}
 
+	public List<ComputerDTO> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection) {
+		return allModelToDTO(computerDAO.getAll(limit, offset, name, orderBy, orderDirection));
+	}
+	
+	private List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> computerMapper.modelToDto(s)).collect(Collectors.toList());
 		return theComputerDtoList;
 	}
 }

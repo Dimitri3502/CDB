@@ -3,10 +3,10 @@ package com.excilys.training.mapper.resultSetModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.training.dao.ComputerDAO;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.ComputerDAO;
 
 public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer> {
 	
