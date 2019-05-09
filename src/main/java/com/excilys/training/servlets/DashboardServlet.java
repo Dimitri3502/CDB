@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.persistance.OrderByChamp;
-import com.excilys.training.persistance.OrderByEnum;
+import com.excilys.training.persistance.OrderByDirection;
 import com.excilys.training.service.ComputerService;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
@@ -44,7 +44,7 @@ public class DashboardServlet extends HttpServlet {
 		Long totalNumber = computerService.count(name);
 		pagination.doPagination(request, totalNumber);
 		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset(),
-				name, mapOrderByChamp(orderBy), mapOrderByEnum(orderDirection));
+				name, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
 
 		// Add to request
 		request.setAttribute("computers", computers);
@@ -101,16 +101,16 @@ public class DashboardServlet extends HttpServlet {
 		}
 	}
 
-	private OrderByEnum mapOrderByEnum(String s) {
+	private OrderByDirection mapOrderByDirection(String s) {
 		if (s == null) {
-			return OrderByEnum.ASC;
+			return OrderByDirection.ASC;
 		} else {
 			switch (s) {
 			default:
 			case "asc":
-				return OrderByEnum.ASC;
+				return OrderByDirection.ASC;
 			case "desc":
-				return OrderByEnum.DESC;
+				return OrderByDirection.DESC;
 			}
 		}
 	}

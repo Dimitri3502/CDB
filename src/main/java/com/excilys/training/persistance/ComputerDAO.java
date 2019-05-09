@@ -234,7 +234,7 @@ public class ComputerDAO extends Dao<Computer> {
 		return computers;
 	}
 
-	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByEnum orderDirection)
+	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection)
 			throws InvalidDiscontinuedDate {
 
 		List<Computer> computers = new ArrayList<Computer>();
@@ -261,7 +261,7 @@ public class ComputerDAO extends Dao<Computer> {
 		return computers;
 	}
 
-	private String map(OrderByEnum c) {
+	private String map(OrderByDirection c) {
 		switch (c) {
 		default:
 		case ASC:
