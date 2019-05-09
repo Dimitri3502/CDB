@@ -116,7 +116,7 @@
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?page_id&numberPerPage=${numberPerPage}=1&search=${search}&order_by=discontinued&order_direction=asc"><i
+												href="?page_id=1&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
