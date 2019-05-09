@@ -1,9 +1,12 @@
 package com.excilys.training.servlets;
 
+import static com.excilys.training.validator.ValidatorUtils.isBlank;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,17 +18,6 @@ import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.persistance.OrderByChamp;
 import com.excilys.training.persistance.OrderByDirection;
 import com.excilys.training.service.ComputerService;
-import static com.excilys.training.validator.ValidatorUtils.isBlank;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.service.CompanyService;
 
 @WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
