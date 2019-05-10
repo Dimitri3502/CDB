@@ -1,6 +1,7 @@
 package com.excilys.training.selenium;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,6 +26,9 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.mapper.CompanyMapper;
+import com.excilys.training.mapper.ComputerMapper;
+import com.excilys.training.model.Computer;
 import com.excilys.training.service.ComputerService;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -32,7 +36,8 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class addComputerTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
-	ComputerService computerService = ComputerService.getInstance();
+	private final ComputerService computerService = ComputerService.getInstance();
+	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
 	JavascriptExecutor js;
 
 	@BeforeClass
@@ -96,8 +101,11 @@ public class addComputerTest {
 		driver.findElement(By.id("companyId")).click();
 		driver.findElement(By.cssSelector(".btn-primary")).click();
 		driver.findElement(By.cssSelector(".navbar-brand")).click();
-		List<ComputerDTO> liste = computerService.getAll();
-		ComputerDTO actual = liste.get(liste.size()-1);
+		List<Computer> liste = computerService.getAll();
+		Computer actualModel = liste.get(liste.size()-1);
+		ComputerDTO actual = computerMapper.modelToDto(actualModel);
 		assertEquals(expected, actual);
+		computerService.delete(actualModel);
+		assertFalse(computerService.findById(actualModel.getId()).isPresent());
 	}
 }
