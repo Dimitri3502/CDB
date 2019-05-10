@@ -13,7 +13,7 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="warn" additivity="true">
+        <Root level="debug" additivity="true">
 <!--             <AppenderRef ref="fileLogger" /> -->
             <AppenderRef ref="console"/>
         </Root>

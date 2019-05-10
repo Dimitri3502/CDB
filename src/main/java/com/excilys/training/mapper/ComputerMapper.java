@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
@@ -15,26 +17,26 @@ import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.Dao;
+import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
 public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	private final static CompanyMapper companyMapper = CompanyMapper.getInstance();
-
+	private CompanyService companyService = CompanyService.getInstance();
 	private static ComputerMapper instance = null;
 
-	private CompanyDAO companyDAO;
+	
 
-	private ComputerMapper(CompanyDAO companyDAO) {
+	private ComputerMapper() {
 		super();
-		this.companyDAO = companyDAO;
 	}
 
-	public final static ComputerMapper getInstance(CompanyDAO companyDAO) {
+	public final static ComputerMapper getInstance() {
 		if (ComputerMapper.instance == null) {
 
 			if (ComputerMapper.instance == null) {
-				ComputerMapper.instance = new ComputerMapper(companyDAO);
+				ComputerMapper.instance = new ComputerMapper();
 			}
 
 		}
@@ -61,7 +63,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			}
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
-				Optional<Company> company = companyDAO.findById(Long.parseLong(companyId));
+				Optional<Company> company = companyService.findById(Long.parseLong(companyId));
 				if (!company.isPresent()) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
@@ -92,6 +94,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		CompanyDTO companyDTO = companyMapper.modelToDto(computer.getCompany());
 		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
+	}
+	@Override
+	public List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> modelToDto(s)).collect(Collectors.toList());
+		return theComputerDtoList;
 	}
 
 }

@@ -32,24 +32,20 @@ public class CompanyService {
 		return findById(id).isPresent();
 	};
 
-	public Optional<CompanyDTO> findById(Long id) {
-		return this.companyDAO.findById(id).map(companyMapper::modelToDto);
+	public Optional<Company> findById(Long id) {
+		return this.companyDAO.findById(id);
 	};
 
-	public List<CompanyDTO> getAll() {
-		List<Company> theCompanyList = companyDAO.getAll();
-		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream()
-				.map(s -> companyMapper.modelToDto(s)).collect(Collectors.toList());
-
-		return theCompanyDtoList;
+	public List<Company> getAll() {
+		return companyDAO.getAll();
+//		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream()
+//				.map(s -> companyMapper.modelToDto(s)).collect(Collectors.toList());
+//
+//		return theCompanyDtoList;
 	}
 
-	public List<CompanyDTO> getAll(int limit, int offset) {
-		List<Company> theCompanyList = companyDAO.getAll(limit, offset);
-		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream()
-				.map(s -> companyMapper.modelToDto(s)).collect(Collectors.toList());
-
-		return theCompanyDtoList;
+	public List<Company> getAll(int limit, int offset) {
+		return companyDAO.getAll(limit, offset);
 	}
 
 	public boolean delete(Long id) throws CompanyNotFoundException, CompanyNotDeletedException {

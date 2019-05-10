@@ -16,6 +16,18 @@ public class Computer extends Model{
 	private LocalDateTime discontinuedDate;
 	private Company company;
 
+	public Computer(Long id, String name, LocalDateTime introducedDate, LocalDateTime discontinuedDate,
+			Company company) {
+		super(id);
+		this.name = name;
+		this.introducedDate = introducedDate;
+		this.discontinuedDate = discontinuedDate;
+		this.company = company;
+	}
+
+	public Computer() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getName() {
 		return name;
