@@ -9,8 +9,7 @@ import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.ComputerDAO;
-import com.excilys.training.persistance.OrderByChamp;
-import com.excilys.training.persistance.OrderByDirection;
+import com.excilys.training.servlets.Page;
 
 public final class ComputerService {
 	
@@ -67,8 +66,8 @@ public final class ComputerService {
 		return allModelToDTO(computerDAO.getAll(limit, offset));
 	}
 
-	public List<ComputerDTO> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection) {
-		return allModelToDTO(computerDAO.getAll(limit, offset, name, orderBy, orderDirection));
+	public List<ComputerDTO> getAll(Page page) {
+		return allModelToDTO(computerDAO.getAll(page));
 	}
 	
 	private List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {

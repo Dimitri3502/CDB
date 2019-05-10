@@ -17,6 +17,7 @@ import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.databases.DatabaseManager;
+import com.excilys.training.servlets.Page;
 
 public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
@@ -234,19 +235,18 @@ public class ComputerDAO extends Dao<Computer> {
 		return computers;
 	}
 
-	public List<Computer> getAll(int limit, int offset, String name, OrderByChamp orderBy, OrderByDirection orderDirection)
+	public List<Computer> getAll(Page page)
 			throws InvalidDiscontinuedDate {
 
 		List<Computer> computers = new ArrayList<Computer>();
 		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
-			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(orderBy))
-					.replace(":order_direction:", map(orderDirection));
+			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
+					.replace(":order_direction:", map(page.getOrderDirection()));
 			PreparedStatement stmt = cnx.prepareStatement(selectByNameOrCompany);
-			name = name != null ? "%" + name + "%" : "%%";
-			stmt.setString(1, name);
-			stmt.setString(2, name);
-			stmt.setLong(3, limit);
-			stmt.setLong(4, offset);
+			stmt.setString(1, page.getSearch());
+			stmt.setString(2, page.getSearch());
+			stmt.setLong(3, page.getLimit());
+			stmt.setLong(4, page.getOffset());
 			logger.debug(stmt.toString());
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -255,7 +255,7 @@ public class ComputerDAO extends Dao<Computer> {
 			}
 		} catch (SQLException ex) {
 			ex.printStackTrace();
-			logger.warn("getAll(" + offset + ", " + limit + ", " + name + ", " + orderBy + ", " + orderDirection + ")",
+			logger.warn("getAll(" + page.getOffset() + ", " + page.getLimit() + ", " + page.getSearch() + ", " + page.getOrderBy() + ", " + page.getOrderDirection() + ")",
 					ex);
 		}
 		return computers;

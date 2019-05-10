@@ -39,8 +39,11 @@ public class DashboardServlet extends HttpServlet {
 
 		Long totalNumber = computerService.count(search);
 		pagination.doPagination(request, totalNumber);
-		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset(),
+		
+		Page page = new Page(pagination.getNumberPerPage(), pagination.getOffset(),
 				search, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
+		
+		List<ComputerDTO> computers = computerService.getAll(page);
 
 		// Add to request
 		request.setAttribute("computers", computers);
