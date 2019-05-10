@@ -26,22 +26,26 @@ public class DashboardServlet extends HttpServlet {
 	private final ComputerService computerService = ComputerService.getInstance();
 	private final Pagination pagination = Pagination.getInstance();
 
+	private String search;
+	private String orderBy;
+	private String orderDirection;
+	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
-		String name = request.getParameter("search");
-		String orderBy = request.getParameter("order_by");
-		String orderDirection = request.getParameter("order_direction");
+		search = request.getParameter("search");
+		orderBy = request.getParameter("order_by");
+		orderDirection = request.getParameter("order_direction");
 
-		Long totalNumber = computerService.count(name);
+		Long totalNumber = computerService.count(search);
 		pagination.doPagination(request, totalNumber);
 		List<ComputerDTO> computers = computerService.getAll(pagination.getNumberPerPage(), pagination.getOffset(),
-				name, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
+				search, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
 
 		// Add to request
 		request.setAttribute("computers", computers);
 		request.setAttribute("orderBy", orderBy );
-		request.setAttribute("search", name );
+		request.setAttribute("search", search );
 		request.setAttribute("orderDirection", orderDirection);
 		Utilities.forwardScreen(request, response, VUE);
 	}
@@ -75,19 +79,25 @@ public class DashboardServlet extends HttpServlet {
 
 	private OrderByChamp mapOrderByChamp(String s) {
 		if (s == null) {
+			orderBy = "id";
 			return OrderByChamp.ID;
 		} else {
 			switch (s) {
 			default:
 			case "id":
+				orderBy = "id";
 				return OrderByChamp.ID;
 			case "name":
+				orderBy = "name";
 				return OrderByChamp.NAME;
 			case "introduced":
+				orderBy = "introduced";
 				return OrderByChamp.INTRODUCED;
 			case "discontinued":
+				orderBy = "discontinued";
 				return OrderByChamp.DISCONTINUED;
-			case "company":
+			case "company_name":
+				orderBy = "company_name";
 				return OrderByChamp.COMPANY;
 			}
 		}

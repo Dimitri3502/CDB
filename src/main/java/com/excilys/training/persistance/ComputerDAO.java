@@ -34,7 +34,7 @@ public class ComputerDAO extends Dao<Computer> {
 			+ "B.id AS company_id ,B.name AS company_name FROM computer AS A "
 			+ "LEFT JOIN company AS B ON A.company_id = B.id "
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
-			+ "ORDER BY :order_by: :order_direction: LIMIT ? OFFSET ?";
+			+ "ORDER BY :order_by: IS NULL, :order_by:  :order_direction: LIMIT ? OFFSET ?";
 
 	private static ComputerDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
@@ -247,7 +247,7 @@ public class ComputerDAO extends Dao<Computer> {
 			stmt.setString(2, name);
 			stmt.setLong(3, limit);
 			stmt.setLong(4, offset);
-			stmt.toString();
+			logger.debug(stmt.toString());
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Computer aComputer = populate(rs);
@@ -275,13 +275,13 @@ public class ComputerDAO extends Dao<Computer> {
 		switch (c) {
 		default:
 		case ID:
-			return "id";
+			return "A.id";
 		case NAME:
-			return "name";
+			return "A.name";
 		case INTRODUCED:
-			return "introduced";
+			return "A.introduced";
 		case DISCONTINUED:
-			return "discontinued";
+			return "A.discontinued";
 		case COMPANY:
 			return "company_name";
 		}
