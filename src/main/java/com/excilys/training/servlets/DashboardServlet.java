@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.mapper.ComputerMapper;
+import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.OrderByChamp;
 import com.excilys.training.persistance.OrderByDirection;
 import com.excilys.training.service.ComputerService;
@@ -24,6 +26,7 @@ public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
 	private final ComputerService computerService = ComputerService.getInstance();
+	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
 	private final Pagination pagination = Pagination.getInstance();
 
 	private String search;
@@ -43,8 +46,7 @@ public class DashboardServlet extends HttpServlet {
 		Page page = new Page(pagination.getNumberPerPage(), pagination.getOffset(),
 				search, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
 		
-		List<ComputerDTO> computers = computerService.getAll(page);
-
+		List<ComputerDTO> computers = computerMapper.allModelToDTO(computerService.getAll(page));
 		// Add to request
 		request.setAttribute("computers", computers);
 		request.setAttribute("orderBy", orderBy );
@@ -70,8 +72,8 @@ public class DashboardServlet extends HttpServlet {
 			idsArray = Arrays.asList(str);
 			for(String idStr: idsArray){
 				Long value = Long.parseLong(idStr);
-		        Optional<ComputerDTO> computerDTO = computerService.findById(value);
-		        computerService.delete(computerDTO.get());
+		        Optional<Computer> computer = computerService.findById(value);
+		        computerService.delete(computer.get());
 			}
 		}
 		processRequest(request, response);

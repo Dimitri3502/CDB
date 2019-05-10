@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.mapper.CompanyMapper;
+import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
@@ -39,6 +41,8 @@ public class EditComputerServlet extends HttpServlet {
 	private final ComputerService computerService = ComputerService.getInstance();
 	private final CompanyService companyService = CompanyService.getInstance();
 	private final WebValidator webValidator = WebValidator.getInstance();
+	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
+	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
 
 
 
@@ -48,8 +52,8 @@ public class EditComputerServlet extends HttpServlet {
     	String idStr = request.getParameter("id");
 
     	long id = Long.parseLong(idStr);
-    	ComputerDTO computer = computerService.findById(id).get();
-		List<CompanyDTO> companies = companyService.getAll();
+    	ComputerDTO computer = computerMapper.modelToDto(computerService.findById(id).get());
+		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
 
 		// Add to request
 		request.setAttribute("computer", computer);
@@ -83,7 +87,7 @@ public class EditComputerServlet extends HttpServlet {
         final Validator.Result result = webValidator.check(computerDTO);
         Map<String, String> erreurs = result.getError();
 		if (result.isValid()) {
-            computerService.update(computerDTO);
+            computerService.update(computerMapper.dtoToModel(computerDTO));
             resultat = "Modification effectuée avec succès.";
         } else {
             resultat = "Échec de la modification.";
@@ -94,7 +98,7 @@ public class EditComputerServlet extends HttpServlet {
         request.setAttribute( ATT_ERREURS, erreurs );
         request.setAttribute( ATT_RESULTAT, resultat );
         request.setAttribute("computer", computerDTO);
-		List<CompanyDTO> companies = companyService.getAll();
+		List<CompanyDTO> companies =  companyMapper.allModelToDTO(companyService.getAll());
 		request.setAttribute("companies", companies);
 
         Utilities.forwardScreen(request, response, VUE);
