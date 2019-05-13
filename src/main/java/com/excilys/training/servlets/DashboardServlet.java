@@ -14,6 +14,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
+import org.springframework.web.HttpRequestHandler;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
@@ -26,15 +31,25 @@ import com.excilys.training.service.ComputerService;
 public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
-	private final ComputerService computerService = null;
-	private final CompanyService companyService = null;
-	private final ComputerMapper computerMapper =  null;
-	private final Pagination pagination = null;
+	private ComputerService computerService;
+	private ComputerMapper computerMapper;
+	private Pagination pagination;
 
 	private String search;
 	private String orderBy;
 	private String orderDirection;
-	
+
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		this.computerService = wac.getBean(ComputerService.class);
+		this.pagination = wac.getBean(Pagination.class);
+		this.computerMapper = wac.getBean(ComputerMapper.class);
+				
+
+	}
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// Get data
@@ -44,15 +59,15 @@ public class DashboardServlet extends HttpServlet {
 
 		Long totalNumber = computerService.count(search);
 		pagination.doPagination(request, totalNumber);
-		
-		Page page = new Page(pagination.getNumberPerPage(), pagination.getOffset(),
-				search, mapOrderByChamp(orderBy), mapOrderByDirection(orderDirection));
-		
+
+		Page page = new Page(pagination.getNumberPerPage(), pagination.getOffset(), search, mapOrderByChamp(orderBy),
+				mapOrderByDirection(orderDirection));
+
 		List<ComputerDTO> computers = computerMapper.allModelToDTO(computerService.getAll(page));
 		// Add to request
 		request.setAttribute("computers", computers);
-		request.setAttribute("orderBy", orderBy );
-		request.setAttribute("search", search );
+		request.setAttribute("orderBy", orderBy);
+		request.setAttribute("search", search);
 		request.setAttribute("orderDirection", orderDirection);
 		Utilities.forwardScreen(request, response, VUE);
 	}
@@ -62,26 +77,26 @@ public class DashboardServlet extends HttpServlet {
 			throws ServletException, IOException {
 		processRequest(request, response);
 	}
-	
+
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String idsStr = request.getParameter("selection");
 		if (!isBlank(idsStr)) {
 			String str[] = idsStr.split(",");
 			List<String> idsArray = new ArrayList<String>();
 			idsArray = Arrays.asList(str);
-			for(String idStr: idsArray){
+			for (String idStr : idsArray) {
 				Long value = Long.parseLong(idStr);
-		        Optional<Computer> computer = computerService.findById(value);
-		        computerService.delete(computer.get());
+				Optional<Computer> computer = computerService.findById(value);
+				computerService.delete(computer.get());
 			}
 		}
 		processRequest(request, response);
-        
 
-        
 	}
 
 	private OrderByChamp mapOrderByChamp(String s) {

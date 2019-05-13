@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.CompanyMapper;
@@ -38,13 +41,23 @@ public class EditComputerServlet extends HttpServlet {
     public static final String ATT_ERREURS  = "erreurs";
     public static final String ATT_RESULTAT = "resultat";
     
-	private final ComputerService computerService = null;
-	private final CompanyService companyService = null;
-	private final ComputerMapper computerMapper =  null;
-	private final Pagination pagination = null;
-	private final CompanyMapper companyMapper = null;
-	private final WebValidator webValidator = null;
+	private ComputerService computerService;
+	private CompanyService companyService;
+	private CompanyMapper companyMapper;
+	private WebValidator webValidator;
+	private ComputerMapper computerMapper;
 
+	@Override
+	public void init() throws ServletException {
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		this.computerService = wac.getBean(ComputerService.class);
+		this.companyService = wac.getBean(CompanyService.class);
+		this.companyMapper = wac.getBean(CompanyMapper.class);
+		this.webValidator = wac.getBean(WebValidator.class);
+		this.computerMapper = wac.getBean(ComputerMapper.class);
+								
+
+	}
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
