@@ -59,7 +59,7 @@ public class CompanyDAO extends Dao<Company> {
 		List<Company> companies = new ArrayList<Company>();
 		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
-			
+
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
 				Company aCompany = populate(rs);
@@ -76,7 +76,7 @@ public class CompanyDAO extends Dao<Company> {
 	public Optional<Company> findById(long id) {
 		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
-			
+
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
@@ -97,7 +97,7 @@ public class CompanyDAO extends Dao<Company> {
 		List<Company> companies = new ArrayList<Company>();
 		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
-			
+
 			stmt.setLong(1, limit);
 			stmt.setLong(2, offset);
 			ResultSet rs = stmt.executeQuery();
@@ -120,27 +120,32 @@ public class CompanyDAO extends Dao<Company> {
 	@Override
 	public boolean delete(Long id) {
 
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY);) {
-			cnx.setAutoCommit(false);
-			
-			deleteComputers.setLong(1, id);
-			deleteComputers.executeUpdate();
+		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
 
-			PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
-			deleteCompany.setLong(1, id);
-			deleteCompany.executeUpdate();
+			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
+				cnx.setAutoCommit(false);
 
-			cnx.commit();
-			cnx.setAutoCommit(true);
-			return true;
+				deleteComputers.setLong(1, id);
+				deleteComputers.executeUpdate();
+
+				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
+				deleteCompany.setLong(1, id);
+				deleteCompany.executeUpdate();
+
+				cnx.commit();
+				cnx.setAutoCommit(true);
+				return true;
+			} catch (Exception e) {
+				cnx.rollback();
+				throw e;
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			logger.warn("delete(" + id + ")", e);
 			return false;
 		}
-		
+
 	}
 
 	@Override
