@@ -1,17 +1,10 @@
 package com.excilys.training.persistance;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
@@ -29,81 +22,28 @@ public class CompanyDAO extends Dao<Company> {
 
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final CompanyResultSetModelMapper companyResultSetModelMapper;
-	private final DataSource dataSource;
-	
+	private final JdbcTemplate jdbcTemplate;
 
-	public CompanyDAO(CompanyResultSetModelMapper companyResultSetModelMapper, DataSource dataSource) {
+	public CompanyDAO(CompanyResultSetModelMapper companyResultSetModelMapper, JdbcTemplate jdbcTemplate) {
 		super();
 		this.companyResultSetModelMapper = companyResultSetModelMapper;
-		this.dataSource = dataSource;
-	}
-
-	public Company populate(ResultSet rs) {
-		Company company = null;
-		try {
-			company = companyResultSetModelMapper.map(rs);
-
-		} catch (SQLException ex) {
-			logger.warn("populate ", ex);
-		}
-		return company;
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
 	@Override
 	public List<Company> getAll() {
-		List<Company> companies = new ArrayList<Company>();
-		try (Connection cnx = dataSource.getConnection();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
-
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Company aCompany = populate(rs);
-				companies.add(aCompany);
-
-			}
-		} catch (SQLException ex) {
-			logger.warn("getAll Companies failed", ex);
-		}
-		return companies;
+		return jdbcTemplate.query(SQL_FIND_ALL, new CompanyResultSetModelMapper());
 	}
 
 	@Override
-	public Optional<Company> findById(long id) {
-		try (Connection cnx = dataSource.getConnection();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
-
-			stmt.setLong(1, id);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				return Optional.of(companyResultSetModelMapper.map(rs));
-			} else {
-				logger.warn("Company findById(" + id + ") not found");
-				return Optional.empty();
-			}
-		} catch (SQLException ex) {
-			logger.warn("Company findById(" + id + ")", ex);
-			return Optional.empty();
-		}
+	public Company findById(long id) {
+		return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, new CompanyResultSetModelMapper());
 	}
 
 	@Override
 	public List<Company> getAll(int limit, int offset) {
-		List<Company> companies = new ArrayList<Company>();
-		try (Connection cnx = dataSource.getConnection();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
-
-			stmt.setLong(1, limit);
-			stmt.setLong(2, offset);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Company aCompany = populate(rs);
-				companies.add(aCompany);
-
-			}
-		} catch (SQLException ex) {
-			logger.warn("findAll(" + offset + "," + limit + ")", ex);
-		}
-		return companies;
+		return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
+				new CompanyResultSetModelMapper());
 	}
 
 	@Override
@@ -111,36 +51,36 @@ public class CompanyDAO extends Dao<Company> {
 		return 0;
 	}
 
-	@Override
-	public boolean delete(Long id) {
-
-		try (Connection cnx = dataSource.getConnection()) {
-
-			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
-				cnx.setAutoCommit(false);
-
-				deleteComputers.setLong(1, id);
-				deleteComputers.executeUpdate();
-
-				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
-				deleteCompany.setLong(1, id);
-				deleteCompany.executeUpdate();
-
-				cnx.commit();
-				cnx.setAutoCommit(true);
-				return true;
-			} catch (Exception e) {
-				cnx.rollback();
-				throw e;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.warn("delete(" + id + ")", e);
-			return false;
-		}
-
-	}
+//	@Override
+//	public boolean delete(Long id) {
+//
+//		try (Connection cnx = dataSource.getConnection()) {
+//
+//			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
+//				cnx.setAutoCommit(false);
+//
+//				deleteComputers.setLong(1, id);
+//				deleteComputers.executeUpdate();
+//
+//				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
+//				deleteCompany.setLong(1, id);
+//				deleteCompany.executeUpdate();
+//
+//				cnx.commit();
+//				cnx.setAutoCommit(true);
+//				return true;
+//			} catch (Exception e) {
+//				cnx.rollback();
+//				throw e;
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			logger.warn("delete(" + id + ")", e);
+//			return false;
+//		}
+//
+//	}
 
 	@Override
 	public boolean update(Company obj) {

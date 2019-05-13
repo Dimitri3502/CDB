@@ -64,7 +64,7 @@ public class EditComputerServlet extends HttpServlet {
     	String idStr = request.getParameter("id");
 
     	long id = Long.parseLong(idStr);
-    	ComputerDTO computer = computerMapper.modelToDto(computerService.findById(id).get());
+    	ComputerDTO computer = computerMapper.modelToDto(computerService.findById(id));
 		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
 
 		// Add to request

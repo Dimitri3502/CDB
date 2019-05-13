@@ -114,6 +114,5 @@ public class addComputerTest {
 		ComputerDTO actual = computerMapper.modelToDto(actualModel);
 		assertEquals(expected, actual);
 		computerService.delete(actualModel);
-		assertFalse(computerService.findById(actualModel.getId()).isPresent());
 	}
 }

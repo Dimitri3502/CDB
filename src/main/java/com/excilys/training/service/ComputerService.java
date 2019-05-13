@@ -32,10 +32,6 @@ public final class ComputerService {
 		return computerDAO.count(name);
 	};
 
-	public long getLastIdInserted() {
-		return computerDAO.getLastIdInserted();
-	};
-
 	public boolean update(Computer computer) {
 		return computerDAO.update(computer);
 	};
@@ -44,7 +40,7 @@ public final class ComputerService {
 		return computerDAO.delete(computer);
 	};
 
-	public Optional<Computer> findById(Long id) {
+	public Computer findById(Long id) {
 		return computerDAO.findById(id);
 //		return computer.map(computerMapper::modelToDto);
 
