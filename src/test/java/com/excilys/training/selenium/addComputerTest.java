@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,11 +21,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.ComputerService;
@@ -36,8 +34,12 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 public class addComputerTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
+	
+	@Autowired
+	private ComputerService computerService;
+	
+	@Autowired
+	private ComputerMapper computerMapper;
 	JavascriptExecutor js;
 
 	@BeforeClass

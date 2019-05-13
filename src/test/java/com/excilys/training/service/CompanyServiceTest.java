@@ -7,18 +7,31 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.excilys.training.TestDatabase;
+import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.model.Company;
+import com.excilys.training.persistance.CompanyDAO;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppSpringConfig.class)
 public class CompanyServiceTest {
-	protected static CompanyService companyService= CompanyService.getInstance();;
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private TestDatabase testDatabase;
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-		TestDatabase.getInstance().reload();
+	@Before
+	public void setUp() throws Exception {
+		testDatabase.reload();
 		
 	}
 

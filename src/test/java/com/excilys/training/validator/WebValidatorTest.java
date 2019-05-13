@@ -5,17 +5,29 @@ import static org.junit.Assert.fail;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.excilys.training.TestDatabase;
+import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppSpringConfig.class)
 public class WebValidatorTest {
-	private final WebValidator webValidator = WebValidator.getInstance();
-
+	
+	@Autowired
+	private WebValidator webValidator;
+	
+	@Autowired
+	private TestDatabase testDatabase;
+	
 	@Before
 	public void setUp() throws Exception {
-		TestDatabase.getInstance().reload();
+		testDatabase.reload();
 		
 	}
 	

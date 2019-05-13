@@ -9,25 +9,38 @@ import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import com.excilys.training.TestDatabase;
+import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppSpringConfig.class)
 public class ComputerServiceTest {
-
-	protected static ComputerService computerService;
-	protected static CompanyService companyService;
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
+	
+	@Autowired
+	private ComputerService computerService;
+	
+	@Autowired
+	private CompanyService companyService;
+	
+	@Autowired
+	private  ComputerMapper computerMapper;
+	
+	@Autowired
+	private TestDatabase testDatabase;	
 	
 	@Before
-	public void setUpBeforeClass() throws Exception {
-		TestDatabase.getInstance().reload();
-		computerService = ComputerService.getInstance();
-		companyService = CompanyService.getInstance();
+	public void setUp() throws Exception {
+		testDatabase.reload();
 	}
 
 	@Test

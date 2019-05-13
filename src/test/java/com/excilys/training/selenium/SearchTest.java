@@ -17,6 +17,7 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.excilys.training.service.ComputerService;
 
@@ -26,7 +27,9 @@ public class SearchTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
-	ComputerService computerService = ComputerService.getInstance();
+	
+	@Autowired
+	private ComputerService computerService;
 
 	@BeforeClass
 	static public void setUpClass() throws IOException, SQLException {
