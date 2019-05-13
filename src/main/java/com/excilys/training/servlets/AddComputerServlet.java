@@ -54,7 +54,7 @@ public class AddComputerServlet extends HttpServlet {
 		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 		this.computerService = wac.getBean(ComputerService.class);
 		this.companyService = wac.getBean(CompanyService.class);
-		this.computerMapper = wac.getBean(ComputerMapper.class);
+		this.companyMapper = wac.getBean(CompanyMapper.class);
 		this.webValidator = wac.getBean(WebValidator.class);
 		this.computerMapper = wac.getBean(ComputerMapper.class);
 								
