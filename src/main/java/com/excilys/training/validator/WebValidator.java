@@ -8,23 +8,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.service.CompanyService;
 
+@Component()
 public class WebValidator extends Validator<ComputerDTO> {
-	private static WebValidator instance;
-	private static final CompanyService companyService = CompanyService.getInstance();
-	private WebValidator() {
-	    }
 
-	public static WebValidator getInstance() {
-		if (Objects.isNull(instance)) {
-			instance = new WebValidator();
-		}
-		return instance;
+	private final CompanyService companyService;
+
+	public WebValidator(CompanyService companyService) {
+		super();
+		this.companyService = companyService;
 	}
 
-	private static boolean checkDateFail(String date) {
+	private boolean checkDateFail(String date) {
 		if (isBlank(date)) {
 			return false;
 		}
@@ -43,7 +42,7 @@ public class WebValidator extends Validator<ComputerDTO> {
 		}
 	}
 
-	private static boolean checkIdFail(String id) {
+	private boolean checkIdFail(String id) {
 		if (id==null) {
 			return false;
 		}

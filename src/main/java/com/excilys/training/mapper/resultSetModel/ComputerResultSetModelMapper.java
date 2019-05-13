@@ -3,11 +3,14 @@ package com.excilys.training.mapper.resultSetModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
 
+@Component
 public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer> {
 	
     private static final String COLUMN_COMPANY_ID = "company_id";
@@ -16,23 +19,7 @@ public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer>
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_INTRODUCED = "introduced";
     private static final String COLUMN_NAME = "name";
-    private static ComputerResultSetModelMapper instance = null;
-    
-    private ComputerResultSetModelMapper() {
-    	
-    }
-    
-	public final static ComputerResultSetModelMapper getInstance()  {
-		if (ComputerResultSetModelMapper.instance == null) {
-             
-              if (ComputerResultSetModelMapper.instance == null) {
-            	  ComputerResultSetModelMapper.instance = new ComputerResultSetModelMapper();
-              }
-            
-         }
-         return ComputerResultSetModelMapper.instance;
-	}
-    
+
 	@Override
 	public Computer map(ResultSet rs) throws SQLException {
 		Computer computer = new Computer();

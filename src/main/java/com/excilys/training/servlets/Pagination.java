@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Pagination {
-	private static Pagination instance = null;
 	
 	private static final int MAX_PAGE = 10; // size of page choice below the table
 	private int numberPerPage = 10; // default value
@@ -15,16 +17,6 @@ public class Pagination {
 	private List<Integer> pageIds;
 	private int nbPage;
 
-	private Pagination() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public static Pagination getInstance() {
-		if (instance == null) {
-			instance = new Pagination();
-		}
-		return instance;
-	}
 	
 	public void doPagination(HttpServletRequest request, long totalNumber) {
 		// number of computers per page

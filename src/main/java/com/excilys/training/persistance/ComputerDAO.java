@@ -8,18 +8,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
+
+import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
-import com.excilys.training.persistance.databases.DatabaseManager;
 import com.excilys.training.servlets.Page;
 
+@Component()
 public class ComputerDAO extends Dao<Computer> {
+
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
 	private static final String SQL_FIND_ALL = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY A.id";
 	private static final String SQL_CREATE = "INSERT INTO computer (name, introduced,discontinued,company_id) VALUES (?,?,?,?)";
@@ -37,28 +40,20 @@ public class ComputerDAO extends Dao<Computer> {
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
 			+ "ORDER BY :order_by: IS NULL, :order_by:  :order_direction: LIMIT ? OFFSET ?";
 
-	private static ComputerDAO instance = null;
+
 	private final Logger logger = LogManager.getLogger(getClass());
-
-	private ComputerDAO() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public final static ComputerDAO getInstance() {
-		if (ComputerDAO.instance == null) {
-
-			if (ComputerDAO.instance == null) {
-				ComputerDAO.instance = new ComputerDAO();
-			}
-
-		}
-		return ComputerDAO.instance;
+	private final ComputerResultSetModelMapper computerResultSetModelMapper;
+	private final DataSource dataSource;
+	
+	public ComputerDAO(ComputerResultSetModelMapper computerResultSetModelMapper, DataSource dataSource) {
+		super();
+		this.computerResultSetModelMapper = computerResultSetModelMapper;
+		this.dataSource = dataSource;
 	}
 
 	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
 		Computer computer = null;
 		try {
-			ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
 			computer = computerResultSetModelMapper.map(rs);
 		} catch (SQLException ex) {
 			logger.warn("populate ", ex);
@@ -68,7 +63,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public List<Computer> getAll() throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
 
 			ResultSet rs = stmt.executeQuery();
@@ -86,7 +81,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public long create(Computer computer) {
 		Long lastInsertedId = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);) {
 			SQLComputer sqlComputer = SQLComputer.from(computer);
 			stmt.setString(1, sqlComputer.getName());
@@ -108,7 +103,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public long count(String name) {
 		Long computersNumber = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 			PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT_NAME)) {
 			name = name != null ? "%" + name + "%" : "%%";
 			stmt.setString(1, name);
@@ -127,7 +122,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public long count() {
 		Long computersNumber = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT);) {
 
 			stmt.execute();
@@ -144,7 +139,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public long getLastIdInserted() {
 		Long lastIdInserted = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_LAST_INSERT_ID);) {
 
 			stmt.execute();
@@ -161,7 +156,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean delete(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);) {
 
 			stmt.setLong(1, computer.getId());
@@ -176,7 +171,7 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public boolean update(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_UPDATE);) {
 
 			SQLComputer sqlComputer = SQLComputer.from(computer);
@@ -196,13 +191,13 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public Optional<Computer> findById(long id) {
 
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
 
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
+			
 				return Optional.of(computerResultSetModelMapper.map(rs));
 			} else {
 				logger.warn("findById(" + id + ") not found");
@@ -219,7 +214,7 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
 
 			stmt.setLong(1, limit);
@@ -239,7 +234,7 @@ public class ComputerDAO extends Dao<Computer> {
 			throws InvalidDiscontinuedDate {
 
 		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+		try (Connection cnx = dataSource.getConnection()) {
 			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
 					.replace(":order_direction:", map(page.getOrderDirection()));
 			PreparedStatement stmt = cnx.prepareStatement(selectByNameOrCompany);

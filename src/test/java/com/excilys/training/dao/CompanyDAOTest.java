@@ -1,22 +1,25 @@
 package com.excilys.training.dao;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.TestDatabase;
 import com.excilys.training.model.Company;
 import com.excilys.training.persistance.CompanyDAO;
 
+@Component
 public class CompanyDAOTest {
 
-	private CompanyDAO companyDAO = CompanyDAO.getInstance();
+	private CompanyDAO companyDAO;
 	
+	
+
 	@Before
 	public void setUp() throws Exception {
 		TestDatabase.getInstance().reload();

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
@@ -13,20 +15,18 @@ import com.excilys.training.service.CompanyService;
 
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
+@Component()
 public class ComputerDTOValidator extends Validator<ComputerDTO> {
 
-	private static ComputerDTOValidator instance;
-	private final CompanyService companyService = CompanyService.getInstance();
 
-	private ComputerDTOValidator() {
+	private final CompanyService companyService;
+
+	public ComputerDTOValidator(CompanyService companyService) {
+		super();
+		this.companyService = companyService;
 	}
 
-	public static ComputerDTOValidator getInstance() {
-		if (Objects.isNull(instance)) {
-			instance = new ComputerDTOValidator();
-		}
-		return instance;
-	}
+
 
 	@Override
 	protected Map<String, String> validation(ComputerDTO toValidate) {

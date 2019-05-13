@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
@@ -18,26 +20,30 @@ import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.servlets.Pagination;
 import com.excilys.training.validator.ComputerDTOValidator;
 import com.excilys.training.validator.Validator;
+import com.excilys.training.validator.WebValidator;
 
+@Component
 public class Controller {
-	private static Controller instance;
 
-	private final ComputerDTOValidator computerDTOValidator = ComputerDTOValidator.getInstance();
-	private final CompanyService companyService = CompanyService.getInstance();
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
-	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
+	private final ComputerDTOValidator computerDTOValidator;
+	private final ComputerService computerService;
+	private final CompanyService companyService;
+	private final ComputerMapper computerMapper;
+	private final CompanyMapper companyMapper;
 	
-	private Controller() {
-	}
 
-	public static Controller getInstance() {
-		if (Objects.isNull(instance)) {
-			instance = new Controller();
-		}
-		return instance;
+
+	public Controller(ComputerDTOValidator computerDTOValidator, ComputerService computerService,
+			CompanyService companyService, ComputerMapper computerMapper, CompanyMapper companyMapper) {
+		super();
+		this.computerDTOValidator = computerDTOValidator;
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.computerMapper = computerMapper;
+		this.companyMapper = companyMapper;
 	}
 
 	public void updateComputer(Long id, ComputerDTOUi computerDTOUi) {

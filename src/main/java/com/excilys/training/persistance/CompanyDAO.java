@@ -8,13 +8,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.sql.DataSource;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
 import com.excilys.training.model.Company;
-import com.excilys.training.persistance.databases.DatabaseManager;
 
+@Component()
 public class CompanyDAO extends Dao<Company> {
 	private static final String SQL_FIND_BY_ID = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_FIND_ALL = "SELECT id, name FROM company";
@@ -24,28 +27,20 @@ public class CompanyDAO extends Dao<Company> {
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT id,name FROM company ORDER BY id LIMIT ? OFFSET ?";
 	private static final String DELETE_COMPUTERS_BY_COMPANY_ID_QUERY = "DELETE FROM computer WHERE computer.company_id = ?";
 
-	private static CompanyDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
+	private final CompanyResultSetModelMapper companyResultSetModelMapper;
+	private final DataSource dataSource;
+	
 
-	private CompanyDAO() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public final static CompanyDAO getInstance() {
-		if (CompanyDAO.instance == null) {
-
-			if (CompanyDAO.instance == null) {
-				CompanyDAO.instance = new CompanyDAO();
-			}
-
-		}
-		return CompanyDAO.instance;
+	public CompanyDAO(CompanyResultSetModelMapper companyResultSetModelMapper, DataSource dataSource) {
+		super();
+		this.companyResultSetModelMapper = companyResultSetModelMapper;
+		this.dataSource = dataSource;
 	}
 
 	public Company populate(ResultSet rs) {
 		Company company = null;
 		try {
-			CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
 			company = companyResultSetModelMapper.map(rs);
 
 		} catch (SQLException ex) {
@@ -57,7 +52,7 @@ public class CompanyDAO extends Dao<Company> {
 	@Override
 	public List<Company> getAll() {
 		List<Company> companies = new ArrayList<Company>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
 
 			ResultSet rs = stmt.executeQuery();
@@ -74,13 +69,12 @@ public class CompanyDAO extends Dao<Company> {
 
 	@Override
 	public Optional<Company> findById(long id) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
 
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
 				return Optional.of(companyResultSetModelMapper.map(rs));
 			} else {
 				logger.warn("Company findById(" + id + ") not found");
@@ -95,7 +89,7 @@ public class CompanyDAO extends Dao<Company> {
 	@Override
 	public List<Company> getAll(int limit, int offset) {
 		List<Company> companies = new ArrayList<Company>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
+		try (Connection cnx = dataSource.getConnection();
 				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
 
 			stmt.setLong(1, limit);
@@ -120,7 +114,7 @@ public class CompanyDAO extends Dao<Company> {
 	@Override
 	public boolean delete(Long id) {
 
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+		try (Connection cnx = dataSource.getConnection()) {
 
 			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
 				cnx.setAutoCommit(false);

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.controller.Controller;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
@@ -13,10 +15,18 @@ import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.validator.ComputerUiValidator;
 import com.excilys.training.validator.Validator;
 
+@Component
 public class Ui {
 
-	private final Controller controller = Controller.getInstance();
-	private final ComputerUiValidator createComputerUIValidator = ComputerUiValidator.getInstance();
+	private final Controller controller;
+	private final ComputerUiValidator createComputerUIValidator;
+	
+
+	public Ui(Controller controller, ComputerUiValidator createComputerUIValidator) {
+		super();
+		this.controller = controller;
+		this.createComputerUIValidator = createComputerUIValidator;
+	}
 
 	public void start() {
 

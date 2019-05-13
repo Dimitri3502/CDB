@@ -3,28 +3,15 @@ package com.excilys.training.mapper.resultSetModel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.excilys.training.model.Company;
-import com.excilys.training.persistance.CompanyDAO;
+import org.springframework.stereotype.Component;
 
+import com.excilys.training.model.Company;
+
+@Component
 public class CompanyResultSetModelMapper extends ResultSetModelMapper<Company> {
 	
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
-    private static CompanyResultSetModelMapper instance = null;
-    
-    private CompanyResultSetModelMapper() {
-    	
-    }
-    
-	public final static CompanyResultSetModelMapper getInstance()  {
-		if (CompanyResultSetModelMapper.instance == null) {
-             
-              if (CompanyResultSetModelMapper.instance == null) {
-            	  CompanyResultSetModelMapper.instance = new CompanyResultSetModelMapper();
-              }
-         }
-         return CompanyResultSetModelMapper.instance;
-	}
     
 	@Override
 	public Company map(ResultSet rs) throws SQLException {

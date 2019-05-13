@@ -40,11 +40,11 @@ public class AddComputerServlet extends HttpServlet {
     public static final String ATT_ERREURS  = "erreurs";
     public static final String ATT_RESULTAT = "resultat";
     
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final CompanyService companyService = CompanyService.getInstance();
-	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
-	private final WebValidator webValidator = WebValidator.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
+	private final ComputerService computerService = null;
+	private final CompanyService companyService = null;
+	private final CompanyMapper companyMapper = null;
+	private final WebValidator webValidator =  null;
+	private final ComputerMapper computerMapper =  null;
 
 
     @Override

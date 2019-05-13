@@ -19,15 +19,17 @@ import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.OrderByChamp;
 import com.excilys.training.persistance.OrderByDirection;
+import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 
 @WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
 public class DashboardServlet extends HttpServlet {
 	public static final String VUE = "/WEB-INF/views/dashboard.jsp";
 
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
-	private final Pagination pagination = Pagination.getInstance();
+	private final ComputerService computerService = null;
+	private final CompanyService companyService = null;
+	private final ComputerMapper computerMapper =  null;
+	private final Pagination pagination = null;
 
 	private String search;
 	private String orderBy;

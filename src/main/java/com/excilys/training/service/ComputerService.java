@@ -3,30 +3,22 @@ package com.excilys.training.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.model.Computer;
-import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.ComputerDAO;
 import com.excilys.training.servlets.Page;
 
+@Component()
 public final class ComputerService {
 
-	private static ComputerService instance = null;
-	private final ComputerDAO computerDAO = ComputerDAO.getInstance();
-	private final CompanyDAO companyDAO = CompanyDAO.getInstance();
+	private final ComputerDAO computerDAO;
 
-	private ComputerService() {
+	public ComputerService(ComputerDAO computerDAO) {
+		super();
+		this.computerDAO = computerDAO;
 	}
-
-	public final static ComputerService getInstance() {
-		if (ComputerService.instance == null) {
-
-			if (ComputerService.instance == null) {
-				ComputerService.instance = new ComputerService();
-			}
-
-		}
-		return ComputerService.instance;
-	}
+	
 
 	public long create(Computer computerDTO) {
 		return computerDAO.create(computerDTO);
