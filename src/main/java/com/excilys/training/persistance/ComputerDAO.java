@@ -1,8 +1,6 @@
 package com.excilys.training.persistance;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -57,23 +55,19 @@ public class ComputerDAO extends Dao<Computer> {
 	public long create(Computer computer) {
 		SQLComputer sqlComputer = SQLComputer.from(computer);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
-		Object[] parameters = new Object[] { sqlComputer.getName(), sqlComputer.getIntroduced(),
-				sqlComputer.getDiscontinued(), sqlComputer.getCompanyId() };
+		jdbcTemplate.update(createStmt(sqlComputer), keyHolder);
+		return keyHolder.getKey().longValue();
+	}
 
-    	jdbcTemplate.update(
-        	    new PreparedStatementCreator() {
-        	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-        	            PreparedStatement stmt =
-        	                con.prepareStatement(SQL_CREATE, new String[] {"id"});
-        				stmt.setString(1, sqlComputer.getName());
-        				stmt.setTimestamp(2, sqlComputer.getIntroduced());
-        				stmt.setTimestamp(3, sqlComputer.getDiscontinued());
-        				stmt.setObject(4, sqlComputer.getCompanyId());
-        	            return stmt;
-        	        }
-        	    },
-        	    keyHolder);
-		return (long) keyHolder.getKey();
+	private PreparedStatementCreator createStmt(SQLComputer sqlComputer) {
+		return con -> {
+			PreparedStatement stmt = con.prepareStatement(SQL_CREATE, new String[] { "id" });
+			stmt.setString(1, sqlComputer.getName());
+			stmt.setTimestamp(2, sqlComputer.getIntroduced());
+			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
+			stmt.setObject(4, sqlComputer.getCompanyId());
+			return stmt;
+		};
 	}
 
 	public long count(String name) {

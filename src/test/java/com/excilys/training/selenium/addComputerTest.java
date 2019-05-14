@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -81,16 +82,16 @@ public class addComputerTest {
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		driver.findElement(By.id("addComputer")).click();
 		driver.findElement(By.id("computerName")).click();
-		driver.findElement(By.id("computerName")).sendKeys("selenium computer");
+		driver.findElement(By.id("computerName")).sendKeys(name);
 		driver.findElement(By.id("introduced")).click();
 		driver.findElement(By.id("introduced")).click();
-		driver.findElement(By.id("introduced")).sendKeys("06/05/2019");
+		driver.findElement(By.id("introduced")).sendKeys(introducedDate);
 		driver.findElement(By.id("discontinued")).click();
 		driver.findElement(By.id("discontinued")).click();
-		driver.findElement(By.id("discontinued")).sendKeys("07/05/2019");
+		driver.findElement(By.id("discontinued")).sendKeys(discontinuedDate);
 		{
 			WebElement dropdown = driver.findElement(By.id("companyId"));
-			dropdown.findElement(By.xpath("//option[. = 'Apple Inc.']")).click();
+			dropdown.findElement(By.xpath("//option[. = '" + CompanyDTOname + "']")).click();
 		}
 		{
 			WebElement element = driver.findElement(By.id("companyId"));
@@ -113,6 +114,7 @@ public class addComputerTest {
 		List<Computer> liste = computerService.getAll();
 		Computer actualModel = liste.get(liste.size()-1);
 		ComputerDTO actual = computerMapper.modelToDto(actualModel);
+		
 		assertEquals(expected, actual);
 		computerService.delete(actualModel);
 	}
