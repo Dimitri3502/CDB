@@ -21,6 +21,8 @@ import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;
 
+import static com.excilys.training.servlets.CONSTANTES.*;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,10 +37,6 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -828447276545120635L;
 	public static final String VUE = "/WEB-INF/views/addComputer.jsp";
-    public static final String CHAMP_COMPUTERNAME = "computerName";
-    public static final String CHAMP_INTRODUCED = "introduced";
-    public static final String CHAMP_DISCONTINUED = "discontinued";
-    public static final String CHAMP_COMPANYID = "companyId";
 
     public static final String ATT_ERREURS  = "erreurs";
     public static final String ATT_RESULTAT = "resultat";

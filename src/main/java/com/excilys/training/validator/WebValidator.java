@@ -11,7 +11,11 @@ import java.util.Objects;
 import org.springframework.stereotype.Component;
 
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.exception.CompanyNotFoundException;
+import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.service.CompanyService;
+
+import static com.excilys.training.servlets.CONSTANTES.*;
 
 @Component()
 public class WebValidator extends Validator<ComputerDTO> {
@@ -29,28 +33,32 @@ public class WebValidator extends Validator<ComputerDTO> {
 		}
 		try {
 			LocalDate dateTocheck = LocalDate.parse(date);
-			LocalDate minDate = LocalDate.of(1970,01,01);
-			LocalDate maxDate = LocalDate.of(2038,01,01);
+			LocalDate minDate = LocalDate.of(1970, 01, 01);
+			LocalDate maxDate = LocalDate.of(2038, 01, 01);
 			if (dateTocheck.isAfter(minDate) && dateTocheck.isBefore(maxDate)) {
 				return false;
 			} else {
 				return true;
 			}
-			
+
 		} catch (DateTimeParseException e) {
-			return true;
+			throw new InvalidDateValueException(date);
 		}
 	}
 
 	private boolean checkIdFail(String id) {
-		if (id==null) {
+		if (id == null) {
 			return false;
 		}
 		try {
 			Long companyId = Long.valueOf(id);
-			return !companyService.isPresent(companyId);
+			if (!companyService.isPresent(companyId)) {
+				throw new CompanyNotFoundException(id);
+			}
+			;
+			return false;
 		} catch (NumberFormatException e) {
-			return true;
+			throw new CompanyNotFoundException(id);
 		}
 	}
 
@@ -58,16 +66,25 @@ public class WebValidator extends Validator<ComputerDTO> {
 	protected Map<String, String> validation(ComputerDTO toValidate) {
 		final HashMap<String, String> errors = new HashMap<>();
 		if (isBlank(toValidate.getName())) {
-			errors.put("computerName", "Le nom ne peut pas être vide");
+			errors.put(CHAMP_COMPUTERNAME, "Le nom ne peut pas être vide");
 		}
-		if (checkDateFail(toValidate.getIntroducedDate())) {
-			errors.put("introduced", "La date d'introduction doit être entre 1970-01-01 et 2038-01-19");
+		
+		try {
+			checkDateFail(toValidate.getIntroducedDate());
+		} catch (InvalidDateValueException e) {
+			errors.put(CHAMP_INTRODUCED, e.getMessage());
 		}
-		if (checkDateFail(toValidate.getDiscontinuedDate())) {
-			errors.put("discontinued", "La date d'expiration doit être entre 1970-01-01 et 2038-01-19");
+		
+		try {
+			checkDateFail(toValidate.getDiscontinuedDate());
+		} catch (InvalidDateValueException e) {
+			errors.put(CHAMP_DISCONTINUED, e.getMessage());
 		}
-		if (checkIdFail(toValidate.getCompanyDTO().getId())) {
-			errors.put("companyId", "Ce fabriquant n'hexiste pas");
+
+		try {
+			checkIdFail(toValidate.getCompanyDTO().getId());
+		} catch (CompanyNotFoundException e) {
+			errors.put(CHAMP_COMPANYID, e.getMessage());
 		}
 		return errors;
 	}
