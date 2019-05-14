@@ -1,9 +1,15 @@
 package com.excilys.training.persistance;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+
+import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,27 +29,48 @@ public class CompanyDAO extends Dao<Company> {
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final CompanyResultSetModelMapper companyResultSetModelMapper;
 	private final JdbcTemplate jdbcTemplate;
+	private final DataSource dataSource;
 
-	public CompanyDAO(CompanyResultSetModelMapper companyResultSetModelMapper, JdbcTemplate jdbcTemplate) {
+	public CompanyDAO(CompanyResultSetModelMapper companyResultSetModelMapper, JdbcTemplate jdbcTemplate,
+			DataSource dataSource) {
 		super();
 		this.companyResultSetModelMapper = companyResultSetModelMapper;
 		this.jdbcTemplate = jdbcTemplate;
+		this.dataSource = dataSource;
 	}
 
 	@Override
 	public List<Company> getAll() {
-		return jdbcTemplate.query(SQL_FIND_ALL, new CompanyResultSetModelMapper());
+		try {
+			return jdbcTemplate.query(SQL_FIND_ALL, companyResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
 	@Override
 	public Company findById(long id) {
-		return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, new CompanyResultSetModelMapper());
+		try {
+			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, companyResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
 	@Override
 	public List<Company> getAll(int limit, int offset) {
-		return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
-				new CompanyResultSetModelMapper());
+		try {
+			return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
+					companyResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
 	@Override
@@ -51,36 +78,36 @@ public class CompanyDAO extends Dao<Company> {
 		return 0;
 	}
 
-//	@Override
-//	public boolean delete(Long id) {
-//
-//		try (Connection cnx = dataSource.getConnection()) {
-//
-//			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
-//				cnx.setAutoCommit(false);
-//
-//				deleteComputers.setLong(1, id);
-//				deleteComputers.executeUpdate();
-//
-//				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
-//				deleteCompany.setLong(1, id);
-//				deleteCompany.executeUpdate();
-//
-//				cnx.commit();
-//				cnx.setAutoCommit(true);
-//				return true;
-//			} catch (Exception e) {
-//				cnx.rollback();
-//				throw e;
-//			}
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//			logger.warn("delete(" + id + ")", e);
-//			return false;
-//		}
-//
-//	}
+	@Override
+	public boolean delete(Long id) {
+
+		try (Connection cnx = dataSource.getConnection()) {
+
+			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
+				cnx.setAutoCommit(false);
+
+				deleteComputers.setLong(1, id);
+				deleteComputers.executeUpdate();
+
+				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
+				deleteCompany.setLong(1, id);
+				deleteCompany.executeUpdate();
+
+				cnx.commit();
+				cnx.setAutoCommit(true);
+				return true;
+			} catch (Exception e) {
+				cnx.rollback();
+				throw e;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			logger.warn("delete(" + id + ")", e);
+			return false;
+		}
+
+	}
 
 	@Override
 	public boolean update(Company obj) {

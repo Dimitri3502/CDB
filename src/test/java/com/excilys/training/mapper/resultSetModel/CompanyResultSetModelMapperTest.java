@@ -40,7 +40,7 @@ public class CompanyResultSetModelMapperTest {
 		Mockito.when(mockResultSet.getLong(COLUMN_ID)).thenReturn(id);
 		Mockito.when(mockResultSet.getString(COLUMN_NAME)).thenReturn(name);
 
-		Company company = companyResultSetModelMapper.map(mockResultSet);
+		Company company = companyResultSetModelMapper.mapRow(mockResultSet,1);
 		Company expectedCompany =  new Company(id,name);
 
 		assertEquals(expectedCompany, company);

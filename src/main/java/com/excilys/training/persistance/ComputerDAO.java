@@ -1,10 +1,17 @@
 package com.excilys.training.persistance;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
@@ -31,34 +38,47 @@ public class ComputerDAO extends Dao<Computer> {
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
 			+ "ORDER BY :order_by: IS NULL, :order_by:  :order_direction: LIMIT ? OFFSET ?";
 
-
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final ComputerResultSetModelMapper computerResultSetModelMapper;
 	private final JdbcTemplate jdbcTemplate;
-	
-	public ComputerDAO(ComputerResultSetModelMapper computerResultSetModelMapper,
-			JdbcTemplate jdbcTemplate) {
+	private SimpleJdbcInsert simpleJdbcInsert;
+
+	public ComputerDAO(ComputerResultSetModelMapper computerResultSetModelMapper, JdbcTemplate jdbcTemplate) {
 		super();
 		this.computerResultSetModelMapper = computerResultSetModelMapper;
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public List<Computer> getAll()  {
-		return jdbcTemplate.query(SQL_FIND_ALL, new ComputerResultSetModelMapper());
+	public List<Computer> getAll() {
+		return jdbcTemplate.query(SQL_FIND_ALL, computerResultSetModelMapper);
 	}
 
 	@Override
 	public long create(Computer computer) {
 		SQLComputer sqlComputer = SQLComputer.from(computer);
-		Object[] parameters = new Object[] {sqlComputer.getName(), sqlComputer.getIntroduced(),
-				 sqlComputer.getDiscontinued(), sqlComputer.getCompanyId()};
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		Object[] parameters = new Object[] { sqlComputer.getName(), sqlComputer.getIntroduced(),
+				sqlComputer.getDiscontinued(), sqlComputer.getCompanyId() };
 
-		return jdbcTemplate.update(SQL_CREATE, parameters);
+    	jdbcTemplate.update(
+        	    new PreparedStatementCreator() {
+        	        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+        	            PreparedStatement stmt =
+        	                con.prepareStatement(SQL_CREATE, new String[] {"id"});
+        				stmt.setString(1, sqlComputer.getName());
+        				stmt.setTimestamp(2, sqlComputer.getIntroduced());
+        				stmt.setTimestamp(3, sqlComputer.getDiscontinued());
+        				stmt.setObject(4, sqlComputer.getCompanyId());
+        	            return stmt;
+        	        }
+        	    },
+        	    keyHolder);
+		return (long) keyHolder.getKey();
 	}
 
 	public long count(String name) {
 		name = name != null ? "%" + name + "%" : "%%";
-		return jdbcTemplate.queryForObject(SQL_COUNT_NAME, new Object[] {name, name}, Long.class);
+		return jdbcTemplate.queryForObject(SQL_COUNT_NAME, new Object[] { name, name }, Long.class);
 
 	}
 
@@ -66,10 +86,9 @@ public class ComputerDAO extends Dao<Computer> {
 		return jdbcTemplate.queryForObject(SQL_COUNT, Long.class);
 	}
 
-
 	@Override
 	public boolean delete(Computer computer) {
-		jdbcTemplate.update(SQL_DELETE, new Object[] {computer.getId()});
+		jdbcTemplate.update(SQL_DELETE, new Object[] { computer.getId() });
 		return true;
 
 	}
@@ -77,8 +96,8 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public boolean update(Computer computer) {
 		SQLComputer sqlComputer = SQLComputer.from(computer);
-		Object[] parameters = new Object[] {sqlComputer.getName(), sqlComputer.getIntroduced(),
-				 sqlComputer.getDiscontinued(), sqlComputer.getCompanyId(), computer.getId()};
+		Object[] parameters = new Object[] { sqlComputer.getName(), sqlComputer.getIntroduced(),
+				sqlComputer.getDiscontinued(), sqlComputer.getCompanyId(), computer.getId() };
 		jdbcTemplate.update(SQL_UPDATE, parameters);
 		return true;
 	}
@@ -86,22 +105,23 @@ public class ComputerDAO extends Dao<Computer> {
 	@Override
 	public Computer findById(long id) {
 
-		return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] {id}, new ComputerResultSetModelMapper());
+		return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
 
 	}
 
 	@Override
 	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
-		return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] {limit, offset}, new ComputerResultSetModelMapper());
+		return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset }, computerResultSetModelMapper);
 	}
 
-	public List<Computer> getAll(Page page)
-			throws InvalidDiscontinuedDate {
+	public List<Computer> getAll(Page page) throws InvalidDiscontinuedDate {
 
-			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
-					.replace(":order_direction:", map(page.getOrderDirection()));
+		String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
+				.replace(":order_direction:", map(page.getOrderDirection()));
 
-		return jdbcTemplate.query(selectByNameOrCompany, new Object[] {page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset()}, new ComputerResultSetModelMapper());
+		return jdbcTemplate.query(selectByNameOrCompany,
+				new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
+				computerResultSetModelMapper);
 	}
 
 	private String map(OrderByDirection c) {

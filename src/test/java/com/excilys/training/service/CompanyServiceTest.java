@@ -45,9 +45,9 @@ public class CompanyServiceTest {
 
 	@Test
 	public void testFindById() {
-		Optional<Company> actual = companyService.findById(2L);
+		Company actual = companyService.findById(2L);
 		Company expected = new Company(2L,"Thinking Machines");
-		assertEquals(actual.get(), expected);
+		assertEquals(actual, expected);
 	}
 
 }

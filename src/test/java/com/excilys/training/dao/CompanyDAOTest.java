@@ -37,7 +37,7 @@ public class CompanyDAOTest {
 	public final void testFindByIdLong() {
 		Long id = 1L;
 		final Company expected = new Company(id, "Apple Inc.");
-		final Company actual = companyDAO.findById(id).get();
+		final Company actual = companyDAO.findById(id);
 		assertEquals(expected, actual);
 	}
 

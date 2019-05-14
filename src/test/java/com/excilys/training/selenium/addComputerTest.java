@@ -22,6 +22,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -50,13 +51,13 @@ public class addComputerTest {
 
 	@BeforeClass
 	static public void setUpClass() throws IOException, SQLException {
-		WebDriverManager.chromedriver().setup();
+		WebDriverManager.phantomjs().setup();
 
 	}
 	 
 	@Before
 	public void setUp() {
-		driver = new ChromeDriver();
+		driver = new PhantomJSDriver();
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
 	}
