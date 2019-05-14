@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class Pagination {
 	
+	private static final String TOTAL_NUMBER = "totalNumber";
+	private static final String PAGE_IDS = "pageIds";
+	private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
+	private static final String NB_PAGE = "nbPage";
+	private static final String NUMBER_PER_PAGE = "numberPerPage";
 	private static final int MAX_PAGE = 10; // size of page choice below the table
 	private int numberPerPage = 10; // default value
 	private int currentPageNumber;
@@ -19,11 +24,11 @@ public class Pagination {
 
 	
 	public void doPagination(HttpServletRequest request, long totalNumber) {
-		// number of computers per page
+		
 		String pageId = request.getParameter("pageid");
 		
-		if (!(request.getParameter("numberPerPage") == null)) {
-			numberPerPage = Integer.parseInt(request.getParameter("numberPerPage"));
+		if (!(request.getParameter(NUMBER_PER_PAGE) == null)) {
+			numberPerPage = Integer.parseInt(request.getParameter(NUMBER_PER_PAGE));
 
 		}
 		nbPage = (int) Math.ceil(((double) totalNumber) / numberPerPage) - 1;
@@ -55,11 +60,11 @@ public class Pagination {
 			pageIds.add(number);
 			len = pageIds.size();
 		}
-		request.setAttribute("totalNumber", totalNumber);
-		request.setAttribute("pageIds", pageIds);
-		request.setAttribute("currentPageNumber", currentPageNumber);
-		request.setAttribute("nbPage", nbPage);
-		request.setAttribute("numberPerPage", numberPerPage);
+		request.setAttribute(TOTAL_NUMBER, totalNumber);
+		request.setAttribute(PAGE_IDS, pageIds);
+		request.setAttribute(CURRENT_PAGE_NUMBER, currentPageNumber);
+		request.setAttribute(NB_PAGE, nbPage);
+		request.setAttribute(NUMBER_PER_PAGE, numberPerPage);
 	}
 
 	public int getOffset() {

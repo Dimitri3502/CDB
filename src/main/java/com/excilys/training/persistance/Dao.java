@@ -53,8 +53,5 @@ public abstract class Dao<T> {
 
 	public abstract List<T> getAll(int limit, int offset);
 
-	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean delete(Long id);
 }

@@ -37,9 +37,6 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -828447276545120635L;
 	public static final String VUE = "/WEB-INF/views/addComputer.jsp";
-
-    public static final String ATT_ERREURS  = "erreurs";
-    public static final String ATT_RESULTAT = "resultat";
     
 	private ComputerService computerService;
 	private CompanyService companyService;
@@ -111,15 +108,4 @@ public class AddComputerServlet extends HttpServlet {
         
         
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

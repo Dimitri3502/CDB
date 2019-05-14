@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
+import com.excilys.training.persistance.ENUMS.OrderByChamp;
+import com.excilys.training.persistance.ENUMS.OrderByDirection;
 import com.excilys.training.servlets.Page;
 
 @Component()
@@ -39,7 +41,6 @@ public class ComputerDAO extends Dao<Computer> {
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final ComputerResultSetModelMapper computerResultSetModelMapper;
 	private final JdbcTemplate jdbcTemplate;
-	private SimpleJdbcInsert simpleJdbcInsert;
 
 	public ComputerDAO(ComputerResultSetModelMapper computerResultSetModelMapper, JdbcTemplate jdbcTemplate) {
 		super();
@@ -48,7 +49,13 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	public List<Computer> getAll() {
-		return jdbcTemplate.query(SQL_FIND_ALL, computerResultSetModelMapper);
+		try {
+			return jdbcTemplate.query(SQL_FIND_ALL, computerResultSetModelMapper);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
 	@Override
@@ -70,20 +77,34 @@ public class ComputerDAO extends Dao<Computer> {
 		};
 	}
 
-	public long count(String name) {
+	public Long count(String name) {
 		name = name != null ? "%" + name + "%" : "%%";
-		return jdbcTemplate.queryForObject(SQL_COUNT_NAME, new Object[] { name, name }, Long.class);
+		try {
+			return jdbcTemplate.queryForObject(SQL_COUNT_NAME, new Object[] { name, name }, Long.class);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
 
 	}
 
-	public long count() {
+	public Long count() {
+		try {
 		return jdbcTemplate.queryForObject(SQL_COUNT, Long.class);
+	} catch (DataAccessException e) {
+		logger.warn(e.getMessage());
+		return null;
 	}
 
+}
+	@Override
+	public boolean delete(Long id) {
+		jdbcTemplate.update(SQL_DELETE, new Object[] { id });
+		return true;
+	}
 	@Override
 	public boolean delete(Computer computer) {
-		jdbcTemplate.update(SQL_DELETE, new Object[] { computer.getId() });
-		return true;
+		return delete(computer.getId());
 
 	}
 
@@ -143,4 +164,6 @@ public class ComputerDAO extends Dao<Computer> {
 			return "company_name";
 		}
 	}
+
+
 }

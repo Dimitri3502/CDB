@@ -39,7 +39,9 @@ public final class ComputerService {
 	public boolean delete(Computer computer) {
 		return computerDAO.delete(computer);
 	};
-
+	public boolean delete(Long id) {
+		return computerDAO.delete(id);
+	};
 	public Computer findById(Long id) {
 		return computerDAO.findById(id);
 //		return computer.map(computerMapper::modelToDto);
