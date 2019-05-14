@@ -22,6 +22,7 @@ import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;
 
+import static com.excilys.training.servlets.CONSTANTES.*;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -32,14 +33,6 @@ import com.excilys.training.validator.WebValidator;
 @WebServlet(name = "EditComputer", urlPatterns = { "/editComputer" })
 public class EditComputerServlet extends HttpServlet {
     public static final String VUE = "/WEB-INF/views/editComputer.jsp";
-    public static final String CHAMP_ID = "id";
-    public static final String CHAMP_COMPUTERNAME = "computerName";
-    public static final String CHAMP_INTRODUCED = "introduced";
-    public static final String CHAMP_DISCONTINUED = "discontinued";
-    public static final String CHAMP_COMPANYID = "companyId";
-
-    public static final String ATT_ERREURS  = "erreurs";
-    public static final String ATT_RESULTAT = "resultat";
     
 	private ComputerService computerService;
 	private CompanyService companyService;
@@ -56,7 +49,7 @@ public class EditComputerServlet extends HttpServlet {
 		this.webValidator = wac.getBean(WebValidator.class);
 		this.computerMapper = wac.getBean(ComputerMapper.class);
 								
-
+		
 	}
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -117,15 +110,5 @@ public class EditComputerServlet extends HttpServlet {
         
         
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

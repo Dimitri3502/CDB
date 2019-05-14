@@ -11,6 +11,9 @@ public class CompanyNotFoundException extends NotFoundException   {
 		super("Le fabriquant id = " + id + " n'existe pas");
 		// TODO Auto-generated constructor stub
 	}
-
+	public CompanyNotFoundException(String id) {
+		super("Le fabriquant id = " + id + " n'existe pas");
+		// TODO Auto-generated constructor stub
+	}
 
 }

@@ -25,8 +25,8 @@
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
-						<input type="hidden" name="order_by" value="${orderBy}" />
-						<input type="hidden" name="order_direction" value="${orderDirection}" />
+						<input type="hidden" name="orderBy" value="${orderBy}" />
+						<input type="hidden" name="orderDirection" value="${orderDirection}" />
 						<input type="search" id="searchbox" name="search" class="form-control" value="${search}" placeholder="Search name" /> 
 						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
 					</form>
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="dashboard?pageid=${currentPageNumber}&numberPerPage=${numberPerPage}&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}'" method="POST">
+		<form id="deleteForm" action="dashboard?pageid=${currentPageNumber}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -59,23 +59,23 @@
 						</span></th>
 						<th>Computer name ${orderDirection}
 							<c:choose>
-								<c:when test="${orderBy == 'name'}">
+								<c:when test="${orderBy == 'computerName'}">
 									<c:choose>
 										<c:when test="${orderDirection == 'asc'}">
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=desc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=desc"><i
 												class="fa fa-sort-down"></i></a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=asc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=name&order_direction=asc"><i
+										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=asc"><i
 										class="fa fa-sort-up"></i></a>
 								</c:otherwise>
 							</c:choose>
@@ -87,19 +87,19 @@
 									<c:choose>
 										<c:when test="${orderDirection == 'asc'}">
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=desc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=desc"><i
 												class="fa fa-sort-down"></i></a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=asc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
 							</c:when>
 							<c:otherwise>
 								<a
-									href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=introduced&order_direction=desc"><i
+									href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=desc"><i
 									class="fa fa-sort-down"></i></a>
 							</c:otherwise>
 						</c:choose>
@@ -111,19 +111,19 @@
 									<c:choose>
 										<c:when test="${orderDirection == 'asc'}">
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=desc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=desc"><i
 												class="fa fa-sort-down"></i></a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=asc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=discontinued&order_direction=desc"><i
+										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=desc"><i
 										class="fa fa-sort-down"></i></a>
 								</c:otherwise>
 							</c:choose>
@@ -135,19 +135,19 @@
 									<c:choose>
 										<c:when test="${orderDirection == 'asc'}">
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=desc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
 												class="fa fa-sort-down"></i></a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=asc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&order_by=company_name&order_direction=desc"><i
+										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
 										class="fa fa-sort-down"></i></a>
 								</c:otherwise>
 							</c:choose>
@@ -180,27 +180,27 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<li><a
-					href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}""
+					href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}""
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 				<c:forEach var="page" items="${pageIds}">
-					<li><a href="?pageid=${page}&&numberPerPage=${numberPerPage}&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}"">${page}</a></li>
+					<li><a href="?pageid=${page}&&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}"">${page}</a></li>
 				</c:forEach>
 				<li><a
-					href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}""
+					href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}""
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
 				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}'"
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
 					type="button" class="btn btn-default">10</button>
 				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}'"
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
 					type="button" class="btn btn-default">50</button>
 				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100&search=${search}&order_by=${orderBy}&order_direction=${orderDirection}'"
+					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
 					type="button" class="btn btn-default">100</button>
 			</div>
 	</footer>
