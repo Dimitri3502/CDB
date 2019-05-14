@@ -41,7 +41,7 @@ public abstract class Dao<T> {
 	 * @throws NotFoundException
 	 * @throws InvalidDiscontinuedDate
 	 */
-	public abstract Optional<T> findById(long id);
+	public abstract T findById(long id);
 
 	/**
 	 * Méthode de recherche des informations

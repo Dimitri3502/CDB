@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import com.excilys.training.persistance.databases.DbCredentials;
 import com.zaxxer.hikari.HikariConfig;
@@ -42,6 +43,11 @@ public class AppSpringConfig {
 	@Bean
 	public HikariDataSource hikariDataSource(HikariConfig hikariConfig) {
 		return new HikariDataSource(hikariConfig);
+	}
+	
+	@Bean
+	public JdbcTemplate jdbcTemplate(HikariDataSource hikariDataSource) {
+		return new JdbcTemplate(hikariDataSource);
 	}
 
 }

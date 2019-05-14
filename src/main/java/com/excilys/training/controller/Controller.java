@@ -67,20 +67,20 @@ public class Controller {
 
 	public boolean ComputerExist(Long id) {
 
-		return computerService.findById(id).isPresent();
+		return computerService.findById(id) != null;
 	}
 
 	public boolean CompanyExist(Long id) {
 
-		return companyService.findById(id).isPresent();
+		return companyService.findById(id) != null;
 	}
 
 	public void showComputer(Long id) {
 
-		Optional<Computer> computer = computerService.findById(id);
+		Computer computer = computerService.findById(id);
 
-		if (computer.isPresent()) {
-			System.out.println(computer.get());
+		if (computer != null) {
+			System.out.println(computer);
 		} else {
 			System.out.println("L'ordinateur id = " + id + " n'existe pas");
 		}
@@ -105,9 +105,9 @@ public class Controller {
 	}
 
 	public void deleteComputer(Long id) {
-		Optional<Computer> computertoDelete = computerService.findById(id);
-		if (computertoDelete.isPresent()) {
-			computerService.delete(computertoDelete.get());
+		Computer computertoDelete = computerService.findById(id);
+		if (computertoDelete != null) {
+			computerService.delete(computertoDelete);
 		} else {
 			System.out.println("L'ordinateur id = " + id + " n'existe pas");
 		}
@@ -123,9 +123,9 @@ public class Controller {
 
 	public void deleteCompany(Long id) {
 		try {
-			Optional<Company> company = companyService.findById(id);
+			Company company = companyService.findById(id);
 			companyService.delete(id);
-			System.out.println("Le fabriquant " + company.get().toString() + " a été supprimé avec succès");
+			System.out.println("Le fabriquant " + company.toString() + " a été supprimé avec succès");
 		} catch (CompanyNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());

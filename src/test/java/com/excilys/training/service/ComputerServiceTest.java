@@ -53,10 +53,10 @@ public class ComputerServiceTest {
 
 	@Test
 	public void testFindById() {
-		Optional<Computer> actual = computerService.findById(3L);
+		Computer actual = computerService.findById(3L);
 		Company company = new Company(2L, "Thinking Machines");
 		Computer expected = new Computer(3L, "CM-200", null, null, company);
-		assertEquals(expected, actual.get());
+		assertEquals(expected, actual);
 
 	}
 
@@ -67,7 +67,7 @@ public class ComputerServiceTest {
 		ComputerDTO expected = new ComputerDTO("3", "test", "2001-02-03", "2001-02-04", companyDTO);
 		long newId = computerService.create(computerMapper.dtoToModel(expected));
 		expected.setId(Long.toString(newId));
-		ComputerDTO actual = computerMapper.modelToDto(computerService.findById(newId).get());
+		ComputerDTO actual = computerMapper.modelToDto(computerService.findById(newId));
 		assertEquals(expected, actual);
 
 	}

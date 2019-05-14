@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +23,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -50,13 +52,13 @@ public class addComputerTest {
 
 	@BeforeClass
 	static public void setUpClass() throws IOException, SQLException {
-		WebDriverManager.chromedriver().setup();
+		WebDriverManager.phantomjs().setup();
 
 	}
 	 
 	@Before
 	public void setUp() {
-		driver = new ChromeDriver();
+		driver = new PhantomJSDriver();
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
 	}
@@ -80,16 +82,16 @@ public class addComputerTest {
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		driver.findElement(By.id("addComputer")).click();
 		driver.findElement(By.id("computerName")).click();
-		driver.findElement(By.id("computerName")).sendKeys("selenium computer");
+		driver.findElement(By.id("computerName")).sendKeys(name);
 		driver.findElement(By.id("introduced")).click();
 		driver.findElement(By.id("introduced")).click();
-		driver.findElement(By.id("introduced")).sendKeys("06/05/2019");
+		driver.findElement(By.id("introduced")).sendKeys(introducedDate);
 		driver.findElement(By.id("discontinued")).click();
 		driver.findElement(By.id("discontinued")).click();
-		driver.findElement(By.id("discontinued")).sendKeys("07/05/2019");
+		driver.findElement(By.id("discontinued")).sendKeys(discontinuedDate);
 		{
 			WebElement dropdown = driver.findElement(By.id("companyId"));
-			dropdown.findElement(By.xpath("//option[. = 'Apple Inc.']")).click();
+			dropdown.findElement(By.xpath("//option[. = '" + CompanyDTOname + "']")).click();
 		}
 		{
 			WebElement element = driver.findElement(By.id("companyId"));
@@ -112,8 +114,8 @@ public class addComputerTest {
 		List<Computer> liste = computerService.getAll();
 		Computer actualModel = liste.get(liste.size()-1);
 		ComputerDTO actual = computerMapper.modelToDto(actualModel);
+		
 		assertEquals(expected, actual);
 		computerService.delete(actualModel);
-		assertFalse(computerService.findById(actualModel.getId()).isPresent());
 	}
 }

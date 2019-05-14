@@ -14,8 +14,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -24,7 +22,6 @@ import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.OrderByChamp;
 import com.excilys.training.persistance.OrderByDirection;
-import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 
 @WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
@@ -91,8 +88,8 @@ public class DashboardServlet extends HttpServlet {
 			idsArray = Arrays.asList(str);
 			for (String idStr : idsArray) {
 				Long value = Long.parseLong(idStr);
-				Optional<Computer> computer = computerService.findById(value);
-				computerService.delete(computer.get());
+				Computer computer = computerService.findById(value);
+				computerService.delete(computer);
 			}
 		}
 		processRequest(request, response);

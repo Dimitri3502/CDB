@@ -27,10 +27,10 @@ public class CompanyService {
 	}
 
 	public boolean isPresent(Long id) {
-		return findById(id).isPresent();
+		return findById(id)!=null;
 	};
 
-	public Optional<Company> findById(Long id) {
+	public Company findById(Long id) {
 		return this.companyDAO.findById(id);
 	};
 

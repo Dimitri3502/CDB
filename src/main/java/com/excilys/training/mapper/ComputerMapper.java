@@ -54,11 +54,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			}
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
-				Optional<Company> company = companyService.findById(Long.parseLong(companyId));
-				if (!company.isPresent()) {
+				Company company = companyService.findById(Long.parseLong(companyId));
+				if (company==null) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
-					theComputer.setCompany(company.get());
+					theComputer.setCompany(company);
 				}
 			}
 			else {
