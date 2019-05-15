@@ -37,7 +37,7 @@ public class AppSpringConfig {
 		hikariConfig.setIdleTimeout(300_000L);
 		hikariConfig.setLeakDetectionThreshold(300_000L);
 		hikariConfig.setConnectionTimeout(10_000L);
-		return new HikariDataSource(hikariConfig);
+		return hikariConfig;
 	}
 
 	@Bean

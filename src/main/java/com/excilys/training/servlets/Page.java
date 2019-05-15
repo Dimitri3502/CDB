@@ -4,6 +4,7 @@ import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;
 
 public class Page {
+	private int currentPageNumber;
 	private int limit; 
 	private int offset; 
 	private String search; 
@@ -50,6 +51,14 @@ public class Page {
 	}
 	public void setOrderDirection(OrderByDirection orderDirection) {
 		this.orderDirection = orderDirection;
+	}
+
+	public int getCurrentPageNumber() {
+		return currentPageNumber;
+	}
+
+	public void setCurrentPageNumber(int currentPageNumber) {
+		this.currentPageNumber = currentPageNumber;
 	}
 	
 	

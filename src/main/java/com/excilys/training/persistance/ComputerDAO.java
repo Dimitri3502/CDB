@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -90,18 +91,20 @@ public class ComputerDAO extends Dao<Computer> {
 
 	public Long count() {
 		try {
-		return jdbcTemplate.queryForObject(SQL_COUNT, Long.class);
-	} catch (DataAccessException e) {
-		logger.warn(e.getMessage());
-		return null;
+			return jdbcTemplate.queryForObject(SQL_COUNT, Long.class);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
-}
 	@Override
 	public boolean delete(Long id) {
 		jdbcTemplate.update(SQL_DELETE, new Object[] { id });
 		return true;
 	}
+
 	@Override
 	public boolean delete(Computer computer) {
 		return delete(computer.getId());
@@ -119,24 +122,40 @@ public class ComputerDAO extends Dao<Computer> {
 
 	@Override
 	public Computer findById(long id) {
-
-		return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
+		try {
+			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
 
 	}
 
 	@Override
-	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
-		return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset }, computerResultSetModelMapper);
+	public List<Computer> getAll(int limit, int offset) {
+		try {
+			return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
+					computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
+
 	}
 
-	public List<Computer> getAll(Page page) throws InvalidDiscontinuedDate {
+	public List<Computer> getAll(Page page){
+		try {
+			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
+					.replace(":order_direction:", map(page.getOrderDirection()));
 
-		String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
-				.replace(":order_direction:", map(page.getOrderDirection()));
+			return jdbcTemplate.query(selectByNameOrCompany,
+					new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
+					computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
+		}
 
-		return jdbcTemplate.query(selectByNameOrCompany,
-				new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
-				computerResultSetModelMapper);
 	}
 
 	private String map(OrderByDirection c) {
@@ -164,6 +183,5 @@ public class ComputerDAO extends Dao<Computer> {
 			return "company_name";
 		}
 	}
-
 
 }
