@@ -46,7 +46,7 @@ public class CompanyDAOTest {
 
 	@Test
 	public final void testGetAllIntInt() {
-		int offset=1 , limit=5;
+		int offset=0 , limit=5;
 		assertEquals(database.findAllCompanies(limit, offset), companyDAO.getAll(limit, offset));
 	}
 	

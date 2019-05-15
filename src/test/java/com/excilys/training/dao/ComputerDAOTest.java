@@ -49,11 +49,15 @@ public class ComputerDAOTest {
 	}
 
 	@Test
-	public final void testFindByIdLong() {
-		Long id = 1L;
+	@Parameters(method = "provideId")
+	public final void testFindByIdLong(Long id) {
 		assertEquals(database.findComputerById(id), computerDAO.findById(id));
 	}
 
+	public Object provideId() {
+		return new Long[] { 1L,2L,3L };
+	}
+	
 	public Object[] providePageLimit() {
 		return new Object[][] { { 1, 10 }, { 9, 10 }, { 3, 5 }, { 2, 10 } };
 	}

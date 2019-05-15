@@ -148,7 +148,7 @@ public class UTDatabase {
 
 
     public List<Company> findAllCompanies() {
-        return companies.values().stream().sorted(Comparator.comparing(Company::getName)).collect(Collectors.toList());
+        return companies.values().stream().sorted(Comparator.comparing(Company::getId)).collect(Collectors.toList());
     }
 
     public void reload() throws IOException, SQLException {
