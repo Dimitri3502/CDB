@@ -114,8 +114,9 @@ public class addComputerTest {
 		List<Computer> liste = computerService.getAll();
 		Computer actualModel = liste.get(liste.size()-1);
 		ComputerDTO actual = computerMapper.modelToDto(actualModel);
-		
 		assertEquals(expected, actual);
+		
+		
 		computerService.delete(actualModel);
 	}
 }

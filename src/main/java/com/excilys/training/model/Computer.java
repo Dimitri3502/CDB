@@ -2,6 +2,7 @@ package com.excilys.training.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 
@@ -9,7 +10,7 @@ import com.excilys.training.exception.InvalidDiscontinuedDate;
  * @author dimitri
  *
  */
-public class Computer extends Model{
+public class Computer extends Model {
 
 	private String name;
 	private LocalDateTime introducedDate;
@@ -49,17 +50,56 @@ public class Computer extends Model{
 		return discontinuedDate;
 	}
 
-	public void setDiscontinuedDate(LocalDateTime discontinuedDate){
-			this.discontinuedDate = discontinuedDate;
+	public void setDiscontinuedDate(LocalDateTime discontinuedDate) {
+		this.discontinuedDate = discontinuedDate;
 	}
-//	public void setDiscontinuedDate(LocalDate discontinuedDate) throws InvalidDiscontinuedDate{
-//		if (discontinuedDate.isAfter(introducedDate)) {
-//			this.discontinuedDate = discontinuedDate;
-//		} else {
-//			throw new InvalidDiscontinuedDate();
-//		}
-//	}
 
+	public static class Builder {
+		private Long id;
+		private String name;
+		private LocalDateTime introducedDate;
+		private LocalDateTime discontinuedDate;
+		private Company company;
+
+		public Builder setId(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder setName(String name) {
+			this.name = name;
+			return this;
+		}
+
+		public Builder setIntroduced(LocalDateTime introduced) {
+			this.introducedDate = introduced;
+			return this;
+		}
+
+		public Builder setDiscontinued(LocalDateTime discontinued) {
+			this.discontinuedDate = discontinued;
+			return this;
+		}
+
+		public Builder setCompany(Company company) {
+			if (company == null) {
+				this.company = new Company();
+			} else {
+				this.company = company;
+			}
+			return this;
+		}
+
+		public Computer build() {
+			Computer computer = new Computer();
+			computer.setId(this.id);
+			computer.setName(this.name);
+			computer.setIntroducedDate(this.introducedDate);
+			computer.setDiscontinuedDate(this.discontinuedDate);
+			computer.setCompany(this.company);
+			return computer;
+		}
+	}
 
 	public Company getCompany() {
 		return company;
@@ -77,13 +117,7 @@ public class Computer extends Model{
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((company == null) ? 0 : company.hashCode());
-		result = prime * result + ((discontinuedDate == null) ? 0 : discontinuedDate.hashCode());
-		result = prime * result + ((introducedDate == null) ? 0 : introducedDate.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return Objects.hash(company, discontinuedDate, introducedDate, name);
 	}
 
 	@Override
@@ -95,30 +129,8 @@ public class Computer extends Model{
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		if (company == null) {
-			if (other.company != null)
-				return false;
-		} else if (!company.equals(other.company))
-			return false;
-		if (discontinuedDate == null) {
-			if (other.discontinuedDate != null)
-				return false;
-		} else if (!discontinuedDate.equals(other.discontinuedDate))
-			return false;
-		if (introducedDate == null) {
-			if (other.introducedDate != null)
-				return false;
-		} else if (!introducedDate.equals(other.introducedDate))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
+		return Objects.equals(company, other.company) && Objects.equals(discontinuedDate, other.discontinuedDate)
+				&& Objects.equals(introducedDate, other.introducedDate) && Objects.equals(name, other.name);
 	}
 
-
-
-	
 }

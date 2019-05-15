@@ -82,4 +82,8 @@ public class Pagination {
 	public void setNumberPerPage(int numberPerPage) {
 		this.numberPerPage = numberPerPage;
 	}
+
+	public int getCurrentPageNumber() {
+		return currentPageNumber;
+	}
 }

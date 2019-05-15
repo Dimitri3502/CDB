@@ -2,6 +2,10 @@ package com.excilys.training.mapper.resultSetModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -42,6 +46,7 @@ public class ComputerResultSetModelMapper implements RowMapper<Computer> {
 		computer.setCompany(aCompany);
 		return computer;
 	}
+	
 
 
 }
