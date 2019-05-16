@@ -1,25 +1,28 @@
 package com.excilys.training.persistance;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Level;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
-import com.excilys.training.persistance.databases.DatabaseManager;
+import com.excilys.training.persistance.ENUMS.OrderByChamp;
+import com.excilys.training.persistance.ENUMS.OrderByDirection;
 import com.excilys.training.servlets.Page;
 
+@Component()
 public class ComputerDAO extends Dao<Computer> {
+
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
 	private static final String SQL_FIND_ALL = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id ORDER BY A.id";
 	private static final String SQL_CREATE = "INSERT INTO computer (name, introduced,discontinued,company_id) VALUES (?,?,?,?)";
@@ -30,235 +33,129 @@ public class ComputerDAO extends Dao<Computer> {
 	private static final String SQL_COUNT_NAME = "SELECT COUNT(computer.id) AS count FROM computer "
 			+ "LEFT JOIN company ON computer.company_id = company.id "
 			+ "WHERE UPPER(computer.name) LIKE UPPER(?) OR UPPER(company.name) LIKE UPPER(?) ";
-	private static final String SQL_LAST_INSERT_ID = "SELECT LAST_INSERT_ID(id) FROM computer";
 	private static final String SELECT_BY_NAME_OR_COMPANY_QUERY = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,"
 			+ "B.id AS company_id ,B.name AS company_name FROM computer AS A "
 			+ "LEFT JOIN company AS B ON A.company_id = B.id "
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
 			+ "ORDER BY :order_by: IS NULL, :order_by:  :order_direction: LIMIT ? OFFSET ?";
 
-	private static ComputerDAO instance = null;
 	private final Logger logger = LogManager.getLogger(getClass());
+	private final ComputerResultSetModelMapper computerResultSetModelMapper;
+	private final JdbcTemplate jdbcTemplate;
 
-	private ComputerDAO() {
-		// TODO Auto-generated constructor stub
+	public ComputerDAO(ComputerResultSetModelMapper computerResultSetModelMapper, JdbcTemplate jdbcTemplate) {
+		super();
+		this.computerResultSetModelMapper = computerResultSetModelMapper;
+		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	public final static ComputerDAO getInstance() {
-		if (ComputerDAO.instance == null) {
-
-			if (ComputerDAO.instance == null) {
-				ComputerDAO.instance = new ComputerDAO();
-			}
-
-		}
-		return ComputerDAO.instance;
-	}
-
-	public Computer populate(ResultSet rs) throws InvalidDiscontinuedDate {
-		Computer computer = null;
+	public List<Computer> getAll() {
 		try {
-			ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
-			computer = computerResultSetModelMapper.map(rs);
-		} catch (SQLException ex) {
-			logger.warn("populate ", ex);
+			return jdbcTemplate.query(SQL_FIND_ALL, computerResultSetModelMapper);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
-		return computer;
-	}
 
-	public List<Computer> getAll() throws InvalidDiscontinuedDate {
-		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL);) {
-
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Computer aComputer = populate(rs);
-				computers.add(aComputer);
-
-			}
-		} catch (SQLException ex) {
-			logger.warn("getAll Computers failed", ex);
-		}
-		return computers;
 	}
 
 	@Override
 	public long create(Computer computer) {
-		Long lastInsertedId = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_CREATE, Statement.RETURN_GENERATED_KEYS);) {
-			SQLComputer sqlComputer = SQLComputer.from(computer);
+		SQLComputer sqlComputer = SQLComputer.from(computer);
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		jdbcTemplate.update(createStmt(sqlComputer), keyHolder);
+		return keyHolder.getKey().longValue();
+	}
+
+	private PreparedStatementCreator createStmt(SQLComputer sqlComputer) {
+		return con -> {
+			PreparedStatement stmt = con.prepareStatement(SQL_CREATE, new String[] { "id" });
 			stmt.setString(1, sqlComputer.getName());
 			stmt.setTimestamp(2, sqlComputer.getIntroduced());
 			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
 			stmt.setObject(4, sqlComputer.getCompanyId());
-			stmt.toString();
-			stmt.executeUpdate();
-
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next()) {
-				lastInsertedId = rs.getLong(1);
-			}
-		} catch (SQLException ex) {
-			logger.warn("create(" + computer.toString() + ")", ex);
-		}
-		return lastInsertedId;
+			return stmt;
+		};
 	}
 
-	public long count(String name) {
-		Long computersNumber = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-			PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT_NAME)) {
-			name = name != null ? "%" + name + "%" : "%%";
-			stmt.setString(1, name);
-			stmt.setString(2, name);
-			stmt.execute();
-
-			ResultSet rs = stmt.getResultSet();
-			if (rs.next()) {
-				computersNumber = rs.getLong(1);
-			}
-		} catch (SQLException ex) {
-			logger.warn("count()", ex);
+	public Long count(String name) {
+		name = name != null ? "%" + name + "%" : "%%";
+		try {
+			return jdbcTemplate.queryForObject(SQL_COUNT_NAME, new Object[] { name, name }, Long.class);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
-		return computersNumber;
+
 	}
 
-	public long count() {
-		Long computersNumber = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_COUNT);) {
-
-			stmt.execute();
-
-			ResultSet rs = stmt.getResultSet();
-			if (rs.next()) {
-				computersNumber = rs.getLong(1);
-			}
-		} catch (SQLException ex) {
-			logger.warn("count()", ex);
+	public Long count() {
+		try {
+			return jdbcTemplate.queryForObject(SQL_COUNT, Long.class);
+		} catch (DataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
-		return computersNumber;
+
 	}
 
-	public long getLastIdInserted() {
-		Long lastIdInserted = null;
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_LAST_INSERT_ID);) {
-
-			stmt.execute();
-
-			ResultSet rs = stmt.getResultSet();
-			if (rs.next()) {
-				lastIdInserted = rs.getLong(1);
-			}
-		} catch (SQLException ex) {
-			logger.warn("getLastIdInserted()", ex);
-		}
-		return lastIdInserted;
+	@Override
+	public boolean delete(Long id) {
+		jdbcTemplate.update(SQL_DELETE, new Object[] { id });
+		return true;
 	}
 
 	@Override
 	public boolean delete(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_DELETE);) {
-
-			stmt.setLong(1, computer.getId());
-			stmt.executeUpdate();
-			return true;
-		} catch (SQLException ex) {
-			logger.warn("delete(" + computer.toString() + ")", ex);
-			return false;
-		}
+		return delete(computer.getId());
 
 	}
 
 	@Override
 	public boolean update(Computer computer) {
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_UPDATE);) {
-
-			SQLComputer sqlComputer = SQLComputer.from(computer);
-			stmt.setString(1, sqlComputer.getName());
-			stmt.setTimestamp(2, sqlComputer.getIntroduced());
-			stmt.setTimestamp(3, sqlComputer.getDiscontinued());
-			stmt.setObject(4, sqlComputer.getCompanyId());
-			stmt.setObject(5, computer.getId());
-			stmt.executeUpdate();
-			stmt.toString();
-		} catch (SQLException ex) {
-			logger.warn("update(" + computer.toString() + ")", ex);
-		}
-		return false;
+		SQLComputer sqlComputer = SQLComputer.from(computer);
+		Object[] parameters = new Object[] { sqlComputer.getName(), sqlComputer.getIntroduced(),
+				sqlComputer.getDiscontinued(), sqlComputer.getCompanyId(), computer.getId() };
+		jdbcTemplate.update(SQL_UPDATE, parameters);
+		return true;
 	}
 
 	@Override
-	public Optional<Computer> findById(long id) {
-
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_BY_ID);) {
-
-			stmt.setLong(1, id);
-			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
-				ComputerResultSetModelMapper computerResultSetModelMapper = ComputerResultSetModelMapper.getInstance();
-				return Optional.of(computerResultSetModelMapper.map(rs));
-			} else {
-				logger.warn("findById(" + id + ") not found");
-				return Optional.empty();
-			}
-
-		} catch (SQLException ex) {
-			logger.warn("Company findById(" + id + ")", ex);
-			throw new RuntimeException(ex);
+	public Computer findById(long id) {
+		try {
+			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
 
 	}
 
 	@Override
-	public List<Computer> getAll(int limit, int offset) throws InvalidDiscontinuedDate {
-		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment();
-				PreparedStatement stmt = cnx.prepareStatement(SQL_FIND_ALL_PAGINED);) {
-
-			stmt.setLong(1, limit);
-			stmt.setLong(2, offset);
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Computer aComputer = populate(rs);
-				computers.add(aComputer);
-			}
-		} catch (SQLException ex) {
-			logger.warn("getAll(" + offset + "," + limit + ")", ex);
+	public List<Computer> getAll(int limit, int offset) {
+		try {
+			return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
+					computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
-		return computers;
+
 	}
 
-	public List<Computer> getAll(Page page)
-			throws InvalidDiscontinuedDate {
-
-		List<Computer> computers = new ArrayList<Computer>();
-		try (Connection cnx = DatabaseManager.getConnectionEnvironment()) {
+	public List<Computer> getAll(Page page){
+		try {
 			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
 					.replace(":order_direction:", map(page.getOrderDirection()));
-			PreparedStatement stmt = cnx.prepareStatement(selectByNameOrCompany);
-			stmt.setString(1, page.getSearch());
-			stmt.setString(2, page.getSearch());
-			stmt.setLong(3, page.getLimit());
-			stmt.setLong(4, page.getOffset());
-			logger.debug(stmt.toString());
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				Computer aComputer = populate(rs);
-				computers.add(aComputer);
-			}
-		} catch (SQLException ex) {
-			ex.printStackTrace();
-			logger.warn("getAll(" + page.getOffset() + ", " + page.getLimit() + ", " + page.getSearch() + ", " + page.getOrderBy() + ", " + page.getOrderDirection() + ")",
-					ex);
+
+			return jdbcTemplate.query(selectByNameOrCompany,
+					new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
+					computerResultSetModelMapper);
+		} catch (EmptyResultDataAccessException e) {
+			logger.warn(e.getMessage());
+			return null;
 		}
-		return computers;
+
 	}
 
 	private String map(OrderByDirection c) {
@@ -286,4 +183,5 @@ public class ComputerDAO extends Dao<Computer> {
 			return "company_name";
 		}
 	}
+
 }

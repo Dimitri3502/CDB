@@ -6,22 +6,13 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
+
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.dto.ComputerDTOUi;
 
+@Component
 public class ComputerUiValidator extends Validator<ComputerDTOUi>{
-    private static ComputerUiValidator instance;
-
-    private ComputerUiValidator() {
-    }
-
-    public static ComputerUiValidator getInstance() {
-        if (Objects.isNull(instance)) {
-            instance = new ComputerUiValidator();
-        }
-        return instance;
-    }
    
     private static boolean checkDateFail(String date) {
         if (date==null) {

@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.CompanyMapper;
@@ -17,6 +20,8 @@ import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;
+
+import static com.excilys.training.servlets.CONSTANTES.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -32,20 +37,24 @@ public class AddComputerServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -828447276545120635L;
 	public static final String VUE = "/WEB-INF/views/addComputer.jsp";
-    public static final String CHAMP_COMPUTERNAME = "computerName";
-    public static final String CHAMP_INTRODUCED = "introduced";
-    public static final String CHAMP_DISCONTINUED = "discontinued";
-    public static final String CHAMP_COMPANYID = "companyId";
-
-    public static final String ATT_ERREURS  = "erreurs";
-    public static final String ATT_RESULTAT = "resultat";
     
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final CompanyService companyService = CompanyService.getInstance();
-	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
-	private final WebValidator webValidator = WebValidator.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
+	private ComputerService computerService;
+	private CompanyService companyService;
+	private CompanyMapper companyMapper;
+	private WebValidator webValidator;
+	private ComputerMapper computerMapper;
 
+	@Override
+	public void init() throws ServletException {
+		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+		this.computerService = wac.getBean(ComputerService.class);
+		this.companyService = wac.getBean(CompanyService.class);
+		this.companyMapper = wac.getBean(CompanyMapper.class);
+		this.webValidator = wac.getBean(WebValidator.class);
+		this.computerMapper = wac.getBean(ComputerMapper.class);
+								
+
+	}
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -99,15 +108,4 @@ public class AddComputerServlet extends HttpServlet {
         
         
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
-
 }

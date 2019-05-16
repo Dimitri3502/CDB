@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
@@ -18,26 +20,30 @@ import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.servlets.Pagination;
 import com.excilys.training.validator.ComputerDTOValidator;
 import com.excilys.training.validator.Validator;
+import com.excilys.training.validator.WebValidator;
 
+@Component
 public class Controller {
-	private static Controller instance;
 
-	private final ComputerDTOValidator computerDTOValidator = ComputerDTOValidator.getInstance();
-	private final CompanyService companyService = CompanyService.getInstance();
-	private final ComputerService computerService = ComputerService.getInstance();
-	private final ComputerMapper computerMapper = ComputerMapper.getInstance();
-	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
+	private final ComputerDTOValidator computerDTOValidator;
+	private final ComputerService computerService;
+	private final CompanyService companyService;
+	private final ComputerMapper computerMapper;
+	private final CompanyMapper companyMapper;
 	
-	private Controller() {
-	}
 
-	public static Controller getInstance() {
-		if (Objects.isNull(instance)) {
-			instance = new Controller();
-		}
-		return instance;
+
+	public Controller(ComputerDTOValidator computerDTOValidator, ComputerService computerService,
+			CompanyService companyService, ComputerMapper computerMapper, CompanyMapper companyMapper) {
+		super();
+		this.computerDTOValidator = computerDTOValidator;
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.computerMapper = computerMapper;
+		this.companyMapper = companyMapper;
 	}
 
 	public void updateComputer(Long id, ComputerDTOUi computerDTOUi) {
@@ -61,20 +67,20 @@ public class Controller {
 
 	public boolean ComputerExist(Long id) {
 
-		return computerService.findById(id).isPresent();
+		return computerService.findById(id) != null;
 	}
 
 	public boolean CompanyExist(Long id) {
 
-		return companyService.findById(id).isPresent();
+		return companyService.findById(id) != null;
 	}
 
 	public void showComputer(Long id) {
 
-		Optional<Computer> computer = computerService.findById(id);
+		Computer computer = computerService.findById(id);
 
-		if (computer.isPresent()) {
-			System.out.println(computer.get());
+		if (computer != null) {
+			System.out.println(computer);
 		} else {
 			System.out.println("L'ordinateur id = " + id + " n'existe pas");
 		}
@@ -99,9 +105,9 @@ public class Controller {
 	}
 
 	public void deleteComputer(Long id) {
-		Optional<Computer> computertoDelete = computerService.findById(id);
-		if (computertoDelete.isPresent()) {
-			computerService.delete(computertoDelete.get());
+		Computer computertoDelete = computerService.findById(id);
+		if (computertoDelete != null) {
+			computerService.delete(computertoDelete);
 		} else {
 			System.out.println("L'ordinateur id = " + id + " n'existe pas");
 		}
@@ -117,9 +123,9 @@ public class Controller {
 
 	public void deleteCompany(Long id) {
 		try {
-			Optional<Company> company = companyService.findById(id);
+			Company company = companyService.findById(id);
 			companyService.delete(id);
-			System.out.println("Le fabriquant " + company.get().toString() + " a été supprimé avec succès");
+			System.out.println("Le fabriquant " + company.toString() + " a été supprimé avec succès");
 		} catch (CompanyNotFoundException e) {
 			// TODO Auto-generated catch block
 			System.out.println(e.getMessage());

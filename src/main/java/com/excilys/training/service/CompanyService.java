@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.exception.CompanyNotDeletedException;
 import com.excilys.training.exception.CompanyNotFoundException;
@@ -11,28 +13,24 @@ import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.model.Company;
 import com.excilys.training.persistance.CompanyDAO;
 
+@Component()
 public class CompanyService {
 
-	private static CompanyService instance = null;
-	private final CompanyDAO companyDAO = CompanyDAO.getInstance();
-	private final CompanyMapper companyMapper = CompanyMapper.getInstance();
+	private final CompanyDAO companyDAO;
+	private final CompanyMapper companyMapper;
 
-	private CompanyService() {
-		// TODO Auto-generated constructor stub
-	}
 
-	public static CompanyService getInstance() {
-		if (instance == null) {
-			instance = new CompanyService();
-		}
-		return instance;
+	public CompanyService(CompanyDAO companyDAO, CompanyMapper companyMapper) {
+		super();
+		this.companyDAO = companyDAO;
+		this.companyMapper = companyMapper;
 	}
 
 	public boolean isPresent(Long id) {
-		return findById(id).isPresent();
+		return findById(id)!=null;
 	};
 
-	public Optional<Company> findById(Long id) {
+	public Company findById(Long id) {
 		return this.companyDAO.findById(id);
 	};
 

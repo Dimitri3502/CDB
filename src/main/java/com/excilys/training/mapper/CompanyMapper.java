@@ -3,29 +3,17 @@ package com.excilys.training.mapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 
+@Component
 public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 
-	private static CompanyMapper instance = null;
-	
-	private CompanyMapper() {
-		super();
-	}
 
-	public final static CompanyMapper getInstance()  {
-		if (CompanyMapper.instance == null) {
-             
-              if (CompanyMapper.instance == null) {
-            	  CompanyMapper.instance = new CompanyMapper();
-              }
-            
-         }
-         return CompanyMapper.instance;
-	}
 	@Override
 	public Company dtoToModel(CompanyDTO companyDTO) {
 		Company theCompany = new Company();

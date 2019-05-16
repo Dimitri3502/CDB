@@ -10,7 +10,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-<!-- VERSIONS -->
+	<!-- VERSIONS -->
 	<properties>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -18,7 +18,7 @@
 		<webdrivermanager.version>3.4.0</webdrivermanager.version>
 		<phantomjsdriver.version>1.4.4</phantomjsdriver.version>
 		<jstl.version>1.2</jstl.version>
-		<javax.servlet.version>2.5</javax.servlet.version>
+		<javax.servlet.version>4.0.1</javax.servlet.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<log4j.version>2.7</log4j.version>
 		<HikariCP.version>2.7.8</HikariCP.version>
@@ -26,9 +26,38 @@
 		<mysql.version>8.0.15</mysql.version>
 		<mockito.version>1.10.19</mockito.version>
 		<junit.version>4.12</junit.version>
+		<JUnitParams.version>1.1.1</JUnitParams.version>
+		<spring.version>5.1.7.RELEASE</spring.version>
 	</properties>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-test -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-jdbc -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -38,6 +67,14 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
+
+		</dependency>
+
+		<dependency>
+			<groupId>pl.pragmatists</groupId>
+			<artifactId>JUnitParams</artifactId>
+			<version>${JUnitParams.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -86,7 +123,7 @@
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
+			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 		</dependency>
 		<dependency>

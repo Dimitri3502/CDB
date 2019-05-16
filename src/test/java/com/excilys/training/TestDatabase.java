@@ -8,21 +8,22 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import com.excilys.training.persistance.databases.DatabaseManager;
+import javax.sql.DataSource;
 
+import org.springframework.stereotype.Component;
+
+
+@Component
 public class TestDatabase {
-
-	private static TestDatabase instance = new TestDatabase();
-
-	private TestDatabase() {
+	private final DataSource dataSource;
+	
+	public TestDatabase(DataSource dataSource) {
+		super();
+		this.dataSource = dataSource;
 	}
 
-	public static TestDatabase getInstance() {
-		return instance;
-	}
-
-	private static void executeScript(String filename) throws SQLException, IOException {
-		try (final Connection connection = DatabaseManager.H2_test_db.getDatabaseAccess().getConnection();
+	private void executeScript(String filename) throws SQLException, IOException {
+		try (final Connection connection = dataSource.getConnection();
 				final Statement statement = connection.createStatement();
 				final InputStream resourceAsStream = TestDatabase.class.getClassLoader().getResourceAsStream(filename);
 				final Scanner scanner = new Scanner(resourceAsStream)) {

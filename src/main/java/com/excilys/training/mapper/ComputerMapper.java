@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.CompanyNotFoundException;
@@ -21,26 +23,15 @@ import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
+@Component
 public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
-	private final static CompanyMapper companyMapper = CompanyMapper.getInstance();
-	private CompanyService companyService = CompanyService.getInstance();
-	private static ComputerMapper instance = null;
+	private final CompanyMapper companyMapper;
+	private final CompanyService companyService;
 
-	
-
-	private ComputerMapper() {
+	public ComputerMapper(CompanyMapper companyMapper, CompanyService companyService) {
 		super();
-	}
-
-	public final static ComputerMapper getInstance() {
-		if (ComputerMapper.instance == null) {
-
-			if (ComputerMapper.instance == null) {
-				ComputerMapper.instance = new ComputerMapper();
-			}
-
-		}
-		return ComputerMapper.instance;
+		this.companyMapper = companyMapper;
+		this.companyService = companyService;
 	}
 
 	@Override
@@ -63,11 +54,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			}
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
-				Optional<Company> company = companyService.findById(Long.parseLong(companyId));
-				if (!company.isPresent()) {
+				Company company = companyService.findById(Long.parseLong(companyId));
+				if (company==null) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
-					theComputer.setCompany(company.get());
+					theComputer.setCompany(company);
 				}
 			}
 			else {

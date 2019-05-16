@@ -2,13 +2,21 @@ package com.excilys.training.mapper.resultSetModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
 
-public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer> {
+@Component
+public class ComputerResultSetModelMapper implements RowMapper<Computer> {
 	
     private static final String COLUMN_COMPANY_ID = "company_id";
     private static final String COLUMN_COMPANY_NAME = "company_name";
@@ -16,25 +24,9 @@ public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer>
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_INTRODUCED = "introduced";
     private static final String COLUMN_NAME = "name";
-    private static ComputerResultSetModelMapper instance = null;
-    
-    private ComputerResultSetModelMapper() {
-    	
-    }
-    
-	public final static ComputerResultSetModelMapper getInstance()  {
-		if (ComputerResultSetModelMapper.instance == null) {
-             
-              if (ComputerResultSetModelMapper.instance == null) {
-            	  ComputerResultSetModelMapper.instance = new ComputerResultSetModelMapper();
-              }
-            
-         }
-         return ComputerResultSetModelMapper.instance;
-	}
-    
+
 	@Override
-	public Computer map(ResultSet rs) throws SQLException {
+	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 		Computer computer = new Computer();
 		computer.setName(rs.getString(COLUMN_NAME));
 		computer.setId(rs.getLong(COLUMN_ID));
@@ -54,5 +46,7 @@ public class ComputerResultSetModelMapper extends ResultSetModelMapper<Computer>
 		computer.setCompany(aCompany);
 		return computer;
 	}
+	
+
 
 }

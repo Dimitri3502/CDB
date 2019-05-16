@@ -1,29 +1,35 @@
 package com.excilys.training.mapper.resultSetModel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import com.excilys.training.TestDatabase;
-import com.excilys.training.model.Company;
-import com.excilys.training.persistance.CompanyDAO;
-
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import com.excilys.training.configuration.AppSpringConfig;
+import com.excilys.training.model.Company;
+
+@RunWith(SpringRunner.class)
+@ContextConfiguration(classes = AppSpringConfig.class)
 public class CompanyResultSetModelMapperTest {
-
-	private CompanyResultSetModelMapper companyResultSetModelMapper = CompanyResultSetModelMapper.getInstance();
+	
+	@Autowired
+	private CompanyResultSetModelMapper companyResultSetModelMapper;
 	
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
     private static ResultSet mockResultSet;
     
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		mockResultSet = Mockito.mock(ResultSet.class);
 	}
 
@@ -34,7 +40,7 @@ public class CompanyResultSetModelMapperTest {
 		Mockito.when(mockResultSet.getLong(COLUMN_ID)).thenReturn(id);
 		Mockito.when(mockResultSet.getString(COLUMN_NAME)).thenReturn(name);
 
-		Company company = companyResultSetModelMapper.map(mockResultSet);
+		Company company = companyResultSetModelMapper.mapRow(mockResultSet,1);
 		Company expectedCompany =  new Company(id,name);
 
 		assertEquals(expectedCompany, company);

@@ -1,9 +1,10 @@
 package com.excilys.training.servlets;
 
-import com.excilys.training.persistance.OrderByChamp;
-import com.excilys.training.persistance.OrderByDirection;
+import com.excilys.training.persistance.ENUMS.OrderByChamp;
+import com.excilys.training.persistance.ENUMS.OrderByDirection;
 
 public class Page {
+	private int currentPageNumber;
 	private int limit; 
 	private int offset; 
 	private String search; 
@@ -14,8 +15,8 @@ public class Page {
 	
 	public Page(int limit, int offset, String search, OrderByChamp orderBy, OrderByDirection orderDirection) {
 		super();
-		this.limit = limit;
-		this.offset = offset;
+		this.setLimit(limit);
+		this.setOffset(offset);
 		this.search = search != null ? "%" + search + "%" : "%%";;
 		this.orderBy = orderBy;
 		this.orderDirection = orderDirection;
@@ -25,13 +26,13 @@ public class Page {
 		return limit;
 	}
 	public void setLimit(int limit) {
-		this.limit = limit;
+		this.limit = limit>0 ? limit : 0;
 	}
 	public int getOffset() {
 		return offset;
 	}
 	public void setOffset(int offset) {
-		this.offset = offset;
+		this.offset = offset>0 ? offset : 0;
 	}
 	public String getSearch() {
 		return search;
@@ -50,6 +51,14 @@ public class Page {
 	}
 	public void setOrderDirection(OrderByDirection orderDirection) {
 		this.orderDirection = orderDirection;
+	}
+
+	public int getCurrentPageNumber() {
+		return currentPageNumber;
+	}
+
+	public void setCurrentPageNumber(int currentPageNumber) {
+		this.currentPageNumber = currentPageNumber;
 	}
 	
 	

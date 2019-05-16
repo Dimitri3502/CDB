@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.After;
@@ -17,7 +18,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -30,19 +32,21 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AppSpringConfig.class)
-public class SearchTest {
+public class NumberPerPage {
+
+	@Autowired
+	private ComputerService computerService;
+
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
-	
-	@Autowired
-	private ComputerService computerService;
 
 	@BeforeClass
 	public static void setUpClass() throws IOException, SQLException {
 		WebDriverManager.phantomjs().setup();
 
 	}
+
 	@Before
 	public void setUp() {
 		driver = new PhantomJSDriver();
@@ -56,24 +60,22 @@ public class SearchTest {
 	}
 
 	@Test
-	public void search() {
-		final String name = "apple";
-		
-		// Step # | name | target | value | comment
-		// 1 | open | /CDB/dashboard | |
+	public void NumberPerPageTest() {
 		driver.get("http://localhost:8080/CDB/dashboard");
-		// 2 | setWindowSize | 1280x960 | |
 		driver.manage().window().setSize(new Dimension(1280, 960));
-		// 3 | click | id=searchbox | |
-		driver.findElement(By.id("searchbox")).click();
-		// 4 | type | id=searchbox | iphone |
 		
-		driver.findElement(By.id("searchbox")).sendKeys(name);
-		// 5 | click | id=searchsubmit | |
-		driver.findElement(By.id("searchsubmit")).click();
-		long actual = Long.parseLong(driver.findElement(By.id("homeTitle")).getText().replaceFirst(" Computers found", ""));
-		long expected = computerService.count(name);
-		assertEquals(expected, actual);
+		driver.findElement(By.cssSelector(".btn-default:nth-child(1)")).click();
+		assertEquals(getComputersTableLines().size(), 10);
 		
+		driver.findElement(By.cssSelector(".btn-group > .btn:nth-child(2)")).click();
+		assertEquals(getComputersTableLines().size(), 50);
+		
+		driver.findElement(By.cssSelector(".btn:nth-child(3)")).click();
+		assertEquals(getComputersTableLines().size(), 100);
+
 	}
+	
+    private List<WebElement> getComputersTableLines() {
+        return driver.findElements(By.xpath("//tbody[@id='results']/tr"));
+    }
 }

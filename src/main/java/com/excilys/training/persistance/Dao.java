@@ -41,7 +41,7 @@ public abstract class Dao<T> {
 	 * @throws NotFoundException
 	 * @throws InvalidDiscontinuedDate
 	 */
-	public abstract Optional<T> findById(long id);
+	public abstract T findById(long id);
 
 	/**
 	 * Méthode de recherche des informations
@@ -53,8 +53,5 @@ public abstract class Dao<T> {
 
 	public abstract List<T> getAll(int limit, int offset);
 
-	public boolean delete(Long id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	public abstract boolean delete(Long id);
 }
