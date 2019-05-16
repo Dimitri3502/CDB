@@ -10,8 +10,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
@@ -30,30 +36,32 @@ import static com.excilys.training.servlets.CONSTANTES.*;
  */
  
 
-@WebServlet(name = "EditComputer", urlPatterns = { "/editComputer" })
+@Controller
+@RequestMapping("/editComputer")
 public class EditComputerServlet extends HttpServlet {
-    public static final String VUE = "/WEB-INF/views/editComputer.jsp";
-    
+    public static final String VUE = "editComputer";
+
+	
+	@Autowired
 	private ComputerService computerService;
+	
+	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
 	private CompanyMapper companyMapper;
+	
+	@Autowired
 	private WebValidator webValidator;
+	
+	@Autowired
 	private ComputerMapper computerMapper;
 
-	@Override
-	public void init() throws ServletException {
-		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		this.computerService = wac.getBean(ComputerService.class);
-		this.companyService = wac.getBean(CompanyService.class);
-		this.companyMapper = wac.getBean(CompanyMapper.class);
-		this.webValidator = wac.getBean(WebValidator.class);
-		this.computerMapper = wac.getBean(ComputerMapper.class);
-								
+	@RequestMapping(method = RequestMethod.GET)
+    public ModelAndView handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-	}
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+		ModelAndView mv = new ModelAndView(VUE);
+    	
     	String idStr = request.getParameter("id");
 
     	long id = Long.parseLong(idStr);
@@ -61,15 +69,18 @@ public class EditComputerServlet extends HttpServlet {
 		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
 
 		// Add to request
-		request.setAttribute("computer", computer);
-		request.setAttribute("companies", companies);
-    	Utilities.forwardScreen(request, response, VUE);
+		mv.addObject("computer", computer);
+		mv.addObject("companies", companies);
+		
+		return mv;
     }
 
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.POST)
+    public ModelAndView handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ModelAndView mv = new ModelAndView(VUE);
+		
         String resultat;
         /* Récupération des champs du formulaire. */
         String id = request.getParameter(CHAMP_ID);
@@ -100,13 +111,13 @@ public class EditComputerServlet extends HttpServlet {
         
 
         /* Stockage du résultat et des messages d'erreur dans l'objet request */
-        request.setAttribute( ATT_ERREURS, erreurs );
-        request.setAttribute( ATT_RESULTAT, resultat );
-        request.setAttribute("computer", computerDTO);
+        mv.addObject( ATT_ERREURS, erreurs );
+        mv.addObject( ATT_RESULTAT, resultat );
+        mv.addObject("computer", computerDTO);
 		List<CompanyDTO> companies =  companyMapper.allModelToDTO(companyService.getAll());
-		request.setAttribute("companies", companies);
+		mv.addObject("companies", companies);
 
-        Utilities.forwardScreen(request, response, VUE);
+		return mv;
         
         
     }

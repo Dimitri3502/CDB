@@ -10,14 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.TestDatabase;
-import com.excilys.training.UTDatabase;
 import com.excilys.training.configuration.AppSpringConfig;
+import com.excilys.training.configuration.AppSpringConfigTEST;
 import com.excilys.training.persistance.CompanyDAO;
 import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.utils.TestDatabase;
+import com.excilys.training.utils.UTDatabase;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = AppSpringConfigTEST.class)
 public class CompanyDAOTest {
 
 	@Autowired

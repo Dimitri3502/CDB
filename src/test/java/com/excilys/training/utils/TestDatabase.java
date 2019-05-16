@@ -1,4 +1,4 @@
-package com.excilys.training;
+package com.excilys.training.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,4 +1,4 @@
-package com.excilys.training;
+package com.excilys.training.utils;
 
 import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;

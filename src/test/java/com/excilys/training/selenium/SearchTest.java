@@ -17,23 +17,28 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.service.ComputerService;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-@RunWith(SpringRunner.class)
+@WebAppConfiguration
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = AppSpringConfig.class)
 public class SearchTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
+	
+	@Autowired
+	private WebApplicationContext webAppContext;
 	
 	@Autowired
 	private ComputerService computerService;
@@ -56,7 +61,7 @@ public class SearchTest {
 	}
 
 	@Test
-	public void search() {
+	public void searchTest() {
 		final String name = "apple";
 		
 		// Step # | name | target | value | comment

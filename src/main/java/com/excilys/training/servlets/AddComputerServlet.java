@@ -1,16 +1,26 @@
 package com.excilys.training.servlets;
+import static com.excilys.training.servlets.CONSTANTES.ATT_ERREURS;
+import static com.excilys.training.servlets.CONSTANTES.ATT_RESULTAT;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_COMPANYID;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_COMPUTERNAME;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_DISCONTINUED;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_INTRODUCED;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
@@ -21,8 +31,6 @@ import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;
 
-import static com.excilys.training.servlets.CONSTANTES.*;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -30,47 +38,49 @@ import static com.excilys.training.servlets.CONSTANTES.*;
  */
 
 
-@WebServlet(name = "AddComputer", urlPatterns = { "/addComputer" })
+@Controller
+@RequestMapping("/addComputer")
 public class AddComputerServlet extends HttpServlet {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = -828447276545120635L;
-	public static final String VUE = "/WEB-INF/views/addComputer.jsp";
+	public static final String VUE = "addComputer";
     
+	@Autowired
 	private ComputerService computerService;
+	
+	@Autowired
 	private CompanyService companyService;
+	
+	@Autowired
 	private CompanyMapper companyMapper;
+	
+	@Autowired
 	private WebValidator webValidator;
+	
+	@Autowired
 	private ComputerMapper computerMapper;
 
-	@Override
-	public void init() throws ServletException {
-		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		this.computerService = wac.getBean(ComputerService.class);
-		this.companyService = wac.getBean(CompanyService.class);
-		this.companyMapper = wac.getBean(CompanyMapper.class);
-		this.webValidator = wac.getBean(WebValidator.class);
-		this.computerMapper = wac.getBean(ComputerMapper.class);
-								
-
-	}
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+	@RequestMapping(method = RequestMethod.GET)
+    public ModelAndView handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ModelAndView mv = new ModelAndView(VUE);
+		
 		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
 
 		// Add to request
-		request.setAttribute("companies", companies);
-    	Utilities.forwardScreen(request, response, VUE);
+		mv.addObject("companies", companies);
+		return mv;
     }
 
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        String resultat;
+	@RequestMapping(method = RequestMethod.POST)
+    public ModelAndView handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		ModelAndView mv = new ModelAndView(VUE);
+		
+		String resultat;
         /* Récupération des champs du formulaire. */
         String computerName = request.getParameter(CHAMP_COMPUTERNAME);
         String introduced = request.getParameter(CHAMP_INTRODUCED);
@@ -98,13 +108,13 @@ public class AddComputerServlet extends HttpServlet {
         
 
         /* Stockage du résultat et des messages d'erreur dans l'objet request */
-        request.setAttribute( ATT_ERREURS, erreurs );
-        request.setAttribute( ATT_RESULTAT, resultat );
-        request.setAttribute("computer", computerDTO);
+        mv.addObject( ATT_ERREURS, erreurs );
+        mv.addObject( ATT_RESULTAT, resultat );
+        mv.addObject("computer", computerDTO);
 		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
-		request.setAttribute("companies", companies);
+		mv.addObject("companies", companies);
 
-        Utilities.forwardScreen(request, response, VUE);
+		return mv;
         
         
     }

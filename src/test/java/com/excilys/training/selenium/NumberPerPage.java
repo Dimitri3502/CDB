@@ -19,21 +19,26 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.service.ComputerService;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+@WebAppConfiguration
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = AppSpringConfig.class)
 public class NumberPerPage {
-
+	
+	@Autowired
+	private WebApplicationContext webAppContext;
+	
 	@Autowired
 	private ComputerService computerService;
 

@@ -1,61 +1,74 @@
 package com.excilys.training.servlets;
 
-import static com.excilys.training.servlets.CONSTANTES.*;
+import static com.excilys.training.servlets.CONSTANTES.ATT_COMPUTERS;
+import static com.excilys.training.servlets.CONSTANTES.ATT_ORDER_BY;
+import static com.excilys.training.servlets.CONSTANTES.ATT_ORDER_DIRECTION;
+import static com.excilys.training.servlets.CONSTANTES.ATT_SEARCH;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_COMPANY_NAME;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_COMPUTERNAME;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_DISCONTINUED;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_ID;
+import static com.excilys.training.servlets.CONSTANTES.CHAMP_INTRODUCED;
+import static com.excilys.training.servlets.CONSTANTES.SELECTION;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
-import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;
 import com.excilys.training.service.ComputerService;
 
-@WebServlet(name = "Dashboard", urlPatterns = { "/dashboard" })
+@Controller
+@RequestMapping({"/dashboard", "/"})
 public class DashboardServlet extends HttpServlet {
 
-	private final Logger logger = LogManager.getLogger(getClass());
-	
-	private static final String VUE = "/WEB-INF/views/dashboard.jsp";
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7519860715562557299L;
 
+	private final Logger logger = LogManager.getLogger(getClass());
+
+	private static final String VUE = "dashboard";
+
+	@Autowired
 	private ComputerService computerService;
+
+	@Autowired
 	private ComputerMapper computerMapper;
+
+	@Autowired
 	private Pagination pagination;
 
 	private String search;
 	private String orderBy;
 	private String orderDirection;
 
-	@Override
-	public void init() throws ServletException {
-		super.init();
-		WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
-		this.computerService = wac.getBean(ComputerService.class);
-		this.pagination = wac.getBean(Pagination.class);
-		this.computerMapper = wac.getBean(ComputerMapper.class);
 
-	}
-
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+	protected ModelAndView processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		ModelAndView mv = new ModelAndView(VUE);
+		
 		// Get data
 		search = request.getParameter(ATT_SEARCH);
 		orderBy = request.getParameter(ATT_ORDER_BY);
@@ -69,30 +82,26 @@ public class DashboardServlet extends HttpServlet {
 
 		List<ComputerDTO> computers = computerMapper.allModelToDTO(computerService.getAll(page));
 		// Add to request
-		request.setAttribute(ATT_COMPUTERS, computers);
-		request.setAttribute(ATT_ORDER_BY, orderBy);
-		request.setAttribute(ATT_SEARCH, search);
-		request.setAttribute(ATT_ORDER_DIRECTION, orderDirection);
-		Utilities.forwardScreen(request, response, VUE);
+		mv.addObject(ATT_COMPUTERS, computers);
+		mv.addObject(ATT_ORDER_BY, orderBy);
+		mv.addObject(ATT_SEARCH, search);
+		mv.addObject(ATT_ORDER_DIRECTION, orderDirection);
+		
+		return mv;
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
+	@RequestMapping(method = RequestMethod.GET)
+    public ModelAndView handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		return processRequest(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 
+	@RequestMapping(method = RequestMethod.POST)
+    public ModelAndView handlePost(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		List<Long> removeComputersId = getRemoveComputersId(request);
 		removeComputersId.stream().forEach(computerService::delete);
 
-		processRequest(request, response);
+		return processRequest(request, response);
 
 	}
 
