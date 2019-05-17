@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,43 +23,42 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
-					<form action="addComputer" method="POST">
+					<form:form method="POST"
+					 action="addComputer"
+					 modelAttribute="computerDTOForm">
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
-									type="text" name="computerName" class="form-control" id="computerName"
-									placeholder="Computer name" required>
-									<span class="erreur">${erreurs['computerName']}</span>
+								<form:label path="computerName">Computer name</form:label>
+								 <form:input type="text" path="computerName" class="form-control" id="computerName"
+									 placeholder="Computer name" ></form:input>
+									<form:errors path="computerName" />
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
-									type="date" name="introduced" class="form-control" id="introduced"
-									placeholder="Introduced date">
-									<span class="erreur">${erreurs['introduced']}</span>
+								<form:label path="introduced">Introduced date</form:label> <form:input
+									type="date" path="introduced" class="form-control" id="introduced"
+									placeholder="Introduced date"></form:input>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
-									type="date" min = "2019-02-15" name="discontinued" class="form-control" id="discontinued"
-									placeholder="Discontinued date">
-									<span class="error">${erreurs['discontinued']}</span>
+								<form:label path="discontinued">Discontinued date</form:label> <form:input
+									type="date" path="discontinued" class="form-control" id="discontinued"
+									placeholder="Discontinued date"></form:input>
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> <select
-									name="companyId" class="form-control" id="companyId">
-									<option value="0">--</option>
+								<form:label path="companyId">Company</form:label> <form:select
+									path="companyId" class="form-control" id="companyId">
+									<option value="">--</option>
 									<c:forEach items="${companies}" var="company">
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
-								</select>
-								<span class="erreur">${erreurs['companyId']}</span>
+								</form:select>
 							</div>
-							<p class="${empty erreurs ? 'succes' : 'erreur'}">${resultat}</p>
+							<p class="${status.error ? 'succes' : 'erreur'}">${resultat}</p>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
+							<input type="submit" value="Add" class="btn btn-primary"></input>
 							or <a href="dashboard" class="btn btn-default">Return</a>
 						</div>
-					</form>
+					</form:form>
 				</div>
 			</div>
 		</div>
