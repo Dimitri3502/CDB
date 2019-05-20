@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTOForm;
 import com.excilys.training.mapper.CompanyMapper;
+import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 
@@ -34,11 +35,12 @@ import com.excilys.training.service.ComputerService;
 @RequestMapping("/addComputer")
 public class AddComputerServlet{
     public AddComputerServlet(ComputerService computerService, CompanyService companyService,
-			CompanyMapper companyMapper) {
+			CompanyMapper companyMapper, ComputerMapper computerMapper) {
 		super();
 		this.computerService = computerService;
 		this.companyService = companyService;
 		this.companyMapper = companyMapper;
+		this.computerMapper = computerMapper;
 	}
 
 
@@ -53,6 +55,8 @@ public class AddComputerServlet{
 	private CompanyService companyService;
 	
 	private CompanyMapper companyMapper;
+	
+	private ComputerMapper computerMapper;
 	
 
 	@RequestMapping(method = RequestMethod.GET)
@@ -82,7 +86,7 @@ public class AddComputerServlet{
 			resultat = false;
             
         } else {
-//        	long id = computerService.create(computerMapper.dtoToModel(computerDTO));
+        	long id = computerService.create(computerMapper.dtoFormToModel(computerDTOForm));
         	message = "Succès de l'inscription.";
         	resultat = true;
         }
