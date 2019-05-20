@@ -33,19 +33,25 @@ import com.excilys.training.service.ComputerService;
 @Controller
 @RequestMapping("/addComputer")
 public class AddComputerServlet{
-    /**
+    public AddComputerServlet(ComputerService computerService, CompanyService companyService,
+			CompanyMapper companyMapper) {
+		super();
+		this.computerService = computerService;
+		this.companyService = companyService;
+		this.companyMapper = companyMapper;
+	}
+
+
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -828447276545120635L;
 	public static final String VUE = "addComputer";
-    
-	@Autowired
-	private ComputerService computerService;
 	
-	@Autowired
+	private ComputerService computerService;
+
 	private CompanyService companyService;
 	
-	@Autowired
 	private CompanyMapper companyMapper;
 	
 

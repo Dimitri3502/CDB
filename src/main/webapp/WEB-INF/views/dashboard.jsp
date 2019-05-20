@@ -80,7 +80,29 @@
 								</c:otherwise>
 							</c:choose>
 						</th>
-						<th>id</th>
+						<th>id
+						<c:choose>
+							<c:when test="${orderBy == 'id'}">
+									<c:choose>
+										<c:when test="${orderDirection == 'asc'}">
+											<a
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=id&orderDirection=desc"><i
+												class="fa fa-sort-down"></i></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=id&orderDirection=asc"><i
+												class="fa fa-sort-up"></i></a>
+										</c:otherwise>
+									</c:choose>
+							</c:when>
+							<c:otherwise>
+								<a
+									href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=id&orderDirection=desc"><i
+									class="fa fa-sort-down"></i></a>
+							</c:otherwise>
+						</c:choose>
+						</th>
 						<th>Introduced date
 						<c:choose>
 							<c:when test="${orderBy == 'introduced'}">
@@ -131,23 +153,23 @@
 						<!-- Table header for Company -->
 						<th>Company
 						<c:choose>
-								<c:when test="${orderBy == 'company_name'}">
+								<c:when test="${orderBy == 'companyName'}">
 									<c:choose>
 										<c:when test="${orderDirection == 'asc'}">
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=companyName&orderDirection=desc"><i
 												class="fa fa-sort-down"></i></a>
 										</c:when>
 										<c:otherwise>
 											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=asc"><i
+												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=companyName&orderDirection=asc"><i
 												class="fa fa-sort-up"></i></a>
 										</c:otherwise>
 									</c:choose>
 								</c:when>
 								<c:otherwise>
 									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
+										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=companyName&orderDirection=desc"><i
 										class="fa fa-sort-down"></i></a>
 								</c:otherwise>
 							</c:choose>

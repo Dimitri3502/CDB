@@ -1,11 +1,17 @@
 package com.excilys.training.servlets;
 
+import static com.excilys.training.servlets.CONSTANTES.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.excilys.training.persistance.ENUMS.OrderByChamp;
+import com.excilys.training.persistance.ENUMS.OrderByDirection;
 
 @Component
 public class Pagination {
@@ -13,41 +19,29 @@ public class Pagination {
 	private static final String TOTAL_NUMBER = "totalNumber";
 	private static final String PAGE_IDS = "pageIds";
 	private static final String CURRENT_PAGE_NUMBER = "currentPageNumber";
-	private static final String NB_PAGE = "nbPage";
-	private static final String NUMBER_PER_PAGE = "numberPerPage";
 	private static final int MAX_PAGE = 10; // size of page choice below the table
-	private int numberPerPage = 10; // default value
+	private int numberPerPage; // default value
 	private int currentPageNumber;
 	private int offset;
 	private List<Integer> pageIds;
 	private int nbPage;
 
 	
-	public void doPagination(HttpServletRequest request, long totalNumber) {
+	public Page doPagination(String search, String orderBy, String orderDirection, int numberPerPage, Integer pageId, long totalNumber, ModelAndView mv) {
 		
-		String pageId = request.getParameter("pageid");
 		
-		if (!(request.getParameter(NUMBER_PER_PAGE) == null)) {
-			numberPerPage = Integer.parseInt(request.getParameter(NUMBER_PER_PAGE));
-
-		}
-		nbPage = (int) Math.ceil(((double) totalNumber) / numberPerPage) - 1;
+		nbPage = (int) Math.ceil(((double) totalNumber) / numberPerPage);
 
 		if (!(pageId == null)) {
-			currentPageNumber = Integer.parseInt(pageId);
-		}
-		// jump 10 pages
-		if (!(pageId == null)) {
-			int pageIdInt = Integer.parseInt(pageId);
 
-			if (pageIdInt > nbPage) {
+			if (pageId > nbPage) {
 				currentPageNumber = nbPage;
 			}
 
-			else if (pageIdInt < 0) {
+			else if (pageId < 0) {
 				currentPageNumber = 0;
 			} else {
-				currentPageNumber = pageIdInt;
+				currentPageNumber = pageId;
 
 			}
 		}
@@ -60,11 +54,17 @@ public class Pagination {
 			pageIds.add(number);
 			len = pageIds.size();
 		}
-		request.setAttribute(TOTAL_NUMBER, totalNumber);
-		request.setAttribute(PAGE_IDS, pageIds);
-		request.setAttribute(CURRENT_PAGE_NUMBER, currentPageNumber);
-		request.setAttribute(NB_PAGE, nbPage);
-		request.setAttribute(NUMBER_PER_PAGE, numberPerPage);
+		mv.addObject(TOTAL_NUMBER, totalNumber);
+		mv.addObject(PAGE_IDS, pageIds);
+		mv.addObject(CURRENT_PAGE_NUMBER, currentPageNumber);
+		mv.addObject(CHAMP_NB_PAGE, nbPage);
+		mv.addObject(ATT_NUMBER_PER_PAGE, numberPerPage);
+		mv.addObject(ATT_ORDER_BY, orderBy);
+		mv.addObject(ATT_SEARCH, search);
+		mv.addObject(ATT_ORDER_DIRECTION, orderDirection);
+		
+		return new Page(numberPerPage, offset, search, mapOrderByChamp(orderBy),
+				mapOrderByDirection(orderDirection));
 	}
 
 	public int getOffset() {
@@ -85,5 +85,40 @@ public class Pagination {
 
 	public int getCurrentPageNumber() {
 		return currentPageNumber;
+	}
+	
+
+	private OrderByChamp mapOrderByChamp(String s) {
+		if (s == null) {
+			return OrderByChamp.ID;
+		} else {
+			switch (s) {
+			default:
+			case CHAMP_ID:
+				return OrderByChamp.ID;
+			case CHAMP_COMPUTERNAME:
+				return OrderByChamp.NAME;
+			case CHAMP_INTRODUCED:
+				return OrderByChamp.INTRODUCED;
+			case CHAMP_DISCONTINUED:
+				return OrderByChamp.DISCONTINUED;
+			case CHAMP_COMPANY_NAME:
+				return OrderByChamp.COMPANY;
+			}
+		}
+	}
+
+	private OrderByDirection mapOrderByDirection(String s) {
+		if (s == null) {
+			return OrderByDirection.ASC;
+		} else {
+			switch (s) {
+			default:
+			case "asc":
+				return OrderByDirection.ASC;
+			case "desc":
+				return OrderByDirection.DESC;
+			}
+		}
 	}
 }
