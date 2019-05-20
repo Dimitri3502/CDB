@@ -38,7 +38,7 @@ import static com.excilys.training.servlets.CONSTANTES.*;
 
 @Controller
 @RequestMapping("/editComputer")
-public class EditComputerServlet extends HttpServlet {
+public class EditComputerServlet{
     public static final String VUE = "editComputer";
 
 	

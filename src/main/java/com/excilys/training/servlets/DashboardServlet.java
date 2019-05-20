@@ -39,7 +39,7 @@ import com.excilys.training.service.ComputerService;
 
 @Controller
 @RequestMapping({"/dashboard", "/"})
-public class DashboardServlet extends HttpServlet {
+public class DashboardServlet{
 
 	/**
 	 * 

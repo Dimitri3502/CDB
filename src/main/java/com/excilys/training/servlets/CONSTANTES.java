@@ -13,6 +13,7 @@ public class CONSTANTES {
     // champs request
     public static final String ATT_ERREURS  = "erreurs";
     public static final String ATT_RESULTAT = "resultat";
+    public static final String ATT_MESSAGE = "message";
 	public static final String ATT_ORDER_DIRECTION = "orderDirection";
 	public static final String ATT_COMPUTERS = "computers";
 	public static final String ATT_ORDER_BY = "orderBy";

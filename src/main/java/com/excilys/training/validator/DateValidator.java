@@ -9,13 +9,13 @@ import org.apache.commons.beanutils.BeanUtils;
 
 public class DateValidator implements ConstraintValidator<Antes, Object> {
 
-	private String introducedDate;
-	private String discontinuedDate;
+	private String introduced;
+	private String discontinued;
     
 	@Override
 	public void initialize(final Antes constraintAnnotation) {
-		introducedDate = constraintAnnotation.first();
-		discontinuedDate = constraintAnnotation.second();
+		introduced = constraintAnnotation.first();
+		discontinued = constraintAnnotation.second();
 	}
 
     @Override
@@ -23,10 +23,10 @@ public class DateValidator implements ConstraintValidator<Antes, Object> {
     {
         try
         {
-            final String firstObj = BeanUtils.getProperty(value, introducedDate);
-            final String secondObj = BeanUtils.getProperty(value, discontinuedDate);
+            final String firstObj = BeanUtils.getProperty(value, introduced);
+            final String secondObj = BeanUtils.getProperty(value, discontinued);
             if (firstObj != null && secondObj != null) {
-            	return LocalDate.parse(firstObj).isAfter(LocalDate.parse(secondObj));
+            	return LocalDate.parse(secondObj).isAfter(LocalDate.parse(firstObj));
             }
             
            

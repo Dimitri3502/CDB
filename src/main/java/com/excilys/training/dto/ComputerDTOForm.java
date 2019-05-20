@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.excilys.training.validator.Antes;
 
 
-@Antes(first = "introducedDate", second = "discontinuedDate", message = "The discontinued date must match be after the introduced date")
+@Antes(first = "introduced", second = "discontinued", message = "The discontinued date must be after the introduced date")
 
 public class ComputerDTOForm extends Dto{
 	
