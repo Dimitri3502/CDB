@@ -5,36 +5,24 @@ import java.time.LocalDate;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import org.apache.commons.beanutils.BeanUtils;
+import com.excilys.training.dto.ComputerDTOForm;
 
-public class DateValidator implements ConstraintValidator<Antes, Object> {
+public class DateValidator implements ConstraintValidator<Antes, ComputerDTOForm> {
 
-	private String introduced;
-	private String discontinued;
-    
 	@Override
-	public void initialize(final Antes constraintAnnotation) {
-		introduced = constraintAnnotation.first();
-		discontinued = constraintAnnotation.second();
-	}
+	public boolean isValid(final ComputerDTOForm value, final ConstraintValidatorContext context) {
+		try {
+			final String firstObj = value.getIntroduced();
+			final String secondObj = value.getDiscontinued();
+			if (firstObj != null && secondObj != null) {
+				if (LocalDate.parse(secondObj).isAfter(LocalDate.parse(firstObj))) {
+					return true;
+				}
+			}
 
-    @Override
-    public boolean isValid(final Object value, final ConstraintValidatorContext context)
-    {
-        try
-        {
-            final String firstObj = BeanUtils.getProperty(value, introduced);
-            final String secondObj = BeanUtils.getProperty(value, discontinued);
-            if (firstObj != null && secondObj != null) {
-            	return LocalDate.parse(secondObj).isAfter(LocalDate.parse(firstObj));
-            }
-            
-           
-        }
-        catch (final Exception ignore)
-        {
-            // ignore
-        }
-        return true;
-    }
+		} catch (final Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

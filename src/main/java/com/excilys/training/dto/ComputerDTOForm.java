@@ -3,15 +3,12 @@ package com.excilys.training.dto;
 import java.util.Objects;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import javax.validation.constraints.Pattern;
 
 import com.excilys.training.validator.Antes;
 
 
-@Antes(first = "introduced", second = "discontinued", message = "The discontinued date must be after the introduced date")
+@Antes(first = "introduced", second = "discontinued")
 
 public class ComputerDTOForm extends Dto{
 	
@@ -19,15 +16,20 @@ public class ComputerDTOForm extends Dto{
 	private String computerName;
 	
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Pattern(regexp=DATE_PATTERN)
 	private String introduced;
 	
-	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Pattern(regexp=DATE_PATTERN)
 	private String discontinued;
 	
 	private String companyName;
 	
 	private String companyId;
+	
+	private static final String DATE_PATTERN = "^((2000|2400|2800|(19|2[0-9](0[48]|[2468][048]|[13579][26])))-02-29)$"
+		      + "|^(((19|2[0-9])[0-9]{2})-02-(0[1-9]|1[0-9]|2[0-8]))$"
+		      + "|^(((19|2[0-9])[0-9]{2})-(0[13578]|10|12)-(0[1-9]|[12][0-9]|3[01]))$"
+		      + "|^(((19|2[0-9])[0-9]{2})-(0[469]|11)-(0[1-9]|[12][0-9]|30))$";
 	
 	public String getComputerName() {
 		return computerName;
@@ -41,12 +43,18 @@ public class ComputerDTOForm extends Dto{
 		return introduced;
 	}
 	public void setIntroduced(String introduced) {
+		if (introduced!= null && introduced.isEmpty()) {
+			introduced = null;
+		}
 		this.introduced = introduced;
 	}
 	public String getDiscontinued() {
 		return discontinued;
 	}
 	public void setDiscontinued(String discontinued) {
+		if (discontinued!= null && discontinued.isEmpty()) {
+			discontinued = null;
+		}
 		this.discontinued = discontinued;
 	}
 	@Override

@@ -1,17 +1,17 @@
 package com.excilys.training.controller.web;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_MESSAGE;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_RESULTAT;
+import static com.excilys.training.controller.web.CONSTANTES.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -81,9 +81,14 @@ public class AddComputerServlet{
 		
 		String message;
 		Boolean resultat;
+		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
 			message = "Échec de l'inscription.";
 			resultat = false;
+			
+			for (ObjectError error : result.getGlobalErrors()) {
+				errors.add(error.getDefaultMessage());
+			}
             
         } else {
         	long id = computerService.create(computerMapper.dtoFormToModel(computerDTOForm));
@@ -93,6 +98,7 @@ public class AddComputerServlet{
         
 
         /* Stockage du résultat et des messages d'erreur dans l'objet request */
+		mv.addObject( ATT_ERRORS_MSG, errors );
         mv.addObject( ATT_RESULTAT, resultat );
         mv.addObject( ATT_MESSAGE, message );
         mv.addObject("computerDTOForm", computerDTOForm);

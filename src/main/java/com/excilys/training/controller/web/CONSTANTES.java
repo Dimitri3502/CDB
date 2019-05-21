@@ -21,6 +21,7 @@ public class CONSTANTES {
 	public static final String ATT_SEARCH = "search";
 	public static final String ATT_PAGE_ID = "pageid";
 	public static final String ATT_NUMBER_PER_PAGE = "numberPerPage";
+	public static final String ATT_ERRORS_MSG = "errorMsgs";
 	
 	public static final String SELECTION = "selection";
 }

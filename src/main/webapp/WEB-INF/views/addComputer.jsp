@@ -25,6 +25,11 @@
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<h1>Add Computer</h1>
+					<div id="errorMsg-container" class="container">
+						<c:forEach items="${errorMsgs}" var="errorMsg">
+							<div class="alert alert-danger">${errorMsg}</div>
+						</c:forEach>
+					</div>
 					<form:form method="POST" action="addComputer"
 						modelAttribute="computerDTOForm">
 						<fieldset>
@@ -51,6 +56,7 @@
 								<form:input type="date" path="discontinued" class="form-control"
 									id="discontinued" placeholder="Discontinued date"></form:input>
 								<form:errors path="discontinued" cssClass="erreur" />
+
 							</div>
 							<div class="form-group">
 								<form:label path="companyId">Company</form:label>
