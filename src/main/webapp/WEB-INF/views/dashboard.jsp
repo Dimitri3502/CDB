@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,7 +22,7 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalNumber} Computers found</h1>
+			<h1 id="homeTitle">${totalNumber} <spring:message code="string.computersFound"/></h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET"
