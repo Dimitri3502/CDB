@@ -26,19 +26,17 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.WebApplicationContext;
 
-import com.excilys.training.configuration.AppSpringConfig;
+import com.excilys.training.configuration.AppConfig;
+import com.excilys.training.configuration.WebMvcConfiguration;
 import com.excilys.training.service.ComputerService;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-@WebAppConfiguration
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = AppConfig.class)
+
 public class NumberPerPage {
-	
-	@Autowired
-	private WebApplicationContext webAppContext;
-	
+
 	@Autowired
 	private ComputerService computerService;
 

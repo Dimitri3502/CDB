@@ -15,8 +15,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
-import com.excilys.training.configuration.AppSpringConfig;
-import com.excilys.training.configuration.AppSpringConfigTEST;
+import com.excilys.training.configuration.WebMvcConfiguration;
+import com.excilys.training.configuration.AppConfig;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
 import com.excilys.training.utils.TestDatabase;
@@ -26,7 +26,7 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(classes = AppSpringConfigTEST.class)
+@ContextConfiguration(classes = AppConfig.class)
 public class ComputerDAOTest {
 
 	@ClassRule

@@ -1,12 +1,12 @@
-package com.excilys.training.servlets;
+package com.excilys.training.controller.web;
 
-import static com.excilys.training.servlets.CONSTANTES.ATT_COMPUTERS;
-import static com.excilys.training.servlets.CONSTANTES.ATT_NUMBER_PER_PAGE;
-import static com.excilys.training.servlets.CONSTANTES.ATT_ORDER_BY;
-import static com.excilys.training.servlets.CONSTANTES.ATT_ORDER_DIRECTION;
-import static com.excilys.training.servlets.CONSTANTES.ATT_PAGE_ID;
-import static com.excilys.training.servlets.CONSTANTES.ATT_SEARCH;
-import static com.excilys.training.servlets.CONSTANTES.SELECTION;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_COMPUTERS;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_NUMBER_PER_PAGE;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_ORDER_BY;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_ORDER_DIRECTION;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_PAGE_ID;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_SEARCH;
+import static com.excilys.training.controller.web.CONSTANTES.SELECTION;
 
 import java.io.IOException;
 import java.util.List;

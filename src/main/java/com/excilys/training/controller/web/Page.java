@@ -1,4 +1,4 @@
-package com.excilys.training.servlets;
+package com.excilys.training.controller.web;
 
 import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;

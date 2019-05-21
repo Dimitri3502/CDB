@@ -1,4 +1,6 @@
-package com.excilys.training.servlets;
+package com.excilys.training.controller.web;
+import static com.excilys.training.controller.web.CONSTANTES.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -27,13 +29,6 @@ import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;
-
-import static com.excilys.training.servlets.CONSTANTES.*;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
  
 
 @Controller

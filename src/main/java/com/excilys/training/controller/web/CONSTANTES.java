@@ -1,4 +1,4 @@
-package com.excilys.training.servlets;
+package com.excilys.training.controller.web;
 
 public class CONSTANTES {
 	

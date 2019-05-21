@@ -1,6 +1,6 @@
-package com.excilys.training.servlets;
-import static com.excilys.training.servlets.CONSTANTES.ATT_MESSAGE;
-import static com.excilys.training.servlets.CONSTANTES.ATT_RESULTAT;
+package com.excilys.training.controller.web;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_MESSAGE;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_RESULTAT;
 
 import java.util.List;
 

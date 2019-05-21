@@ -5,9 +5,9 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.excilys.training.controller.web.Page;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
-import com.excilys.training.servlets.Page;
 
 @Component()
 public final class ComputerService {

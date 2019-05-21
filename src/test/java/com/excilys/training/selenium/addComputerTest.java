@@ -24,9 +24,8 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
-import com.excilys.training.configuration.AppSpringConfig;
+import com.excilys.training.configuration.AppConfig;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
@@ -35,9 +34,9 @@ import com.excilys.training.service.ComputerService;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-@WebAppConfiguration
+
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = AppConfig.class)
 
 public class addComputerTest {
 	private WebDriver driver;

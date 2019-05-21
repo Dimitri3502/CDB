@@ -13,12 +13,12 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import com.excilys.training.controller.web.Page;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;
-import com.excilys.training.servlets.Page;
 
 @Component()
 public class ComputerDAO extends Dao<Computer> {

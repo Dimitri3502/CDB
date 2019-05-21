@@ -1,6 +1,6 @@
-package com.excilys.training.servlets;
+package com.excilys.training.controller.web;
 
-import static com.excilys.training.servlets.CONSTANTES.*;
+import static com.excilys.training.controller.web.CONSTANTES.*;
 
 import java.util.ArrayList;
 import java.util.List;

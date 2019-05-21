@@ -19,7 +19,7 @@ import com.zaxxer.hikari.HikariDataSource;
 "com.excilys.training.persistance",
 "com.excilys.training.mapper",
 "com.excilys.training.validator"})
-public class AppSpringConfigTEST {
+public class AppConfig {
 
 
 	@Bean
