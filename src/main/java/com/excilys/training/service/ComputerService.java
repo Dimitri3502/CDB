@@ -1,16 +1,17 @@
 package com.excilys.training.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.training.controller.web.Page;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
 
-@Component()
-public final class ComputerService {
+@Service
+@Transactional(readOnly = true)
+public class ComputerService {
 
 	private final ComputerDAO computerDAO;
 
@@ -19,7 +20,7 @@ public final class ComputerService {
 		this.computerDAO = computerDAO;
 	}
 	
-
+	@Transactional
 	public long create(Computer computerDTO) {
 		return computerDAO.create(computerDTO);
 	};
@@ -31,20 +32,20 @@ public final class ComputerService {
 	public long count(String name) {
 		return computerDAO.count(name);
 	};
-
+	@Transactional
 	public boolean update(Computer computer) {
 		return computerDAO.update(computer);
 	};
-
+	@Transactional
 	public boolean delete(Computer computer) {
 		return computerDAO.delete(computer);
 	};
+	@Transactional
 	public boolean delete(Long id) {
 		return computerDAO.delete(id);
 	};
 	public Computer findById(Long id) {
 		return computerDAO.findById(id);
-//		return computer.map(computerMapper::modelToDto);
 
 	};
 

@@ -3,10 +3,15 @@ package com.excilys.training.configuration;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.excilys.training.persistance.databases.DbCredentials;
 import com.zaxxer.hikari.HikariConfig;
@@ -19,8 +24,13 @@ import com.zaxxer.hikari.HikariDataSource;
 "com.excilys.training.persistance",
 "com.excilys.training.mapper",
 "com.excilys.training.validator"})
+@EnableTransactionManagement
 public class AppConfig {
 
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+	return new DataSourceTransactionManager(dataSource);
+    }
 
 	@Bean
 	public DbCredentials DbCredentials() {

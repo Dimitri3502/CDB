@@ -46,5 +46,14 @@ public class CompanyServiceTest {
 		Company expected = new Company(2L,"Thinking Machines");
 		assertEquals(actual, expected);
 	}
-
+	@Test
+	public final void testDelete() {
+		Long id=2L;
+		companyService.findById(id);
+		companyService.delete(id);
+		
+		// insert into computer (id,name,introduced,discontinued,company_id) 
+		// values (  2,'CM-2a',null,null,2);
+		assertTrue(companyService.findById(id) == null);
+	}
 }
