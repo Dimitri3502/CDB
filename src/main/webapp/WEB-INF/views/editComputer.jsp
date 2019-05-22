@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,34 +23,32 @@
 				<div class="col-xs-8 col-xs-offset-2 box">
 					<div class="label label-default pull-right">id:
 						${computer.id}</div>
-					<h1>Edit Computer</h1>
+					<h1><spring:message code="string.editTitle" /></a></h1>
 
 					<form action="editComputer" method="POST">
 						<input type="hidden" name="id" value="${computer.id}" id="id" />
 						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
-								<label for="computerName">Computer name</label> <input
+								<label for="computerName"> <spring:message code="string.computerName" /> </label> <input
 									name="computerName" type="text" class="form-control" id="computerName"
-									placeholder="Computer name" value="${computer.name}" required>
+									placeholder="<spring:message code="string.computerName" />" value="${computer.name}" required>
 								<span class="erreur">${erreurs['computerName']}</span>
 							</div>
 							<div class="form-group">
-								<label for="introduced">Introduced date</label> <input
+								<label for="introduced"><spring:message code="string.introduced" /></label> <input
 									name="introduced" type="date" class="form-control" id="introduced"
-									placeholder="Introduced date"
 									value="${computer.introducedDate}"> <span
 									class="erreur">${erreurs['introduced']}</span>
 							</div>
 							<div class="form-group">
-								<label for="discontinued">Discontinued date</label> <input
+								<label for="discontinued"> <spring:message code="string.discontinued" /></label> <input
 									name="discontinued" type="date" class="form-control" id="discontinued"
-									placeholder="Discontinued date"
 									value="${computer.discontinuedDate}"> <span
 									class="erreur">${erreurs['discontinued']}</span>
 							</div>
 							<div class="form-group">
-								<label for="companyId">Company</label> <select name="companyId"
+								<label for="companyId"><spring:message code="string.companyName" /></label> <select name="companyId"
 									class="form-control" id="companyId">
 									<option value="0">--</option>
 									<c:forEach items="${companies}" var="company">

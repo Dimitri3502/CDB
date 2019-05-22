@@ -24,9 +24,9 @@ import com.excilys.training.service.ComputerService;
 @Controller
 @RequestMapping({"/dashboard", "/"})
 @SessionAttributes("page")
-public class DashboardServlet{
+public class DashboardController{
 
-	public DashboardServlet(ComputerService computerService, ComputerMapper computerMapper, Pagination pagination) {
+	public DashboardController(ComputerService computerService, ComputerMapper computerMapper, Pagination pagination) {
 		super();
 		this.computerService = computerService;
 		this.computerMapper = computerMapper;

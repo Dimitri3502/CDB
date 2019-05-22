@@ -24,8 +24,8 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
-					<div id="errorMsg-container" class="container">
+					<h1><spring:message code="string.addTitle" /></h1>
+					<div id="errorMsg-container">
 						<c:forEach items="${errorMsgs}" var="errorMsg">
 							<div class="alert alert-danger">${errorMsg}</div>
 						</c:forEach>
@@ -36,30 +36,32 @@
 							<div class="form-group">
 								<spring:bind path="computerName">
 									<div class="form-group ${status.error ? 'has-error' : ''}">
-										<form:label path="computerName">Computer name</form:label>
+										<form:label path="computerName"><spring:message code="string.computerName" /></form:label>
+										<spring:message code="string.computerName" var="computerName" />
 										<form:input type="text" path="computerName"
-											class="form-control" id="computerName"
-											placeholder="Computer name"></form:input>
+											class="form-control" id="computerName" 
+											placeholder="${computerName}"
+											></form:input>
 										<form:errors path="computerName" cssClass="erreur" />
 									</div>
 
 								</spring:bind>
 							</div>
 							<div class="form-group">
-								<form:label path="introduced">Introduced date</form:label>
+								<form:label path="introduced"><spring:message code="string.introduced" /></form:label>
 								<form:input type="date" path="introduced" class="form-control"
 									id="introduced" placeholder="Introduced date"></form:input>
 								<form:errors path="introduced" cssClass="erreur" />
 							</div>
 							<div class="form-group">
-								<form:label path="discontinued">Discontinued date</form:label>
+								<form:label path="discontinued"><spring:message code="string.discontinued" /> </form:label>
 								<form:input type="date" path="discontinued" class="form-control"
 									id="discontinued" placeholder="Discontinued date"></form:input>
 								<form:errors path="discontinued" cssClass="erreur" />
 
 							</div>
 							<div class="form-group">
-								<form:label path="companyId">Company</form:label>
+								<form:label path="companyId"><spring:message code="string.companyName" /></form:label>
 								<form:select path="companyId" class="form-control"
 									id="companyId">
 									<option value="">--</option>

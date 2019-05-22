@@ -33,7 +33,7 @@ import com.excilys.training.validator.WebValidator;
 
 @Controller
 @RequestMapping("/editComputer")
-public class EditComputerServlet{
+public class EditComputerController{
     public static final String VUE = "editComputer";
 
 	

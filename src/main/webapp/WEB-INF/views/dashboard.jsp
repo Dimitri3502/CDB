@@ -32,14 +32,18 @@
 						class="form-inline">
 						<input type="search" id="searchbox" name="search"
 							class="form-control" value="${page.search}"
-							placeholder="Search name" /> <input type="submit"
-							id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+							placeholder="<spring:message code="string.chooseHere" />" /> <input
+							type="submit" id="searchsubmit"
+							value="<spring:message code="string.filter" />"
+							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer">
+						<spring:message code="string.add" />
+					</a> <a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"> <spring:message
+							code="string.edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -62,8 +66,8 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th class="th-sm">Computer name <a
-							title="Order by name ascendant"
+						<th class="th-sm"><spring:message code="string.computerName" />
+							<a title="Order by name ascendant"
 							<c:url value="/dashboard" var="url">
  								<c:param name="orderBy" value="computerName"/>
  								<c:param name="orderDirection" value="asc"/>
@@ -74,8 +78,7 @@
  								<c:param name="orderBy" value="computerName"/>
  								<c:param name="orderDirection" value="desc"/>
 							</c:url>
-							href="${url}"> <em class="fa fa-arrow-up"></em></a>
-						</th>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 						<th class="th-sm">id <a title="Order by id ascendant"
 							<c:url value="/dashboard" var="url">
  								<c:param name="orderBy" value="id"/>
@@ -89,8 +92,8 @@
 							</c:url>
 							href="${url}"> <em class="fa fa-arrow-up"></em></a>
 						</th>
-						<th class="th-sm">Introduced date <a
-							title="Order by introduced ascendant"
+						<th class="th-sm"><spring:message code="string.introduced" />
+							<a title="Order by introduced ascendant"
 							<c:url value="/dashboard" var="url">
  								<c:param name="orderBy" value="introduced"/>
  								<c:param name="orderDirection" value="asc"/>
@@ -101,11 +104,10 @@
  								<c:param name="orderBy" value="introduced"/>
  								<c:param name="orderDirection" value="desc"/>
 							</c:url>
-							href="${url}"> <em class="fa fa-arrow-up"></em></a>
-						</th>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 						<!-- Table header for Discontinued Date -->
-						<th class="th-sm">Discontinued date <a
-							title="Order by discontinued ascendant"
+						<th class="th-sm"><spring:message code="string.discontinued" />
+							<a title="Order by discontinued ascendant"
 							<c:url value="/dashboard" var="url">
  								<c:param name="orderBy" value="discontinued"/>
  								<c:param name="orderDirection" value="asc"/>
@@ -116,12 +118,11 @@
  								<c:param name="orderBy" value="discontinued"/>
  								<c:param name="orderDirection" value="desc"/>
 							</c:url>
-							href="${url}"> <em class="fa fa-arrow-up"></em></a>
-						</th>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 
 						<!-- Table header for Company -->
-						<th class="th-sm">Company <a
-							title="Order by company ascendant"
+						<th class="th-sm"><spring:message code="string.companyName" />
+							<a title="Order by company ascendant"
 							<c:url value="/dashboard" var="url">
  								<c:param name="orderBy" value="companyName"/>
  								<c:param name="orderDirection" value="asc"/>
@@ -132,8 +133,7 @@
  								<c:param name="orderBy" value="companyName"/>
  								<c:param name="orderDirection" value="desc"/>
 							</c:url>
-							href="${url}"> <em class="fa fa-arrow-up"></em></a>
-						</th>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -200,6 +200,11 @@
 		</div>
 
 	</footer>
+		<script type="text/javascript">
+		var edit = "<spring:message code="string.js.edit"/>";
+		var view = "<spring:message code="string.js.view"/>";
+		var alertMsg = "<spring:message code="string.js.alertMsg"/>";
+	</script>
 	<script src="static/js/jquery.min.js"></script>
 	<script src="static/js/bootstrap.min.js"></script>
 	<script src="static/js/dashboard.js"></script>

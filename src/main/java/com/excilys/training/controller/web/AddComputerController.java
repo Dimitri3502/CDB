@@ -33,8 +33,8 @@ import com.excilys.training.service.ComputerService;
 
 @Controller
 @RequestMapping("/addComputer")
-public class AddComputerServlet{
-    public AddComputerServlet(ComputerService computerService, CompanyService companyService,
+public class AddComputerController{
+    public AddComputerController(ComputerService computerService, CompanyService companyService,
 			CompanyMapper companyMapper, ComputerMapper computerMapper) {
 		super();
 		this.computerService = computerService;
@@ -60,7 +60,7 @@ public class AddComputerServlet{
 	
 
 	@RequestMapping(method = RequestMethod.GET)
-    public ModelAndView handleGet(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ModelAndView handleGet() throws Exception {
 		
 		ModelAndView mv = new ModelAndView(VUE);
 		
@@ -85,7 +85,6 @@ public class AddComputerServlet{
 		if (result.hasErrors()) {
 			message = "Échec de l'inscription.";
 			resultat = false;
-			
 			for (ObjectError error : result.getGlobalErrors()) {
 				errors.add(error.getDefaultMessage());
 			}
@@ -94,6 +93,7 @@ public class AddComputerServlet{
         	long id = computerService.create(computerMapper.dtoFormToModel(computerDTOForm));
         	message = "Succès de l'inscription.";
         	resultat = true;
+        	mv.addObject("computerDTOForm", new ComputerDTOForm());
         }
         
 
@@ -101,7 +101,7 @@ public class AddComputerServlet{
 		mv.addObject( ATT_ERRORS_MSG, errors );
         mv.addObject( ATT_RESULTAT, resultat );
         mv.addObject( ATT_MESSAGE, message );
-        mv.addObject("computerDTOForm", computerDTOForm);
+        
 		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
 		mv.addObject("companies", companies);
 

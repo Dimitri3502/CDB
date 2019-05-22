@@ -15,9 +15,9 @@ public class DateValidator implements ConstraintValidator<Antes, ComputerDTOForm
 			final String firstObj = value.getIntroduced();
 			final String secondObj = value.getDiscontinued();
 			if (firstObj != null && secondObj != null) {
-				if (LocalDate.parse(secondObj).isAfter(LocalDate.parse(firstObj))) {
-					return true;
-				}
+				return LocalDate.parse(secondObj).isAfter(LocalDate.parse(firstObj));
+			} else {
+				return true;
 			}
 
 		} catch (final Exception e) {
