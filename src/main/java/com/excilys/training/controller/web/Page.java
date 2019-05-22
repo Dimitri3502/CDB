@@ -1,27 +1,34 @@
 package com.excilys.training.controller.web;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+
 import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;
 
 public class Page {
 	private int currentPageNumber;
+	private int pageNumberRequest;
+	private List<Integer> pageIds; 
 	private int limit; 
 	private int offset; 
 	private String search; 
 	private OrderByChamp orderBy; 
 	private OrderByDirection orderDirection;
+	private int nbPage;
 	
 	
-	
-	public Page(int limit, int offset, String search, OrderByChamp orderBy, OrderByDirection orderDirection) {
-		super();
-		this.setLimit(limit);
-		this.setOffset(offset);
-		this.search = search != null ? "%" + search + "%" : "%%";;
-		this.orderBy = orderBy;
-		this.orderDirection = orderDirection;
+	public Page() {
+		pageIds = Arrays.asList(0, 1, 2,3,4,4,5,6,7,8,9);
+		orderBy = OrderByChamp.ID;
+		orderDirection = OrderByDirection.ASC;
+		limit = 10;
+		offset = 0;
+		search = "";
 	}
-	
+
 	public int getLimit() {
 		return limit;
 	}
@@ -38,18 +45,21 @@ public class Page {
 		return search;
 	}
 	public void setSearch(String search) {
-		this.search = search;
+		setCurrentPageNumber(0);
+		this.search = Objects.toString(search,"");
 	}
 	public OrderByChamp getOrderBy() {
 		return orderBy;
 	}
 	public void setOrderBy(OrderByChamp orderBy) {
+		setCurrentPageNumber(0);
 		this.orderBy = orderBy;
 	}
 	public OrderByDirection getOrderDirection() {
 		return orderDirection;
 	}
 	public void setOrderDirection(OrderByDirection orderDirection) {
+		setCurrentPageNumber(0);
 		this.orderDirection = orderDirection;
 	}
 
@@ -59,6 +69,30 @@ public class Page {
 
 	public void setCurrentPageNumber(int currentPageNumber) {
 		this.currentPageNumber = currentPageNumber;
+	}
+
+	public int getPageNumberRequest() {
+		return pageNumberRequest;
+	}
+
+	public void setPageNumberRequest(int pageNumberRequest) {
+		this.pageNumberRequest = pageNumberRequest;
+	}
+
+	public List<Integer> getPageIds() {
+		return pageIds;
+	}
+
+	public void setPageIds(List<Integer> pageIds) {
+		this.pageIds = pageIds;
+	}
+
+	public int getNbPage() {
+		return nbPage;
+	}
+
+	public void setNbPage(int nbPage) {
+		this.nbPage = nbPage;
 	}
 	
 	

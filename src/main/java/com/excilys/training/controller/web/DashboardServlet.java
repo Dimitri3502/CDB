@@ -1,12 +1,6 @@
 package com.excilys.training.controller.web;
 
-import static com.excilys.training.controller.web.CONSTANTES.ATT_COMPUTERS;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_NUMBER_PER_PAGE;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_ORDER_BY;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_ORDER_DIRECTION;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_PAGE_ID;
-import static com.excilys.training.controller.web.CONSTANTES.ATT_SEARCH;
-import static com.excilys.training.controller.web.CONSTANTES.SELECTION;
+import static com.excilys.training.controller.web.CONSTANTES.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +10,11 @@ import javax.servlet.ServletException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.ComputerDTO;
@@ -27,6 +23,7 @@ import com.excilys.training.service.ComputerService;
 
 @Controller
 @RequestMapping({"/dashboard", "/"})
+@SessionAttributes("page")
 public class DashboardServlet{
 
 	public DashboardServlet(ComputerService computerService, ComputerMapper computerMapper, Pagination pagination) {
@@ -54,39 +51,37 @@ public class DashboardServlet{
 	
 
 	@RequestMapping(method = RequestMethod.GET)
-	protected ModelAndView processRequest(@RequestParam(required = false, name = ATT_SEARCH) String search,
-			@RequestParam(required = false, name = ATT_ORDER_BY) String orderBy,
-			@RequestParam(required = false, name = ATT_ORDER_DIRECTION) String orderDirection,
-			@RequestParam(defaultValue = "10", name = ATT_NUMBER_PER_PAGE) Integer numberPerPage,
-			@RequestParam(defaultValue = "0", name = ATT_PAGE_ID) Integer pageId)
+	protected ModelAndView processRequest(@ModelAttribute("page") Page page)
 			throws ServletException, IOException {
 		
 		ModelAndView mv = new ModelAndView(VUE);
 		
 
-		Long totalNumber = computerService.count(search);
-		Page page = pagination.doPagination(search, orderBy, orderDirection, numberPerPage, pageId, totalNumber,mv);
+		Long totalNumber = computerService.count(page.getSearch());
+		pagination.doPagination(totalNumber, page);
 
 
 		List<ComputerDTO> computers = computerMapper.allModelToDTO(computerService.getAll(page));
 		// Add to request
+		mv.addObject(ATT_TOTAL_NUMBER, totalNumber);
 		mv.addObject(ATT_COMPUTERS, computers);
-		
+		mv.addObject("page", page);
 		return mv;
 	}
 
 
 	@RequestMapping(method = RequestMethod.POST)
-    public ModelAndView handlePost(@RequestParam(required = false, name = ATT_SEARCH) String search,
-			@RequestParam(required = false, name = ATT_SEARCH) String orderBy,
-			@RequestParam(required = false, name = ATT_ORDER_DIRECTION) String orderDirection,
-			@RequestParam(required = false, name = ATT_NUMBER_PER_PAGE) Integer numberPerPage,
-			@RequestParam(required = false, name = ATT_PAGE_ID) Integer pageId,
+    public ModelAndView handlePost(@ModelAttribute("page") Page page,
     		@RequestParam(name = SELECTION) List<Long> removeComputersId) throws Exception {
 		
 		removeComputersId.stream().forEach(computerService::delete);
-		return processRequest(search, orderBy, orderDirection, numberPerPage, pageId);
+		return processRequest(page);
 
+	}
+	
+	@ModelAttribute("page")
+	public Page getPage() {
+		return new Page();
 	}
 
 }

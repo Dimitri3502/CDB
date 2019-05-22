@@ -55,12 +55,6 @@
 			<version>${javax.validation.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>

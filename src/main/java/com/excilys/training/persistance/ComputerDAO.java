@@ -163,9 +163,9 @@ public class ComputerDAO extends Dao<Computer> {
 		try {
 			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
 					.replace(":order_direction:", map(page.getOrderDirection()));
-			
+			String search = "%" + page.getSearch() + "%";
 			return jdbcTemplate.query(selectByNameOrCompany,
-					new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
+					new Object[] {search, search, page.getLimit(), page.getOffset() },
 					computerResultSetModelMapper);
 		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());

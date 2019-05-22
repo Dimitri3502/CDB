@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.FormatterRegistry;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
@@ -18,6 +19,9 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
+
+import com.excilys.training.converter.StringToOrderByChampConverter;
+import com.excilys.training.converter.StringToOrderByDirectionConverter;
 
 @Configuration
 @ComponentScan(basePackages = "com.excilys.training.controller.web")
@@ -39,37 +43,45 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
 		return bean;
 	}
+
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+		registry.addConverter(new StringToOrderByChampConverter());
+		registry.addConverter(new StringToOrderByDirectionConverter());
+	}
+
 	@Bean
 	public LocaleResolver localeResolver() {
-	    SessionLocaleResolver slr = new SessionLocaleResolver();
-	    slr.setDefaultLocale(Locale.US);
-	    return slr;
+		SessionLocaleResolver slr = new SessionLocaleResolver();
+		slr.setDefaultLocale(Locale.US);
+		return slr;
 	}
+
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
-	    LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
-	    lci.setParamName("lang");
-	    return lci;
+		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
+		lci.setParamName("lang");
+		return lci;
 	}
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-	    registry.addInterceptor(localeChangeInterceptor());
+		registry.addInterceptor(localeChangeInterceptor());
 	}
 
 	@Bean
 	public MessageSource messageSource() {
-	    ReloadableResourceBundleMessageSource messageSource
-	      = new ReloadableResourceBundleMessageSource();
-	     
-	    messageSource.setBasename("classpath:i18n/messages");
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+
+		messageSource.setBasename("classpath:i18n/messages");
 //	    messageSource.setDefaultEncoding("UTF-8");
-	    return messageSource;
+		return messageSource;
 	}
-	
+
 	@Bean
 	public LocalValidatorFactoryBean getValidator() {
-	    LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
-	    bean.setValidationMessageSource(messageSource());
-	    return bean;
+		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+		bean.setValidationMessageSource(messageSource());
+		return bean;
 	}
 }

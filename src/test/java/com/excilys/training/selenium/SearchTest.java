@@ -1,6 +1,7 @@
 package com.excilys.training.selenium;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -76,9 +77,9 @@ public class SearchTest {
 		driver.findElement(By.id("searchbox")).sendKeys(name);
 		// 5 | click | id=searchsubmit | |
 		driver.findElement(By.id("searchsubmit")).click();
-		long actual = Long.parseLong(driver.findElement(By.id("homeTitle")).getText().replaceFirst(" Computers found", ""));
-		long expected = computerService.count(name);
-		assertEquals(expected, actual);
+		String actual = driver.findElement(By.id("homeTitle")).getText();
+		String expected = ""+ computerService.count(name);
+		assertTrue(actual.toLowerCase().contains(expected.toLowerCase()));
 		
 	}
 }
