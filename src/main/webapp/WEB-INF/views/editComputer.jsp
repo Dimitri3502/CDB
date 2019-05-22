@@ -32,7 +32,8 @@
 							<div class="form-group">
 								<label for="computerName"> <spring:message code="string.computerName" /> </label> <input
 									name="computerName" type="text" class="form-control" id="computerName"
-									placeholder="<spring:message code="string.computerName" />" value="${computer.name}" required>
+									placeholder="<spring:message code="string.computerName" />" 
+									value="${computer.name}" required>
 								<span class="erreur">${erreurs['computerName']}</span>
 							</div>
 							<div class="form-group">
