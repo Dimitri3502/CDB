@@ -58,13 +58,12 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
 				Company company = companyService.findById(Long.parseLong(companyId));
-				if (company==null) {
+				if (company == null) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
 					theComputer.setCompany(company);
 				}
-			}
-			else {
+			} else {
 				theComputer.setCompany(new Company());
 			}
 		} catch (DateTimeParseException | CompanyNotFoundException e) {
@@ -73,7 +72,6 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 
 		return theComputer;
 	}
-
 
 	public ComputerDTOForm modelToDtoForm(Computer computer) {
 		ComputerDTOForm theComputerDTOForm = new ComputerDTOForm();
@@ -86,10 +84,12 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			theComputerDTOForm.setDiscontinued(computer.getDiscontinuedDate().toLocalDate().toString());
 		}
 		theComputerDTOForm.setCompanyName(computer.getCompany().getName());
-		theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+		if (computer.getCompany().getId() != null) {
+			theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+		}
 		return theComputerDTOForm;
 	}
-	
+
 	@Override
 	public ComputerDTO modelToDto(Computer computer) {
 		ComputerDTO theComputerDTO = new ComputerDTO();
@@ -105,9 +105,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
 	}
+
 	@Override
 	public List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {
-		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> modelToDto(s)).collect(Collectors.toList());
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> modelToDto(s))
+				.collect(Collectors.toList());
 		return theComputerDtoList;
 	}
 
@@ -131,13 +133,12 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			if (!isBlank(computerDTOForm.getCompanyId())) {
 				String companyId = computerDTOForm.getCompanyId();
 				Company company = companyService.findById(Long.parseLong(companyId));
-				if (company==null) {
+				if (company == null) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
 					theComputer.setCompany(company);
 				}
-			}
-			else {
+			} else {
 				theComputer.setCompany(new Company());
 			}
 		} catch (DateTimeParseException | CompanyNotFoundException e) {
