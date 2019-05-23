@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Pagination {
 
-	private static final int MAX_PAGE = 10; // size of page choice below the table
+	
 	private int currentPageNumber;
 	private List<Integer> pageIds;
 	private int nbPage;
@@ -18,6 +18,7 @@ public class Pagination {
 		Integer pageNumberRequest = page.getPageNumberRequest();
 
 		nbPage = (int) Math.ceil(((double) totalNumber) / limit);
+		nbPage = nbPage ==0 ? 0 : nbPage-1;
 
 		if (!(pageNumberRequest == null)) {
 
@@ -35,7 +36,7 @@ public class Pagination {
 
 		pageIds = new ArrayList<>();
 		int len = 0;
-		for (int number = Math.max(0, currentPageNumber - MAX_PAGE / 2); (len < MAX_PAGE)
+		for (int number = Math.max(0, currentPageNumber - Page.MAX_PAGE_CHOICE / 2); (len < Page.MAX_PAGE_CHOICE)
 				&& (number <= nbPage); ++number) {
 			pageIds.add(number);
 			len = pageIds.size();

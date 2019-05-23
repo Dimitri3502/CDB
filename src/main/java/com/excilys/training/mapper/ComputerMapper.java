@@ -74,6 +74,22 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		return theComputer;
 	}
 
+
+	public ComputerDTOForm modelToDtoForm(Computer computer) {
+		ComputerDTOForm theComputerDTOForm = new ComputerDTOForm();
+		theComputerDTOForm.setId(Long.toString(computer.getId()));
+		theComputerDTOForm.setComputerName(computer.getName());
+		if (computer.getIntroducedDate() != null) {
+			theComputerDTOForm.setIntroduced(computer.getIntroducedDate().toLocalDate().toString());
+		}
+		if (computer.getDiscontinuedDate() != null) {
+			theComputerDTOForm.setDiscontinued(computer.getDiscontinuedDate().toLocalDate().toString());
+		}
+		theComputerDTOForm.setCompanyName(computer.getCompany().getName());
+		theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+		return theComputerDTOForm;
+	}
+	
 	@Override
 	public ComputerDTO modelToDto(Computer computer) {
 		ComputerDTO theComputerDTO = new ComputerDTO();
@@ -95,7 +111,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		return theComputerDtoList;
 	}
 
-	public Computer dtoFormToModel(@Valid ComputerDTOForm computerDTOForm) {
+	public Computer dtoFormToModel(ComputerDTOForm computerDTOForm) {
 		Computer theComputer = new Computer();
 
 		if (!isBlank(computerDTOForm.getId())) {

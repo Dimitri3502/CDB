@@ -18,6 +18,7 @@ public class Page {
 	private OrderByChamp orderBy; 
 	private OrderByDirection orderDirection;
 	private int nbPage;
+	public static final int MAX_PAGE_CHOICE = 10; // size of page choice below the table
 	
 	
 	public Page() {
@@ -45,21 +46,21 @@ public class Page {
 		return search;
 	}
 	public void setSearch(String search) {
-		setCurrentPageNumber(0);
+		setPageNumberRequest(0);
 		this.search = Objects.toString(search,"");
 	}
 	public OrderByChamp getOrderBy() {
 		return orderBy;
 	}
 	public void setOrderBy(OrderByChamp orderBy) {
-		setCurrentPageNumber(0);
+		setPageNumberRequest(0);
 		this.orderBy = orderBy;
 	}
 	public OrderByDirection getOrderDirection() {
 		return orderDirection;
 	}
 	public void setOrderDirection(OrderByDirection orderDirection) {
-		setCurrentPageNumber(0);
+		setPageNumberRequest(0);
 		this.orderDirection = orderDirection;
 	}
 

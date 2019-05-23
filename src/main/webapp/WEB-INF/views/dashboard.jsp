@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-
+<%@ page import="com.excilys.training.controller.web.Page" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +18,9 @@
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
+				<div class="pull-right">
+				<a class="navbar-brand" href="?lang=us">US</a>|<a class="navbar-brand" href="?lang=fr">FR</a>
+				</div>
 		</div>
 	</header>
 
@@ -142,7 +145,11 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
+							<td><a 
+							<c:url value="/editComputer" var="url">
+ 								<c:param name="id" value="${computer.id}"/>
+							</c:url>
+							href="${url}">${computer.name}</a></td>
 							<td>${computer.id}</td>
 							<td>${computer.introducedDate}</td>
 							<td>${computer.discontinuedDate}</td>
@@ -162,7 +169,7 @@
 			<ul class="pagination">
 				<li><a
 					<c:url value="/dashboard" var="url">
-						<c:param name="pageNumberRequest" value="${page.currentPageNumber - 10}"/>
+						<c:param name="pageNumberRequest" value="${page.currentPageNumber - Page.MAX_PAGE_CHOICE}"/>
 					</c:url>
 					href="${url}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
@@ -175,7 +182,7 @@
 				</c:forEach>
 				<li><a
 					<c:url value="/dashboard" var="url">
-						<c:param name="pageNumberRequest" value="${page.currentPageNumber + 10}"/>
+						<c:param name="pageNumberRequest" value="${page.currentPageNumber + Page.MAX_PAGE_CHOICE}"/>
 					</c:url>
 					href="${url}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>

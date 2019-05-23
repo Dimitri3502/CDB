@@ -58,18 +58,19 @@ public class AddComputerController{
 	
 	private ComputerMapper computerMapper;
 	
+	@ModelAttribute("companies")
+	public List<CompanyDTO>  getCompanies() {
+		return companyMapper.allModelToDTO(companyService.getAll());
+	}
 
+	@ModelAttribute("computerDTOForm")
+	public ComputerDTOForm  getComputerDTOForm() {
+		return new ComputerDTOForm();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
     public ModelAndView handleGet() throws Exception {
-		
-		ModelAndView mv = new ModelAndView(VUE);
-		
-		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
-
-		// Add to request
-		mv.addObject("computerDTOForm", new ComputerDTOForm());
-		mv.addObject("companies", companies);
-		return mv;
+		return new ModelAndView(VUE);
     }
 
 
@@ -83,7 +84,7 @@ public class AddComputerController{
 		Boolean resultat;
 		List<String> errors = new ArrayList<>();
 		if (result.hasErrors()) {
-			message = "Échec de l'inscription.";
+			message = "string.fail";
 			resultat = false;
 			for (ObjectError error : result.getGlobalErrors()) {
 				errors.add(error.getDefaultMessage());
@@ -91,7 +92,7 @@ public class AddComputerController{
             
         } else {
         	long id = computerService.create(computerMapper.dtoFormToModel(computerDTOForm));
-        	message = "Succès de l'inscription.";
+        	message = "string.success";
         	resultat = true;
         	mv.addObject("computerDTOForm", new ComputerDTOForm());
         }
@@ -101,9 +102,7 @@ public class AddComputerController{
 		mv.addObject( ATT_ERRORS_MSG, errors );
         mv.addObject( ATT_RESULTAT, resultat );
         mv.addObject( ATT_MESSAGE, message );
-        
-		List<CompanyDTO> companies = companyMapper.allModelToDTO(companyService.getAll());
-		mv.addObject("companies", companies);
+       
 
 		return mv;
         

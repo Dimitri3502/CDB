@@ -17,6 +17,9 @@
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
+				<div class="pull-right">
+				<a class="navbar-brand" href="?lang=us">US</a>|<a class="navbar-brand" href="?lang=fr">FR</a>
+				</div>
 		</div>
 	</header>
 
@@ -71,7 +74,7 @@
 								</form:select>
 								<form:errors path="companyId" cssClass="erreur" />
 							</div>
-							<div class="${resultat ? 'text-success' : 'text-danger'}">${message}</div>
+							<div class="${resultat ? 'text-success' : 'text-danger'}"><spring:message code="${message}" text=""/></div>
 						</fieldset>
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary"></input>
