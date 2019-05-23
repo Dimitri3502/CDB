@@ -1,9 +1,16 @@
 package com.excilys.training.dto;
 
+
+
 public class ComputerDTO extends Dto{
-	private String name;
-	private String introducedDate;
-	private String discontinuedDate;
+	
+
+	private String computerName;
+
+	private String introduced;
+
+	private String discontinued;
+
 	private CompanyDTO companyDTO;
 	
 	public ComputerDTO() {
@@ -16,29 +23,29 @@ public class ComputerDTO extends Dto{
 	
 	public ComputerDTO(String id, String name, String introducedDate, String discontinuedDate, CompanyDTO companyDTO) {
 		super(id);
-		this.name = name;
-		this.introducedDate = introducedDate;
-		this.discontinuedDate = discontinuedDate;
+		this.computerName = name;
+		this.introduced = introducedDate;
+		this.discontinued = discontinuedDate;
 		this.companyDTO = companyDTO;
 	}
 	
 	public String getName() {
-		return name;
+		return computerName;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.computerName = name;
 	}
 	public String getIntroducedDate() {
-		return introducedDate;
+		return introduced;
 	}
 	public void setIntroducedDate(String introducedDate) {
-		this.introducedDate = introducedDate;
+		this.introduced = introducedDate;
 	}
 	public String getDiscontinuedDate() {
-		return discontinuedDate;
+		return discontinued;
 	}
 	public void setDiscontinuedDate(String discontinuedDate) {
-		this.discontinuedDate = discontinuedDate;
+		this.discontinued = discontinuedDate;
 	}
 
 	public CompanyDTO getCompanyDTO() {
@@ -49,17 +56,17 @@ public class ComputerDTO extends Dto{
 	}
 	@Override
 	public String toString() {
-		return "ComputerDTO [id = " + id + ", name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
-				+ discontinuedDate + ", CompanyDTO=" + companyDTO.toString() + "]";
+		return "ComputerDTO [id = " + id + ", name=" + computerName + ", introducedDate=" + introduced + ", discontinuedDate="
+				+ discontinued + ", CompanyDTO=" + companyDTO.toString() + "]";
 	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((companyDTO == null) ? 0 : companyDTO.hashCode());
-		result = prime * result + ((discontinuedDate == null) ? 0 : discontinuedDate.hashCode());
-		result = prime * result + ((introducedDate == null) ? 0 : introducedDate.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((discontinued == null) ? 0 : discontinued.hashCode());
+		result = prime * result + ((introduced == null) ? 0 : introduced.hashCode());
+		result = prime * result + ((computerName == null) ? 0 : computerName.hashCode());
 		return result;
 	}
 	@Override
@@ -76,20 +83,20 @@ public class ComputerDTO extends Dto{
 				return false;
 		} else if (!companyDTO.equals(other.companyDTO))
 			return false;
-		if (discontinuedDate == null) {
-			if (other.discontinuedDate != null)
+		if (discontinued == null) {
+			if (other.discontinued != null)
 				return false;
-		} else if (!discontinuedDate.equals(other.discontinuedDate))
+		} else if (!discontinued.equals(other.discontinued))
 			return false;
-		if (introducedDate == null) {
-			if (other.introducedDate != null)
+		if (introduced == null) {
+			if (other.introduced != null)
 				return false;
-		} else if (!introducedDate.equals(other.introducedDate))
+		} else if (!introduced.equals(other.introduced))
 			return false;
-		if (name == null) {
-			if (other.name != null)
+		if (computerName == null) {
+			if (other.computerName != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!computerName.equals(other.computerName))
 			return false;
 		return true;
 	}

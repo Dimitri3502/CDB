@@ -3,18 +3,39 @@ package com.excilys.training.configuration;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+import javax.sql.DataSource;
+
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import com.excilys.training.persistance.databases.DbCredentials;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan(basePackages = "com.excilys.training")
-public class AppSpringConfig {
+@ComponentScan(basePackages = {
+"com.excilys.training.utils",
+"com.excilys.training.service",
+"com.excilys.training.persistance",
+"com.excilys.training.mapper",
+"com.excilys.training.validator"})
+@EnableTransactionManagement
+public class AppConfig {
+
+    @Bean
+    public PlatformTransactionManager transactionManager(DataSource dataSource) {
+	return new DataSourceTransactionManager(dataSource);
+    }
+    
+
 	@Bean
 	public DbCredentials DbCredentials() {
 		final String environnement = System.getenv("dbName");
@@ -24,7 +45,7 @@ public class AppSpringConfig {
 			return new DbCredentials(ResourceBundle.getBundle("dbTest"));
 		}
 	}
-
+	
 	@Bean
 	public HikariConfig hikariConfig(DbCredentials credentials) {
 		final HikariConfig hikariConfig = new HikariConfig();
@@ -44,7 +65,7 @@ public class AppSpringConfig {
 	public HikariDataSource hikariDataSource(HikariConfig hikariConfig) {
 		return new HikariDataSource(hikariConfig);
 	}
-	
+
 	@Bean
 	public JdbcTemplate jdbcTemplate(HikariDataSource hikariDataSource) {
 		return new JdbcTemplate(hikariDataSource);
