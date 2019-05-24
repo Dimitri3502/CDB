@@ -19,6 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
+import com.excilys.training.pagination.Page;
+import com.excilys.training.pagination.Pagination;
 import com.excilys.training.service.ComputerService;
 
 @Controller

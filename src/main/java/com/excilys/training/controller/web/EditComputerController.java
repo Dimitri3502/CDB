@@ -1,41 +1,28 @@
 package com.excilys.training.controller.web;
-import static com.excilys.training.controller.web.CONSTANTES.*;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_ERRORS_MSG;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_MESSAGE;
+import static com.excilys.training.controller.web.CONSTANTES.ATT_RESULTAT;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.dto.CompanyDTO;
-import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOForm;
 import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
-import com.excilys.training.validator.Validator;
-import com.excilys.training.validator.WebValidator;
  
 
 @Controller

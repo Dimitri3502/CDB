@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.training.controller.web.Page;
 import com.excilys.training.model.Computer;
+import com.excilys.training.pagination.Page;
 import com.excilys.training.persistance.ComputerDAO;
 
 @Service

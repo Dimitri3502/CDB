@@ -2,7 +2,7 @@ package com.excilys.training.converter;
 
 import org.springframework.core.convert.converter.Converter;
 
-import com.excilys.training.persistance.ENUMS.OrderByDirection;
+import com.excilys.training.pagination.ENUMS.OrderByDirection;
 
 public class StringToOrderByDirectionConverter implements Converter<String, OrderByDirection> {
 

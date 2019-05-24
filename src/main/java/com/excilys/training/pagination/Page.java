@@ -1,12 +1,12 @@
-package com.excilys.training.controller.web;
+package com.excilys.training.pagination;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import com.excilys.training.persistance.ENUMS.OrderByChamp;
-import com.excilys.training.persistance.ENUMS.OrderByDirection;
+import com.excilys.training.pagination.ENUMS.OrderByChamp;
+import com.excilys.training.pagination.ENUMS.OrderByDirection;
 
 public class Page {
 	private int currentPageNumber;

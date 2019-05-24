@@ -24,6 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.excilys.training.configuration.WebMvcConfiguration;
 import com.excilys.training.model.Computer;
+import com.excilys.training.pagination.Page;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.utils.TestConfig;
 

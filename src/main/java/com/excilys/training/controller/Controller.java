@@ -1,19 +1,15 @@
 package com.excilys.training.controller;
 
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import com.excilys.training.controller.web.Pagination;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
 import com.excilys.training.exception.CompanyNotDeletedException;
 import com.excilys.training.exception.CompanyNotFoundException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.ValidatorException;
 import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.mapper.UiDTO.ComputerUiDTOMapper;
@@ -23,7 +19,6 @@ import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
 import com.excilys.training.validator.ComputerDTOValidator;
 import com.excilys.training.validator.Validator;
-import com.excilys.training.validator.WebValidator;
 
 @Component
 public class Controller {
@@ -55,12 +50,7 @@ public class Controller {
 			computerService.update(computerMapper.dtoToModel(computerDTO));
 			System.out.println("Ordinateur id : " + id + " modifié");
 		} else {
-			try {
-				throw new ValidatorException(result);
-			} catch (ValidatorException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("error occured");
 		}
 
 	}
@@ -95,12 +85,7 @@ public class Controller {
 			long idCreate = computerService.create(computerMapper.dtoToModel(computerDTOCreate));
 			System.out.println("Ordinateur creer avec l'id : " + idCreate);
 		} else {
-			try {
-				throw new ValidatorException(result);
-			} catch (ValidatorException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			System.out.println("error occured");
 		}
 	}
 

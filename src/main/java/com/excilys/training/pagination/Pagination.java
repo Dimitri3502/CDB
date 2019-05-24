@@ -1,4 +1,4 @@
-package com.excilys.training.controller.web;
+package com.excilys.training.pagination;
 
 import java.util.ArrayList;
 import java.util.List;
