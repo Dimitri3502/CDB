@@ -1,6 +1,6 @@
 package com.excilys.training.exception;
 
-public class CompanyNotDeletedException extends Exception   {
+public class CompanyNotDeletedException extends RuntimeException   {
 
 	/**
 	 * 

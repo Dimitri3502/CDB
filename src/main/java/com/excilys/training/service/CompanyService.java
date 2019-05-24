@@ -1,33 +1,31 @@
 package com.excilys.training.service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.exception.CompanyNotDeletedException;
 import com.excilys.training.exception.CompanyNotFoundException;
-import com.excilys.training.mapper.CompanyMapper;
 import com.excilys.training.model.Company;
 import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.persistance.ComputerDAO;
 
-@Component()
+@Service
+@Transactional(readOnly = true)
 public class CompanyService {
 
 	private final CompanyDAO companyDAO;
-	private final CompanyMapper companyMapper;
+	private final ComputerDAO computerDAO;
 
-
-	public CompanyService(CompanyDAO companyDAO, CompanyMapper companyMapper) {
+	public CompanyService(CompanyDAO companyDAO, ComputerDAO computerDAO) {
 		super();
 		this.companyDAO = companyDAO;
-		this.companyMapper = companyMapper;
+		this.computerDAO = computerDAO;
 	}
 
 	public boolean isPresent(Long id) {
-		return findById(id)!=null;
+		return findById(id) != null;
 	};
 
 	public Company findById(Long id) {
@@ -36,23 +34,19 @@ public class CompanyService {
 
 	public List<Company> getAll() {
 		return companyDAO.getAll();
-//		List<CompanyDTO> theCompanyDtoList = (List<CompanyDTO>) theCompanyList.stream()
-//				.map(s -> companyMapper.modelToDto(s)).collect(Collectors.toList());
-//
-//		return theCompanyDtoList;
 	}
 
 	public List<Company> getAll(int limit, int offset) {
 		return companyDAO.getAll(limit, offset);
 	}
 
-	public boolean delete(Long id) throws CompanyNotFoundException, CompanyNotDeletedException {
+	@Transactional
+	public boolean delete(Long id) {
 		if (isPresent(id)) {
-			if (this.companyDAO.delete(id)) {
-				return true;
-			} else {
-				throw new CompanyNotDeletedException(id);
-			}
+			computerDAO.deleteByCompanyId(id);
+			companyDAO.delete(id);
+			return true;
+
 		} else {
 			throw new CompanyNotFoundException(id);
 

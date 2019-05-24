@@ -19,19 +19,19 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
+
 public class NumberPerPage {
 
 	@Autowired
@@ -44,11 +44,13 @@ public class NumberPerPage {
 	@BeforeClass
 	public static void setUpClass() throws IOException, SQLException {
 		WebDriverManager.phantomjs().setup();
+//		WebDriverManager.chromedriver().setup();
 
 	}
 
 	@Before
 	public void setUp() {
+//		driver = new ChromeDriver();
 		driver = new PhantomJSDriver();
 		js = (JavascriptExecutor) driver;
 		vars = new HashMap<String, Object>();
@@ -64,13 +66,13 @@ public class NumberPerPage {
 		driver.get("http://localhost:8080/CDB/dashboard");
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		
-		driver.findElement(By.cssSelector(".btn-default:nth-child(1)")).click();
+		driver.findElement(By.linkText("10")).click();
 		assertEquals(getComputersTableLines().size(), 10);
 		
-		driver.findElement(By.cssSelector(".btn-group > .btn:nth-child(2)")).click();
+		driver.findElement(By.linkText("50")).click();
 		assertEquals(getComputersTableLines().size(), 50);
 		
-		driver.findElement(By.cssSelector(".btn:nth-child(3)")).click();
+		driver.findElement(By.linkText("100")).click();
 		assertEquals(getComputersTableLines().size(), 100);
 
 	}

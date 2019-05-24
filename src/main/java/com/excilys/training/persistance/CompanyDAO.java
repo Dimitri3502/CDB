@@ -9,14 +9,17 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.excilys.training.exception.CompanyNotDeletedException;
 import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
 import com.excilys.training.model.Company;
 
 @Component()
+@Transactional(readOnly = true)
 public class CompanyDAO extends Dao<Company> {
 	private static final String SQL_FIND_BY_ID = "SELECT id, name FROM company WHERE id = ?";
 	private static final String SQL_FIND_ALL = "SELECT id, name FROM company";
@@ -24,7 +27,6 @@ public class CompanyDAO extends Dao<Company> {
 	private static final String SQL_UPDATE = "UPDATE company SET(name) VALUES (?) WHERE id=?";
 	private static final String SQL_DELETE = "DELETE FROM company WHERE id=?";
 	private static final String SQL_FIND_ALL_PAGINED = "SELECT id,name FROM company ORDER BY id LIMIT ? OFFSET ?";
-	private static final String DELETE_COMPUTERS_BY_COMPANY_ID_QUERY = "DELETE FROM computer WHERE computer.company_id = ?";
 
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final CompanyResultSetModelMapper companyResultSetModelMapper;
@@ -43,7 +45,7 @@ public class CompanyDAO extends Dao<Company> {
 	public List<Company> getAll() {
 		try {
 			return jdbcTemplate.query(SQL_FIND_ALL, companyResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -54,7 +56,7 @@ public class CompanyDAO extends Dao<Company> {
 	public Company findById(long id) {
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, companyResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -66,7 +68,7 @@ public class CompanyDAO extends Dao<Company> {
 		try {
 			return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
 					companyResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -78,36 +80,6 @@ public class CompanyDAO extends Dao<Company> {
 		return 0;
 	}
 
-	@Override
-	public boolean delete(Long id) {
-
-		try (Connection cnx = dataSource.getConnection()) {
-
-			try (PreparedStatement deleteComputers = cnx.prepareStatement(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY)) {
-				cnx.setAutoCommit(false);
-
-				deleteComputers.setLong(1, id);
-				deleteComputers.executeUpdate();
-
-				PreparedStatement deleteCompany = cnx.prepareStatement(SQL_DELETE);
-				deleteCompany.setLong(1, id);
-				deleteCompany.executeUpdate();
-
-				cnx.commit();
-				cnx.setAutoCommit(true);
-				return true;
-			} catch (Exception e) {
-				cnx.rollback();
-				throw e;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			logger.warn("delete(" + id + ")", e);
-			return false;
-		}
-
-	}
 
 	@Override
 	public boolean update(Company obj) {
@@ -119,6 +91,20 @@ public class CompanyDAO extends Dao<Company> {
 	public boolean delete(Company obj) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	@Transactional
+	public boolean delete(Long id) throws CompanyNotDeletedException{
+		try {
+			final Object[] args = { id };
+			jdbcTemplate.update(SQL_DELETE, args);
+			return true;
+		} catch (DataAccessException e) {
+			logger.warn("deleteById(" + id + ")", e);
+			throw new CompanyNotDeletedException(id);
+		}
+		
 	}
 
 }

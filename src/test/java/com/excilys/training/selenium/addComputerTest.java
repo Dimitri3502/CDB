@@ -1,14 +1,12 @@
 package com.excilys.training.selenium;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,24 +19,26 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppSpringConfig;
+import com.excilys.training.configuration.AppConfig;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
+
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
+
 public class addComputerTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;

@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Component;
 
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
+import com.excilys.training.dto.ComputerDTOForm;
 import com.excilys.training.exception.CompanyNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.exception.InvalidDiscontinuedDate;
@@ -55,13 +58,12 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
 				Company company = companyService.findById(Long.parseLong(companyId));
-				if (company==null) {
+				if (company == null) {
 					throw new CompanyNotFoundException(Long.parseLong(companyId));
 				} else {
 					theComputer.setCompany(company);
 				}
-			}
-			else {
+			} else {
 				theComputer.setCompany(new Company());
 			}
 		} catch (DateTimeParseException | CompanyNotFoundException e) {
@@ -69,6 +71,23 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		}
 
 		return theComputer;
+	}
+
+	public ComputerDTOForm modelToDtoForm(Computer computer) {
+		ComputerDTOForm theComputerDTOForm = new ComputerDTOForm();
+		theComputerDTOForm.setId(Long.toString(computer.getId()));
+		theComputerDTOForm.setComputerName(computer.getName());
+		if (computer.getIntroducedDate() != null) {
+			theComputerDTOForm.setIntroduced(computer.getIntroducedDate().toLocalDate().toString());
+		}
+		if (computer.getDiscontinuedDate() != null) {
+			theComputerDTOForm.setDiscontinued(computer.getDiscontinuedDate().toLocalDate().toString());
+		}
+		theComputerDTOForm.setCompanyName(computer.getCompany().getName());
+		if (computer.getCompany().getId() != null) {
+			theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+		}
+		return theComputerDTOForm;
 	}
 
 	@Override
@@ -86,10 +105,47 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		theComputerDTO.setCompanyDTO(companyDTO);
 		return theComputerDTO;
 	}
+
 	@Override
 	public List<ComputerDTO> allModelToDTO(List<Computer> theComputerList) {
-		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> modelToDto(s)).collect(Collectors.toList());
+		List<ComputerDTO> theComputerDtoList = (List<ComputerDTO>) theComputerList.stream().map(s -> modelToDto(s))
+				.collect(Collectors.toList());
 		return theComputerDtoList;
+	}
+
+	public Computer dtoFormToModel(ComputerDTOForm computerDTOForm) {
+		Computer theComputer = new Computer();
+
+		if (!isBlank(computerDTOForm.getId())) {
+			theComputer.setId(Long.parseLong(computerDTOForm.getId()));
+		}
+
+		try {
+			theComputer.setName(computerDTOForm.getComputerName());
+			if (!isBlank(computerDTOForm.getIntroduced())) {
+				theComputer.setIntroducedDate(
+						LocalDateTime.of(LocalDate.parse(computerDTOForm.getIntroduced()), LocalTime.of(12, 00)));
+			}
+			if (!isBlank(computerDTOForm.getDiscontinued())) {
+				theComputer.setDiscontinuedDate(
+						LocalDateTime.of(LocalDate.parse(computerDTOForm.getDiscontinued()), LocalTime.of(12, 00)));
+			}
+			if (!isBlank(computerDTOForm.getCompanyId())) {
+				String companyId = computerDTOForm.getCompanyId();
+				Company company = companyService.findById(Long.parseLong(companyId));
+				if (company == null) {
+					throw new CompanyNotFoundException(Long.parseLong(companyId));
+				} else {
+					theComputer.setCompany(company);
+				}
+			} else {
+				theComputer.setCompany(new Company());
+			}
+		} catch (DateTimeParseException | CompanyNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return theComputer;
 	}
 
 }

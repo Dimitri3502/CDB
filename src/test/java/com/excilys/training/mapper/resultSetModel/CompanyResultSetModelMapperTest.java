@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
@@ -14,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.model.Company;
+import com.excilys.training.utils.TestConfig;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class CompanyResultSetModelMapperTest {
 	
 	@Autowired

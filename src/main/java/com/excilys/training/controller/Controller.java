@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
+import com.excilys.training.controller.web.Pagination;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.dto.ComputerDTOUi;
@@ -20,7 +21,6 @@ import com.excilys.training.model.Company;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.CompanyService;
 import com.excilys.training.service.ComputerService;
-import com.excilys.training.servlets.Pagination;
 import com.excilys.training.validator.ComputerDTOValidator;
 import com.excilys.training.validator.Validator;
 import com.excilys.training.validator.WebValidator;

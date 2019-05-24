@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page import="com.excilys.training.controller.web.Page" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,40 +8,50 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="css/main.css" rel="stylesheet" media="screen">
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
 			<a class="navbar-brand" href="dashboard"> Application - Computer
 				Database </a>
+				<div class="pull-right">
+				<a class="navbar-brand" href="?lang=us">US</a>|<a class="navbar-brand" href="?lang=fr">FR</a>
+				</div>
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">${totalNumber} Computers found</h1>
+			<h1 id="homeTitle">${totalNumber}
+				<spring:message code="string.computersFound" />
+			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="dashboard" method="GET"
 						class="form-inline">
-						<input type="hidden" name="orderBy" value="${orderBy}" />
-						<input type="hidden" name="orderDirection" value="${orderDirection}" />
-						<input type="search" id="searchbox" name="search" class="form-control" value="${search}" placeholder="Search name" /> 
-						<input type="submit" id="searchsubmit" value="Filter by name" class="btn btn-primary" />
+						<input type="search" id="searchbox" name="search"
+							class="form-control" value="${page.search}"
+							placeholder="<spring:message code="string.chooseHere" />" /> <input
+							type="submit" id="searchsubmit"
+							value="<spring:message code="string.filter" />"
+							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
-					<a class="btn btn-success" id="addComputer" href="addComputer">Add
-						Computer</a> <a class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+					<a class="btn btn-success" id="addComputer" href="addComputer">
+						<spring:message code="string.add" />
+					</a> <a class="btn btn-default" id="editComputer" href="#"
+						onclick="$.fn.toggleEditMode();"> <spring:message
+							code="string.edit" /></a>
 				</div>
 			</div>
 		</div>
 
-		<form id="deleteForm" action="dashboard?pageid=${currentPageNumber}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'" method="POST">
+		<form id="deleteForm" action="dashboard" method="POST">
 			<input type="hidden" name="selection" value="">
 		</form>
 
@@ -57,102 +69,74 @@
 									class="fa fa-trash-o fa-lg"></i>
 							</a>
 						</span></th>
-						<th>Computer name ${orderDirection}
-							<c:choose>
-								<c:when test="${orderBy == 'computerName'}">
-									<c:choose>
-										<c:when test="${orderDirection == 'asc'}">
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=desc"><i
-												class="fa fa-sort-down"></i></a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=asc"><i
-												class="fa fa-sort-up"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=computerName&orderDirection=asc"><i
-										class="fa fa-sort-up"></i></a>
-								</c:otherwise>
-							</c:choose>
+						<th class="th-sm"><spring:message code="string.computerName" />
+							<a title="Order by name ascendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="computerName"/>
+ 								<c:param name="orderDirection" value="asc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-down"></em></a> <a
+							title="Order by name descendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="computerName"/>
+ 								<c:param name="orderDirection" value="desc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
+						<th class="th-sm">id <a title="Order by id ascendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="id"/>
+ 								<c:param name="orderDirection" value="asc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-down"></em></a> <a
+							title="Order by id descendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="id"/>
+ 								<c:param name="orderDirection" value="desc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a>
 						</th>
-						<th>id</th>
-						<th>Introduced date
-						<c:choose>
-							<c:when test="${orderBy == 'introduced'}">
-									<c:choose>
-										<c:when test="${orderDirection == 'asc'}">
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=desc"><i
-												class="fa fa-sort-down"></i></a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=asc"><i
-												class="fa fa-sort-up"></i></a>
-										</c:otherwise>
-									</c:choose>
-							</c:when>
-							<c:otherwise>
-								<a
-									href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=introduced&orderDirection=desc"><i
-									class="fa fa-sort-down"></i></a>
-							</c:otherwise>
-						</c:choose>
-						</th>
+						<th class="th-sm"><spring:message code="string.introduced" />
+							<a title="Order by introduced ascendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="introduced"/>
+ 								<c:param name="orderDirection" value="asc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-down"></em></a> <a
+							title="Order by introduced descendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="introduced"/>
+ 								<c:param name="orderDirection" value="desc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date
-						<c:choose>
-								<c:when test="${orderBy == 'discontinued'}">
-									<c:choose>
-										<c:when test="${orderDirection == 'asc'}">
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=desc"><i
-												class="fa fa-sort-down"></i></a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=asc"><i
-												class="fa fa-sort-up"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=discontinued&orderDirection=desc"><i
-										class="fa fa-sort-down"></i></a>
-								</c:otherwise>
-							</c:choose>
-						</th>
-						<!-- Table header for Company -->
-						<th>Company
-						<c:choose>
-								<c:when test="${orderBy == 'company_name'}">
-									<c:choose>
-										<c:when test="${orderDirection == 'asc'}">
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
-												class="fa fa-sort-down"></i></a>
-										</c:when>
-										<c:otherwise>
-											<a
-												href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=asc"><i
-												class="fa fa-sort-up"></i></a>
-										</c:otherwise>
-									</c:choose>
-								</c:when>
-								<c:otherwise>
-									<a
-										href="?pageid=0&numberPerPage=${numberPerPage}&search=${search}&orderBy=company_name&orderDirection=desc"><i
-										class="fa fa-sort-down"></i></a>
-								</c:otherwise>
-							</c:choose>
-						</th>
+						<th class="th-sm"><spring:message code="string.discontinued" />
+							<a title="Order by discontinued ascendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="discontinued"/>
+ 								<c:param name="orderDirection" value="asc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-down"></em></a> <a
+							title="Order by discontinued descendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="discontinued"/>
+ 								<c:param name="orderDirection" value="desc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 
+						<!-- Table header for Company -->
+						<th class="th-sm"><spring:message code="string.companyName" />
+							<a title="Order by company ascendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="companyName"/>
+ 								<c:param name="orderDirection" value="asc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-down"></em></a> <a
+							title="Order by company descendant"
+							<c:url value="/dashboard" var="url">
+ 								<c:param name="orderBy" value="companyName"/>
+ 								<c:param name="orderDirection" value="desc"/>
+							</c:url>
+							href="${url}"> <em class="fa fa-arrow-up"></em></a></th>
 					</tr>
 				</thead>
 				<!-- Browse attribute computers -->
@@ -161,7 +145,11 @@
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
 								class="cb" value="${computer.id}"></td>
-							<td><a href="editComputer?id=${computer.id}" onclick="">${computer.name}</a></td>
+							<td><a 
+							<c:url value="/editComputer" var="url">
+ 								<c:param name="id" value="${computer.id}"/>
+							</c:url>
+							href="${url}">${computer.name}</a></td>
 							<td>${computer.id}</td>
 							<td>${computer.introducedDate}</td>
 							<td>${computer.discontinuedDate}</td>
@@ -172,7 +160,7 @@
 				</tbody>
 
 			</table>
-			Page ${currentPageNumber} / ${nbPage}
+			Page ${page.currentPageNumber} / ${page.nbPage}
 		</div>
 	</section>
 
@@ -180,33 +168,53 @@
 		<div class="container text-center">
 			<ul class="pagination">
 				<li><a
-					href="?pageid=${currentPageNumber-10}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}""
-					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+					<c:url value="/dashboard" var="url">
+						<c:param name="pageNumberRequest" value="${page.currentPageNumber - Page.MAX_PAGE_CHOICE}"/>
+					</c:url>
+					href="${url}" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
-				<c:forEach var="page" items="${pageIds}">
-					<li><a href="?pageid=${page}&&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}"">${page}</a></li>
+				<c:forEach var="page" items="${page.pageIds}">
+					<li><a
+						<c:url value="/dashboard" var="url">
+								<c:param name="pageNumberRequest" value="${page}"/>
+							</c:url>
+						href="${url}">${page} </a></li>
 				</c:forEach>
 				<li><a
-					href="?pageid=${currentPageNumber+10}&numberPerPage=${numberPerPage}&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}""
-					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+					<c:url value="/dashboard" var="url">
+						<c:param name="pageNumberRequest" value="${page.currentPageNumber + Page.MAX_PAGE_CHOICE}"/>
+					</c:url>
+					href="${url}" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
+
 			</ul>
 
 			<div class="btn-group btn-group-sm pull-right" role="group">
-				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=10&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
-					type="button" class="btn btn-default">10</button>
-				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=50&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
-					type="button" class="btn btn-default">50</button>
-				<button
-					onclick="location.href='?pageid=${currentPageNumber}&numberPerPage=100&search=${search}&orderBy=${orderBy}&orderDirection=${orderDirection}'"
-					type="button" class="btn btn-default">100</button>
+				<a class="btn btn-default"
+					<c:url value="/dashboard" var="url">
+						<c:param name="limit" value="10"/>
+					</c:url>
+					href="${url}">10</a> <a class="btn btn-default"
+					<c:url value="/dashboard" var="url">
+						<c:param name="limit" value="50"/>
+					</c:url>
+					href="${url}">50</a> <a class="btn btn-default"
+					<c:url value="/dashboard" var="url">
+						<c:param name="limit" value="100"/>
+					</c:url>
+					href="${url}">100</a>
 			</div>
+		</div>
+
 	</footer>
-	<script src="js/jquery.min.js"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script src="js/dashboard.js"></script>
+		<script type="text/javascript">
+		var edit = "<spring:message code="string.js.edit"/>";
+		var view = "<spring:message code="string.js.view"/>";
+		var alertMsg = "<spring:message code="string.js.alertMsg"/>";
+	</script>
+	<script src="static/js/jquery.min.js"></script>
+	<script src="static/js/bootstrap.min.js"></script>
+	<script src="static/js/dashboard.js"></script>
 
 </body>
 </html>

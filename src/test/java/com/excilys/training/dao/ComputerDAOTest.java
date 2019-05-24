@@ -15,17 +15,17 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.rules.SpringClassRule;
 import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
-import com.excilys.training.TestDatabase;
-import com.excilys.training.UTDatabase;
-import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.utils.TestConfig;
+import com.excilys.training.utils.TestDatabase;
+import com.excilys.training.utils.UTDatabase;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class ComputerDAOTest {
 
 	@ClassRule

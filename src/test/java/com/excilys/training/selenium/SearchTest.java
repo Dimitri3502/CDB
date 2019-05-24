@@ -1,6 +1,6 @@
 package com.excilys.training.selenium;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -17,23 +17,24 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
+
 public class SearchTest {
 	private WebDriver driver;
 	private Map<String, Object> vars;
 	JavascriptExecutor js;
+	
 	
 	@Autowired
 	private ComputerService computerService;
@@ -56,7 +57,7 @@ public class SearchTest {
 	}
 
 	@Test
-	public void search() {
+	public void searchTest() {
 		final String name = "apple";
 		
 		// Step # | name | target | value | comment
@@ -71,9 +72,9 @@ public class SearchTest {
 		driver.findElement(By.id("searchbox")).sendKeys(name);
 		// 5 | click | id=searchsubmit | |
 		driver.findElement(By.id("searchsubmit")).click();
-		long actual = Long.parseLong(driver.findElement(By.id("homeTitle")).getText().replaceFirst(" Computers found", ""));
-		long expected = computerService.count(name);
-		assertEquals(expected, actual);
+		String actual = driver.findElement(By.id("homeTitle")).getText();
+		String expected = ""+ computerService.count(name);
+		assertTrue(actual.toLowerCase().contains(expected.toLowerCase()));
 		
 	}
 }

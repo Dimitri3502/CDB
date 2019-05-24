@@ -5,23 +5,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.TestDatabase;
-import com.excilys.training.configuration.AppSpringConfig;
 import com.excilys.training.model.Company;
-import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.utils.TestConfig;
+import com.excilys.training.utils.TestDatabase;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppSpringConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 public class CompanyServiceTest {
 	@Autowired
 	private CompanyService companyService;
@@ -49,5 +46,14 @@ public class CompanyServiceTest {
 		Company expected = new Company(2L,"Thinking Machines");
 		assertEquals(actual, expected);
 	}
-
+	@Test
+	public final void testDelete() {
+		Long id=2L;
+		companyService.findById(id);
+		companyService.delete(id);
+		
+		// insert into computer (id,name,introduced,discontinued,company_id) 
+		// values (  2,'CM-2a',null,null,2);
+		assertTrue(companyService.findById(id) == null);
+	}
 }

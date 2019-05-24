@@ -1,5 +1,6 @@
 package com.excilys.training.validator;
 
+import static com.excilys.training.controller.web.CONSTANTES.*;
 import static com.excilys.training.validator.ValidatorUtils.isBlank;
 
 import java.time.LocalDate;
@@ -14,8 +15,6 @@ import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.exception.CompanyNotFoundException;
 import com.excilys.training.exception.InvalidDateValueException;
 import com.excilys.training.service.CompanyService;
-
-import static com.excilys.training.servlets.CONSTANTES.*;
 
 @Component()
 public class WebValidator extends Validator<ComputerDTO> {

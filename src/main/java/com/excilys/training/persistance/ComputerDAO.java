@@ -6,21 +6,22 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.training.exception.InvalidDiscontinuedDate;
+import com.excilys.training.controller.web.Page;
+import com.excilys.training.exception.ComputerNotDeletedException;
 import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.persistance.ENUMS.OrderByChamp;
 import com.excilys.training.persistance.ENUMS.OrderByDirection;
-import com.excilys.training.servlets.Page;
 
 @Component()
+@Transactional(readOnly = true)
 public class ComputerDAO extends Dao<Computer> {
 
 	private static final String SQL_FIND_BY_ID = "SELECT A.id AS id,A.name AS name ,A.introduced AS introduced ,A.discontinued AS discontinued ,B.id AS company_id ,B.name AS company_name FROM computer AS A LEFT JOIN company AS B ON A.company_id = B.id WHERE A.id = ?";
@@ -38,6 +39,7 @@ public class ComputerDAO extends Dao<Computer> {
 			+ "LEFT JOIN company AS B ON A.company_id = B.id "
 			+ "WHERE UPPER(A.name) LIKE UPPER(?) OR UPPER(B.name) LIKE UPPER(?) "
 			+ "ORDER BY :order_by: IS NULL, :order_by:  :order_direction: LIMIT ? OFFSET ?";
+	private static final String DELETE_COMPUTERS_BY_COMPANY_ID_QUERY = "DELETE FROM computer WHERE computer.company_id = ?";
 
 	private final Logger logger = LogManager.getLogger(getClass());
 	private final ComputerResultSetModelMapper computerResultSetModelMapper;
@@ -60,6 +62,7 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
+	@Transactional
 	public long create(Computer computer) {
 		SQLComputer sqlComputer = SQLComputer.from(computer);
 		KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -100,18 +103,31 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
+	@Transactional
 	public boolean delete(Long id) {
 		jdbcTemplate.update(SQL_DELETE, new Object[] { id });
 		return true;
 	}
 
 	@Override
+	@Transactional
 	public boolean delete(Computer computer) {
 		return delete(computer.getId());
 
 	}
+	
+    @Transactional
+    public void deleteByCompanyId(long id) {
+	try {
+	    jdbcTemplate.update(DELETE_COMPUTERS_BY_COMPANY_ID_QUERY, id);
+	} catch (DataAccessException e) {
+	    logger.warn("deleteByMannufacturerId(" + id + ")", e);
+	    throw new ComputerNotDeletedException(id);
+	}
+    }
 
 	@Override
+	@Transactional
 	public boolean update(Computer computer) {
 		SQLComputer sqlComputer = SQLComputer.from(computer);
 		Object[] parameters = new Object[] { sqlComputer.getName(), sqlComputer.getIntroduced(),
@@ -124,7 +140,7 @@ public class ComputerDAO extends Dao<Computer> {
 	public Computer findById(long id) {
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -136,7 +152,7 @@ public class ComputerDAO extends Dao<Computer> {
 		try {
 			return jdbcTemplate.query(SQL_FIND_ALL_PAGINED, new Object[] { limit, offset },
 					computerResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -147,11 +163,11 @@ public class ComputerDAO extends Dao<Computer> {
 		try {
 			String selectByNameOrCompany = SELECT_BY_NAME_OR_COMPANY_QUERY.replace(":order_by:", map(page.getOrderBy()))
 					.replace(":order_direction:", map(page.getOrderDirection()));
-
+			String search = "%" + page.getSearch() + "%";
 			return jdbcTemplate.query(selectByNameOrCompany,
-					new Object[] { page.getSearch(), page.getSearch(), page.getLimit(), page.getOffset() },
+					new Object[] {search, search, page.getLimit(), page.getOffset() },
 					computerResultSetModelMapper);
-		} catch (EmptyResultDataAccessException e) {
+		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
 			return null;
 		}
@@ -180,7 +196,7 @@ public class ComputerDAO extends Dao<Computer> {
 		case DISCONTINUED:
 			return "A.discontinued";
 		case COMPANY:
-			return "company_name";
+			return "B.name";
 		}
 	}
 
