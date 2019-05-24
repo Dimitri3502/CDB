@@ -31,12 +31,13 @@ import com.excilys.training.dto.ComputerDTO;
 import com.excilys.training.mapper.ComputerMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 
 public class addComputerTest {
 	private WebDriver driver;

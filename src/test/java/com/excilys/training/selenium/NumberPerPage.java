@@ -24,13 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppConfig;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 
 public class NumberPerPage {
 

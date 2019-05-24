@@ -1,6 +1,5 @@
 package com.excilys.training.selenium;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -21,19 +20,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.web.context.WebApplicationContext;
 
-import com.excilys.training.configuration.AppConfig;
-import com.excilys.training.configuration.WebMvcConfiguration;
 import com.excilys.training.service.ComputerService;
+import com.excilys.training.utils.TestConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = AppConfig.class)
+@ContextConfiguration(classes = TestConfig.class)
 
 public class SearchTest {
 	private WebDriver driver;

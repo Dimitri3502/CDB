@@ -22,7 +22,6 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @ComponentScan(basePackages = {
-"com.excilys.training.utils",
 "com.excilys.training.service",
 "com.excilys.training.persistance",
 "com.excilys.training.mapper",
