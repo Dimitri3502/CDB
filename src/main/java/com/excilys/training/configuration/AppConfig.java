@@ -8,7 +8,6 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -23,9 +22,10 @@ import com.zaxxer.hikari.HikariDataSource;
 "com.excilys.training.service",
 "com.excilys.training.persistance",
 "com.excilys.training.mapper",
-"com.excilys.training.validator"})
+"com.excilys.training.validator",
+"com.excilys.training.pagination"})
 @EnableTransactionManagement
-@EnableJpaRepositories
+//@EnableJpaRepositories
 public class AppConfig {
 
     @Bean

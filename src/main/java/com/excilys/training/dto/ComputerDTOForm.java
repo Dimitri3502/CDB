@@ -5,10 +5,10 @@ import java.util.Objects;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
-import com.excilys.training.validator.Antes;
+import com.excilys.training.validator.DatesConstraint;
 
 
-@Antes(first = "introduced", second = "discontinued")
+@DatesConstraint(first = "introduced", second = "discontinued")
 
 public class ComputerDTOForm extends Dto{
 	

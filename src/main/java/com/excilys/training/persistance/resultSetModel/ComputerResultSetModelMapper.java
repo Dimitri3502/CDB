@@ -1,4 +1,4 @@
-package com.excilys.training.mapper.resultSetModel;
+package com.excilys.training.persistance.resultSetModel;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

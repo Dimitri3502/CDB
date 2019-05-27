@@ -7,7 +7,7 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.excilys.training.dto.ComputerDTOForm;
 
-public class DateValidator implements ConstraintValidator<Antes, ComputerDTOForm> {
+public class DateValidator implements ConstraintValidator<DatesConstraint, ComputerDTOForm> {
 
 	@Override
 	public boolean isValid(final ComputerDTOForm value, final ConstraintValidatorContext context) {

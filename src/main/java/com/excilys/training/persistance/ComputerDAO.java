@@ -14,11 +14,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.training.exception.ComputerNotDeletedException;
-import com.excilys.training.mapper.resultSetModel.ComputerResultSetModelMapper;
 import com.excilys.training.model.Computer;
 import com.excilys.training.pagination.Page;
 import com.excilys.training.pagination.ENUMS.OrderByChamp;
 import com.excilys.training.pagination.ENUMS.OrderByDirection;
+import com.excilys.training.persistance.resultSetModel.ComputerResultSetModelMapper;
 
 @Component()
 @Transactional(readOnly = true)

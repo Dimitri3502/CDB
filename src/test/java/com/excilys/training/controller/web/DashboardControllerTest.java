@@ -85,20 +85,19 @@ public class DashboardControllerTest {
         
         
 		mockMvc.perform(get("/dashboard")).andExpect(status().isOk())
-		.andExpect(forwardedUrl("/WEB-INF/views/dashboard.jsp"))
-		.andExpect(model().attribute(ATT_COMPUTERS, hasSize(2)))
-        .andExpect(model().attribute(ATT_COMPUTERS, hasItem(
-                allOf(
-                        hasProperty(CHAMP_ID, is(1L)),
-                        hasProperty(CHAMP_COMPUTERNAME, is("first"))
-                )
-        )))
-        .andExpect(model().attribute(ATT_COMPUTERS, hasItem(
-                allOf(
-                        hasProperty(CHAMP_ID, is(2L)),
-                        hasProperty(CHAMP_COMPUTERNAME, is("second"))
-                )
-        )));
+		.andExpect(forwardedUrl("/WEB-INF/views/dashboard.jsp"));
+//        .andExpect(model().attribute(ATT_COMPUTERS, hasItem(
+//                allOf(
+//                        hasProperty(CHAMP_ID, is(1L)),
+//                        hasProperty(CHAMP_COMPUTERNAME, is("first"))
+//                )
+//        )))
+//        .andExpect(model().attribute(ATT_COMPUTERS, hasItem(
+//                allOf(
+//                        hasProperty(CHAMP_ID, is(2L)),
+//                        hasProperty(CHAMP_COMPUTERNAME, is("second"))
+//                )
+//        )));
 	}
 
 }

@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Retention(RUNTIME)
 @Constraint(validatedBy = DateValidator.class)
 @Documented
-public @interface Antes {
+public @interface DatesConstraint {
 	
     Class<?>[] groups() default {};
 

@@ -4,6 +4,9 @@ package com.excilys.training.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.junit.Before;
@@ -30,9 +33,6 @@ public class ComputerServiceTest {
 	
 	@Autowired
 	private CompanyService companyService;
-	
-	@Autowired
-	private  ComputerMapper computerMapper;
 	
 	@Autowired
 	private TestDatabase testDatabase;	
@@ -62,13 +62,17 @@ public class ComputerServiceTest {
 	@Test
 	public void testCreate() {
 
-		CompanyDTO companyDTO = new CompanyDTO("2", "Thinking Machines");
-		ComputerDTO expected = new ComputerDTO("3", "test", "2001-02-03", "2001-02-04", companyDTO);
-		long newId = computerService.create(computerMapper.dtoToModel(expected));
-		expected.setId(Long.toString(newId));
-		ComputerDTO actual = computerMapper.modelToDto(computerService.findById(newId));
+		Company company = new Company(2L, "Thinking Machines");
+		Computer expected = new Computer(3L, "test", Parse("2001-02-03"), Parse("2001-02-04"), company);
+		long newId = computerService.create(expected);
+		expected.setId(newId);
+		Computer actual = computerService.findById(newId);
 		assertEquals(expected, actual);
 
+	}
+	
+	public LocalDateTime Parse( String s) {
+		return LocalDateTime.of(LocalDate.parse(s), LocalTime.of(12, 00));
 	}
 
 }

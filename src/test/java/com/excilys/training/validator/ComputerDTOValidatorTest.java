@@ -9,17 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.excilys.training.configuration.AppConfig;
 import com.excilys.training.dto.CompanyDTO;
 import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.utils.TestConfig;
 import com.excilys.training.utils.TestDatabase;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
-public class WebValidatorTest {
+@ContextConfiguration(classes = AppConfig.class)
+public class ComputerDTOValidatorTest {
 	
 	@Autowired
-	private WebValidator webValidator;
+	private ComputerDTOValidator ComputerDTOValidator;
 	
 	@Autowired
 	private TestDatabase testDatabase;
@@ -36,13 +36,13 @@ public class WebValidatorTest {
 		toValidate.setName("name");
 		toValidate.setCompanyDTO(new CompanyDTO());
 		toValidate.setIntroducedDate("01-01-1969");
-		assertEquals(false, webValidator.check(toValidate).isValid());
+		assertEquals(false, ComputerDTOValidator.check(toValidate).isValid());
 	}
 	@Test
 	public void testCheckIdFail() {
 		ComputerDTO toValidate = new ComputerDTO();
 		toValidate.setName("name");
 		toValidate.setCompanyDTO(new CompanyDTO("500",null));
-		assertEquals(false, webValidator.check(toValidate).isValid());
+		assertEquals(false, ComputerDTOValidator.check(toValidate).isValid());
 	}
 	}

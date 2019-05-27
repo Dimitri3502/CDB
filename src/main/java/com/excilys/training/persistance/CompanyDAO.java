@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.training.exception.CompanyNotDeletedException;
-import com.excilys.training.mapper.resultSetModel.CompanyResultSetModelMapper;
 import com.excilys.training.model.Company;
+import com.excilys.training.persistance.resultSetModel.CompanyResultSetModelMapper;
 
 @Component()
 @Transactional(readOnly = true)
