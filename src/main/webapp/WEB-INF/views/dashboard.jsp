@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ page import="com.excilys.training.pagination.Page" %>
+<%@ page import="com.excilys.training.binding.pagination.Page" %>
 <!DOCTYPE html>
 <html>
 <head>

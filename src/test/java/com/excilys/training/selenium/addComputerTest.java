@@ -1,5 +1,6 @@
 package com.excilys.training.selenium;
 
+import static com.excilys.training.binding.validator.ValidatorUtils.Parse;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -25,19 +26,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.configuration.AppConfig;
-import com.excilys.training.dto.CompanyDTO;
-import com.excilys.training.dto.ComputerDTO;
-import com.excilys.training.mapper.ComputerMapper;
-import com.excilys.training.model.Computer;
+import com.excilys.training.core.Company;
+import com.excilys.training.core.Computer;
 import com.excilys.training.service.ComputerService;
-import com.excilys.training.utils.TestConfig;
+import com.excilys.training.service.conf.ServiceConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = ServiceConfig.class)
 
 public class addComputerTest {
 	private WebDriver driver;
@@ -46,8 +44,6 @@ public class addComputerTest {
 	@Autowired
 	private ComputerService computerService;
 	
-	@Autowired
-	private ComputerMapper computerMapper;
 	JavascriptExecutor js;
 
 	@BeforeClass
@@ -74,9 +70,9 @@ public class addComputerTest {
 		String name = "selenium computer";
 		String introducedDate = "2019-05-06";
 		String discontinuedDate = "2019-05-07";
-		String CompanyDTOname = "Apple Inc.";
-		CompanyDTO companyDTO = new CompanyDTO("1",CompanyDTOname);
-		ComputerDTO expected = new ComputerDTO(name, introducedDate, discontinuedDate, companyDTO);
+		String Companyname = "Apple Inc.";
+		Company company = new Company(1L,Companyname);
+		Computer expected = new Computer(1L, name, Parse(introducedDate), Parse(discontinuedDate), company);
 		
 		driver.get("http://localhost:8080/CDB/");
 		driver.manage().window().setSize(new Dimension(1280, 960));
@@ -91,7 +87,7 @@ public class addComputerTest {
 		driver.findElement(By.id("discontinued")).sendKeys(discontinuedDate);
 		{
 			WebElement dropdown = driver.findElement(By.id("companyId"));
-			dropdown.findElement(By.xpath("//option[. = '" + CompanyDTOname + "']")).click();
+			dropdown.findElement(By.xpath("//option[. = '" + Companyname + "']")).click();
 		}
 		{
 			WebElement element = driver.findElement(By.id("companyId"));
@@ -112,11 +108,11 @@ public class addComputerTest {
 		driver.findElement(By.cssSelector(".btn-primary")).click();
 		driver.findElement(By.cssSelector(".navbar-brand")).click();
 		List<Computer> liste = computerService.getAll();
-		Computer actualModel = liste.get(liste.size()-1);
-		ComputerDTO actual = computerMapper.modelToDto(actualModel);
+		Computer actual = liste.get(liste.size()-1);
+		expected.setId(actual.getId());
 		assertEquals(expected, actual);
 		
 		
-		computerService.delete(actualModel);
+		computerService.delete(actual);
 	}
 }

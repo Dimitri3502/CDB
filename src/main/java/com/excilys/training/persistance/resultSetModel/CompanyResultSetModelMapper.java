@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.excilys.training.model.Company;
+import com.excilys.training.core.Company;
 
 @Component
 public class CompanyResultSetModelMapper implements RowMapper<Company> {

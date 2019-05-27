@@ -3,7 +3,7 @@ package com.excilys.training.persistance;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-import com.excilys.training.model.Computer;
+import com.excilys.training.core.Computer;
 
 class SQLComputer {
 

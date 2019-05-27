@@ -1,8 +1,5 @@
 package com.excilys.training.persistance;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -14,8 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.training.exception.CompanyNotDeletedException;
-import com.excilys.training.model.Company;
+import com.excilys.training.core.Company;
+import com.excilys.training.persistance.exception.CompanyNotDeletedException;
+import com.excilys.training.persistance.exception.CompanyNotFoundException;
 import com.excilys.training.persistance.resultSetModel.CompanyResultSetModelMapper;
 
 @Component()
@@ -53,12 +51,12 @@ public class CompanyDAO extends Dao<Company> {
 	}
 
 	@Override
-	public Company findById(long id) {
+	public Company findById(long id) throws CompanyNotFoundException{
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, companyResultSetModelMapper);
 		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
-			return null;
+			throw new CompanyNotFoundException(id);
 		}
 
 	}

@@ -10,9 +10,9 @@ import java.time.LocalTime;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.model.Company;
-import com.excilys.training.model.Computer;
+import com.excilys.training.binding.exception.InvalidDiscontinuedDate;
+import com.excilys.training.core.Company;
+import com.excilys.training.core.Computer;
 import com.excilys.training.persistance.ComputerDAO;
 
 @Component

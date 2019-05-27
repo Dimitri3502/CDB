@@ -13,11 +13,12 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.training.exception.ComputerNotDeletedException;
-import com.excilys.training.model.Computer;
-import com.excilys.training.pagination.Page;
-import com.excilys.training.pagination.ENUMS.OrderByChamp;
-import com.excilys.training.pagination.ENUMS.OrderByDirection;
+import com.excilys.training.binding.pagination.Page;
+import com.excilys.training.binding.pagination.ENUMS.OrderByChamp;
+import com.excilys.training.binding.pagination.ENUMS.OrderByDirection;
+import com.excilys.training.core.Computer;
+import com.excilys.training.persistance.exception.ComputerNotDeletedException;
+import com.excilys.training.persistance.exception.ComputerNotFoundException;
 import com.excilys.training.persistance.resultSetModel.ComputerResultSetModelMapper;
 
 @Component()
@@ -137,12 +138,12 @@ public class ComputerDAO extends Dao<Computer> {
 	}
 
 	@Override
-	public Computer findById(long id) {
+	public Computer findById(long id) throws ComputerNotFoundException {
 		try {
 			return jdbcTemplate.queryForObject(SQL_FIND_BY_ID, new Object[] { id }, computerResultSetModelMapper);
 		} catch (DataAccessException e) {
 			logger.warn(e.getMessage());
-			return null;
+			throw new ComputerNotFoundException(id);
 		}
 
 	}

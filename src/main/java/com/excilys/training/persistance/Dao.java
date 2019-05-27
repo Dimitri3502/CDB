@@ -4,8 +4,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import com.excilys.training.exception.InvalidDiscontinuedDate;
-import com.excilys.training.exception.NotFoundException;
+import com.excilys.training.binding.exception.InvalidDiscontinuedDate;
+import com.excilys.training.persistance.exception.CompanyNotFoundException;
+import com.excilys.training.persistance.exception.NotFoundException;
 
 public abstract class Dao<T> {
 
@@ -38,10 +39,11 @@ public abstract class Dao<T> {
 	 * 
 	 * @param key
 	 * @return T
+	 * @throws CompanyNotFoundException 
 	 * @throws NotFoundException
 	 * @throws InvalidDiscontinuedDate
 	 */
-	public abstract T findById(long id);
+	public abstract T findById(long id) throws NotFoundException;
 
 	/**
 	 * Méthode de recherche des informations

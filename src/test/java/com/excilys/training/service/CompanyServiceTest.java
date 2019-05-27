@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.excilys.training.model.Company;
-import com.excilys.training.utils.TestConfig;
-import com.excilys.training.utils.TestDatabase;
+import com.excilys.training.core.Company;
+import com.excilys.training.persistance.exception.CompanyNotFoundException;
+import com.excilys.training.persistance.h2database.H2Config;
+import com.excilys.training.persistance.h2database.TestDatabase;
+import com.excilys.training.service.conf.ServiceConfig;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = TestConfig.class)
+@ContextConfiguration(classes = {H2Config.class, ServiceConfig.class})
 public class CompanyServiceTest {
 	@Autowired
 	private CompanyService companyService;
@@ -41,19 +43,16 @@ public class CompanyServiceTest {
 	}
 
 	@Test
-	public void testFindById() {
+	public void testFindById() throws CompanyNotFoundException {
 		Company actual = companyService.findById(2L);
 		Company expected = new Company(2L,"Thinking Machines");
 		assertEquals(actual, expected);
 	}
-	@Test
-	public final void testDelete() {
+	@Test(expected = CompanyNotFoundException.class)
+	public final void testDelete() throws CompanyNotFoundException {
 		Long id=2L;
 		companyService.findById(id);
 		companyService.delete(id);
-		
-		// insert into computer (id,name,introduced,discontinued,company_id) 
-		// values (  2,'CM-2a',null,null,2);
-		assertTrue(companyService.findById(id) == null);
+		companyService.findById(id);
 	}
 }
