@@ -16,11 +16,11 @@
 		<module>service</module>
 		<module>console</module>
 		<module>webapp</module>
-   	 </modules>
+	</modules>
 
 	<!-- VERSIONS -->
 	<properties>
-<module.version>1.0</module.version>
+		<module.version>1.0</module.version>
 		<tomcat-version>2.2</tomcat-version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -44,8 +44,8 @@
 		<hibernate.version>6.0.16.Final</hibernate.version>
 	</properties>
 
-<dependencies>
-		
+	<dependencies>
+
 
 
 
@@ -85,17 +85,5 @@
 		</dependency>
 
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.tomcat.maven</groupId>
-				<artifactId>tomcat7-maven-plugin</artifactId>
-				<version>${tomcat-version}</version>
-				<configuration>
-					<port>8080</port>
-					<path>/CDB</path>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+
 </project>

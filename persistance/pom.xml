@@ -17,11 +17,6 @@
 
 		<dependency>
 			<groupId>fr.dimitri</groupId>
-			<artifactId>core</artifactId>
-			<version>${module.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.dimitri</groupId>
 			<artifactId>binding</artifactId>
 			<version>${module.version}</version>
 		</dependency>
@@ -35,12 +30,12 @@
 		<!-- <groupId>org.springframework.data</groupId> -->
 		<!-- <artifactId>spring-data-jpa</artifactId> -->
 		<!-- </dependency> -->
-		<dependency>
-			<groupId>com.h2database</groupId>
-			<artifactId>h2</artifactId>
-			<version>${h2database.version}</version>
-			<scope>test</scope>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.h2database</groupId> -->
+<!-- 			<artifactId>h2</artifactId> -->
+<!-- 			<version>${h2database.version}</version> -->
+<!-- 			<scope>test</scope> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>

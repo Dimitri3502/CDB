@@ -10,16 +10,11 @@
 
     <artifactId>webapp</artifactId>
     <version>${module.version}</version>
-    <packaging>jar</packaging>
+    <packaging>war</packaging>
     <modelVersion>4.0.0</modelVersion>
 
 	<dependencies>
 
-        <dependency>
-            <groupId>fr.dimitri</groupId>
-            <artifactId>core</artifactId>
-            <version>${module.version}</version>
-        </dependency>
         <dependency>
             <groupId>fr.dimitri</groupId>
             <artifactId>service</artifactId>
@@ -110,4 +105,17 @@
 		</dependency>
 
 </dependencies>
+<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>${tomcat-version}</version>
+				<configuration>
+					<port>8080</port>
+					<path>/CDB</path>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

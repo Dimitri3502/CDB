@@ -16,11 +16,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>fr.dimitri</groupId>
-			<artifactId>core</artifactId>
-			<version>${module.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.dimitri</groupId>
 			<artifactId>service</artifactId>
 			<version>${module.version}</version>
 		</dependency>
