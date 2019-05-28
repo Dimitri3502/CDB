@@ -30,6 +30,7 @@ import com.excilys.training.core.Company;
 import com.excilys.training.core.Computer;
 import com.excilys.training.service.IComputerService;
 import com.excilys.training.service.conf.ServiceConfig;
+import com.excilys.training.webapp.conf.WebAppConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -74,7 +75,7 @@ public class addComputerTest {
 		Company company = new Company(1L,Companyname);
 		Computer expected = new Computer(1L, name, Parse(introducedDate), Parse(discontinuedDate), company);
 		
-		driver.get("http://localhost:8080/CDB/");
+		driver.get("http://localhost:8080/webapp/");
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		driver.findElement(By.id("addComputer")).click();
 		driver.findElement(By.id("computerName")).click();

@@ -63,7 +63,7 @@ public class NumberPerPage {
 
 	@Test
 	public void NumberPerPageTest() {
-		driver.get("http://localhost:8080/CDB/dashboard");
+		driver.get("http://localhost:8080/webapp/dashboard");
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		
 		driver.findElement(By.linkText("10")).click();

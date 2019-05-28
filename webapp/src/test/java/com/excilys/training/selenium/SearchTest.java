@@ -62,7 +62,7 @@ public class SearchTest {
 		
 		// Step # | name | target | value | comment
 		// 1 | open | /CDB/dashboard | |
-		driver.get("http://localhost:8080/CDB/dashboard");
+		driver.get("http://localhost:8080/webapp/dashboard");
 		// 2 | setWindowSize | 1280x960 | |
 		driver.manage().window().setSize(new Dimension(1280, 960));
 		// 3 | click | id=searchbox | |
