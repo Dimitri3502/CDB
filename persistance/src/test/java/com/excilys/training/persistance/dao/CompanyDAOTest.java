@@ -10,8 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.excilys.training.binding.exception.CompanyNotFoundException;
-import com.excilys.training.persistance.CompanyDAO;
-import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.persistance.CompanyDAOimpl;
+import com.excilys.training.persistance.ComputerDAOimpl;
 import com.excilys.training.persistance.conf.PersistanceConfig;
 import com.excilys.training.persistance.h2database.H2Config;
 import com.excilys.training.persistance.h2database.TestDatabase;
@@ -22,10 +22,10 @@ import com.excilys.training.persistance.h2database.UTDatabase;
 public class CompanyDAOTest {
 
 	@Autowired
-	private CompanyDAO companyDAO;
+	private CompanyDAOimpl companyDAO;
 
 	@Autowired
-	private ComputerDAO computerDAO;
+	private ComputerDAOimpl computerDAO;
 	
     @Autowired
     private UTDatabase database;

@@ -12,6 +12,20 @@
 	<version>${module.version}</version>
 	<packaging>jar</packaging>
 	<modelVersion>4.0.0</modelVersion>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.data</groupId>
+				<artifactId>spring-data-releasetrain</artifactId>
+				<version>Lovelace-SR8</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
 	<dependencies>
 
 
@@ -21,15 +35,17 @@
 			<version>${module.version}</version>
 		</dependency>
 
-		<!-- <dependencyManagement> <dependencies> <dependency> <groupId>org.springframework.data</groupId> 
-			<artifactId>spring-data-releasetrain</artifactId> <version>Lovelace-SR8</version> 
-			<scope>import</scope> <type>pom</type> </dependency> </dependencies> </dependencyManagement> 
-			<dependencies> -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate-em.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 
-		<!-- <dependency> -->
-		<!-- <groupId>org.springframework.data</groupId> -->
-		<!-- <artifactId>spring-data-jpa</artifactId> -->
-		<!-- </dependency> -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>

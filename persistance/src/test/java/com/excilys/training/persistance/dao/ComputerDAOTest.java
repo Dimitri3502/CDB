@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 
 import com.excilys.training.binding.exception.ComputerNotFoundException;
 import com.excilys.training.core.Computer;
-import com.excilys.training.persistance.ComputerDAO;
+import com.excilys.training.persistance.ComputerDAOimpl;
 import com.excilys.training.persistance.conf.PersistanceConfig;
 import com.excilys.training.persistance.h2database.H2Config;
 import com.excilys.training.persistance.h2database.TestDatabase;
@@ -35,7 +35,7 @@ public class ComputerDAOTest {
 	public final SpringMethodRule springMethodRule = new SpringMethodRule();
 
 	@Autowired
-	private ComputerDAO computerDAO;
+	private ComputerDAOimpl computerDAO;
 
 	@Autowired
 	private UTDatabase database;

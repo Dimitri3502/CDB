@@ -5,10 +5,8 @@ import java.util.List;
 import com.excilys.training.binding.dto.Dto;
 import com.excilys.training.binding.exception.InvalidDateValueException;
 import com.excilys.training.binding.exception.InvalidDiscontinuedDate;
-import com.excilys.training.binding.exception.NotFoundException;
-import com.excilys.training.core.Model;
 
-public abstract class Mapper<T extends Dto, U extends Model> {
+public abstract class Mapper<T extends Dto, U > {
 
 	public Mapper() {}
 	

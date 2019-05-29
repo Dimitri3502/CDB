@@ -62,6 +62,8 @@ public class DashboardController{
 		Long totalNumber = computerService.count(page.getSearch());
 		pagination.doPagination(totalNumber, page);
 
+		String search = page.getSearch();
+		
 
 		List<ComputerDTO> computers = computerMapper.allModelToDTO(computerService.getAll(page));
 		// Add to request

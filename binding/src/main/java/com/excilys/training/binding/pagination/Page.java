@@ -1,9 +1,9 @@
 package com.excilys.training.binding.pagination;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
 
 import com.excilys.training.binding.pagination.ENUMS.OrderByChamp;
 import com.excilys.training.binding.pagination.ENUMS.OrderByDirection;
