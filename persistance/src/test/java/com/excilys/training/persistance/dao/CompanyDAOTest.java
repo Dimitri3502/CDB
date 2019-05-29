@@ -10,8 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.excilys.training.binding.exception.CompanyNotFoundException;
-import com.excilys.training.persistance.CompanyDAOimpl;
-import com.excilys.training.persistance.ComputerDAOimpl;
+import com.excilys.training.persistance.CompanyDAO;
+import com.excilys.training.persistance.ComputerDAO;
 import com.excilys.training.persistance.conf.PersistanceConfig;
 import com.excilys.training.persistance.h2database.H2Config;
 import com.excilys.training.persistance.h2database.TestDatabase;
@@ -22,10 +22,10 @@ import com.excilys.training.persistance.h2database.UTDatabase;
 public class CompanyDAOTest {
 
 	@Autowired
-	private CompanyDAOimpl companyDAO;
+	private CompanyDAO companyDAO;
 
 	@Autowired
-	private ComputerDAOimpl computerDAO;
+	private ComputerDAO computerDAO;
 	
     @Autowired
     private UTDatabase database;
@@ -42,14 +42,14 @@ public class CompanyDAOTest {
 	@Test
 	public final void testFindByIdLong() throws CompanyNotFoundException {
 		Long id = 1L;
-		assertEquals(database.findCompanyById(id),companyDAO.findById(id));
+		assertEquals(database.findCompanyById(id),companyDAO.findById(id).get());
 	}
 
-	@Test
-	public final void testGetAllIntInt() {
-		int offset=0 , limit=5;
-		assertEquals(database.findAllCompanies(limit, offset), companyDAO.getAll(limit, offset));
-	}
+//	@Test
+//	public final void testGetAllIntInt() {
+//		int offset=0 , limit=5;
+//		assertEquals(database.findAllCompanies(limit, offset), companyDAO.getAll(limit, offset));
+//	}
 	
 
 }

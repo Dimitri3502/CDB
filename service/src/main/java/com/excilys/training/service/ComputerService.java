@@ -110,6 +110,7 @@ public class ComputerService implements IComputerService {
 	private Pageable pageable(Page page) {
 		Pageable p=  PageRequest.of(page.getPageNumberRequest(), 
 				page.getLimit(), Direction.valueOf(map(page.getOrderDirection())), map(page.getOrderBy()));
+//		PageRequest.of(0,10,Direction.ASC,"name");
 		return p;
 	}
 
