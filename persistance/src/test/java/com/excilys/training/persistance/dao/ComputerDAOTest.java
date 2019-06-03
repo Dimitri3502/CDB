@@ -2,6 +2,7 @@ package com.excilys.training.persistance.dao;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -61,14 +62,15 @@ public class ComputerDAOTest {
 	}
 
 	public Object[] providePageLimit() {
-		return new Object[][] { { 1, 10 }, { 2, 10 }, { 1, 5 }, { 2, 7 } };
+		return new Object[][] { { 0, 9 }, { 2, 10 }, { 0, 5 }, { 2, 7 } };
 	}
 
 	@Test
 	@Parameters(method = "providePageLimit")
 	public final void testGetAllIntInt(int page, int limit) {
 		final List<Computer> expected = database.findAllComputers(page, limit);
-		final List<Computer> actual = computerDAO.findAll(PageRequest.of(page, limit)).getContent();
+		final List<Computer> actual  = new ArrayList<>();
+		computerDAO.findAll(PageRequest.of(page, limit)).getContent().forEach(actual::add);
 		assertEquals(expected, actual);
 	}
 

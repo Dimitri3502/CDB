@@ -15,7 +15,7 @@ public interface ComputerDAO extends PagingAndSortingRepository<Computer, Long> 
 	
 	List<Computer> findByName(String name);
 	
-	Page<Computer> findAllByNameLike(String name, Pageable pageable);
+	Page<Computer> findAllByNameLikeOrCompanyNameLike(String CompouterName, String companyName, Pageable pageable);
 
-	long countByNameLike(String name);
+	long countByNameLikeOrCompanyNameLike(String CompouterName, String companyName);
 }

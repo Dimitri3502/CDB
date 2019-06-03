@@ -55,7 +55,7 @@ public class ComputerService implements IComputerService {
 
 	@Override
 	public long count(String name) {
-		return computerDAO.countByNameLike(name);
+		return computerDAO.countByNameLikeOrCompanyNameLike(name, name);
 	};
 
 	@Override
@@ -105,7 +105,7 @@ public class ComputerService implements IComputerService {
 		List<Computer> computers = new ArrayList<>();
 		String name = page.getFilter();
 		Pageable p = pageable(page);
-		computerDAO.findAllByNameLike(name, p).forEach(computers::add);
+		computerDAO.findAllByNameLikeOrCompanyNameLike(name,name, p).forEach(computers::add);
 		return computers;
 	}
 	private Pageable pageable(Page page) {
@@ -137,7 +137,7 @@ public class ComputerService implements IComputerService {
 		case DISCONTINUED:
 			return "discontinued";
 		case COMPANY:
-			return "company_id";
+			return "company.name";
 		}
 	}
 
