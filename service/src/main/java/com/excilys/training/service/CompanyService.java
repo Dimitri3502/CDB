@@ -1,5 +1,6 @@
 package com.excilys.training.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -39,25 +40,28 @@ public class CompanyService implements FindCompanyById, ICompanyService{
 
 	@Override
 	public Company findById(Long id) throws CompanyNotFoundException {
-		return this.companyDAO.findById(id);
+		if (this.companyDAO.findById(id).isPresent()) {
+			return this.companyDAO.findById(id).get();
+		}
+		else {
+			throw new CompanyNotFoundException(id);
+		}
 	};
 
 	@Override
 	public List<Company> getAll() {
-		return companyDAO.getAll();
+		List<Company> companies = new ArrayList<>();
+		companyDAO.findAll().forEach(companies::add);
+		return companies;
 	}
 
-	@Override
-	public List<Company> getAll(int limit, int offset) {
-		return companyDAO.getAll(limit, offset);
-	}
 
 	@Override
 	@Transactional
 	public boolean delete(Long id) throws CompanyNotFoundException {
 		if (isPresent(id)) {
 			computerDAO.deleteByCompanyId(id);
-			companyDAO.delete(id);
+			companyDAO.deleteById(id);
 			return true;
 
 		} else {

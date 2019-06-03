@@ -125,7 +125,8 @@ public class UTDatabase {
                 .collect(Collectors.toList());
     }
     
-    public List<Computer> findAllComputers(int limit, int offset) {
+    public List<Computer> findAllComputers(int page, int limit) {
+    	int offset = page*limit;
         return findAllComputers().stream().skip(offset).limit(limit).collect(Collectors.toList());
     }
 

@@ -2,8 +2,6 @@ package com.excilys.training.service;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import com.excilys.training.binding.exception.ComputerNotFoundException;
 import com.excilys.training.binding.pagination.Page;
 import com.excilys.training.core.Computer;
@@ -20,15 +18,15 @@ public interface IComputerService {
 
 	boolean update(Computer computer);
 
-	boolean delete(Computer computer);
+	void delete(Computer computer);
 
-	boolean delete(Long id);
+	void delete(Long id);
 
 	Computer findById(Long id) throws ComputerNotFoundException;
 
 	List<Computer> getAll();
 
-	List<Computer> getAll(int limit, int offset);
+	List<Computer> getAll(int page, int size);
 
 	List<Computer> getAll(Page page);
 

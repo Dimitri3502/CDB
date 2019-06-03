@@ -33,16 +33,16 @@ public class ComputerDTO extends Dto{
 	public void setName(String name) {
 		this.computerName = name;
 	}
-	public String getIntroducedDate() {
+	public String getIntroduced() {
 		return introduced;
 	}
-	public void setIntroducedDate(String introducedDate) {
+	public void setIntroduced(String introducedDate) {
 		this.introduced = introducedDate;
 	}
-	public String getDiscontinuedDate() {
+	public String getDiscontinued() {
 		return discontinued;
 	}
-	public void setDiscontinuedDate(String discontinuedDate) {
+	public void setDiscontinued(String discontinuedDate) {
 		this.discontinued = discontinuedDate;
 	}
 

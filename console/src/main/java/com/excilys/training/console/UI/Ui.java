@@ -177,12 +177,13 @@ public class Ui {
 
 	public void listPagination(String str) {
 		boolean returnMenu = false;
-		int n = 0;
+		int page = 1;
+		int size = 10;
 		while (!returnMenu) {
 			if (str == "computer") {
 				List<ComputerDTO> theComputerDTOList;
 				try {
-					theComputerDTOList = controller.getAllComputerPagined(10, n);
+					theComputerDTOList = controller.getAllComputerPagined(page, size);
 					theComputerDTOList.forEach(System.out::println);
 				} catch (InvalidDiscontinuedDate e) {
 					// TODO Auto-generated catch block
@@ -193,7 +194,7 @@ public class Ui {
 			if (str == "company") {
 				List<CompanyDTO> theCompanyDTOList;
 				try {
-					theCompanyDTOList = controller.getAllCompanyPagined(10, n);
+					theCompanyDTOList = controller.getAllCompanyPagined(page, size);
 					theCompanyDTOList.forEach(System.out::println);
 				} catch (InvalidDiscontinuedDate e) {
 					// TODO Auto-generated catch block
@@ -209,11 +210,11 @@ public class Ui {
 				break;
 			// page suivante
 			case "1":
-				n += 10;
+				page += 1;
 				break;
 			// page precedente
 			case "2":
-				n -= 10;
+				page -= 1;
 				break;
 			}
 		}

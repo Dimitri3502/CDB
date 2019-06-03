@@ -151,8 +151,8 @@
 							</c:url>
 							href="${url}">${computer.name}</a></td>
 							<td>${computer.id}</td>
-							<td>${computer.introducedDate}</td>
-							<td>${computer.discontinuedDate}</td>
+							<td>${computer.introduced}</td>
+							<td>${computer.discontinued}</td>
 							<td>${computer.companyDTO.name}</td>
 
 						</tr>

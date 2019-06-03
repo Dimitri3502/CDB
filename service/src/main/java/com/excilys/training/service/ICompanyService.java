@@ -15,8 +15,6 @@ public interface ICompanyService {
 
 	List<Company> getAll();
 
-	List<Company> getAll(int limit, int offset);
-
 	boolean delete(Long id) throws CompanyNotFoundException;
 
 }

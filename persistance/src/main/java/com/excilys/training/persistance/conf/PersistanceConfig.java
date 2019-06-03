@@ -1,15 +1,20 @@
 package com.excilys.training.persistance.conf;
 
 import java.util.Objects;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -18,17 +23,44 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
-@ComponentScan(basePackages = {
-"com.excilys.training.persistance"})
 @EnableTransactionManagement
-//@EnableJpaRepositories
+@EnableJpaRepositories(
+"com.excilys.training.persistance")
 public class PersistanceConfig {
-
-    @Bean
-    public PlatformTransactionManager transactionManager(DataSource dataSource) {
-	return new DataSourceTransactionManager(dataSource);
-    }
-    
+	
+	@Bean
+	   public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+	      LocalContainerEntityManagerFactoryBean em 
+	        = new LocalContainerEntityManagerFactoryBean();
+	      em.setDataSource(dataSource);
+	      em.setPackagesToScan(new String[] { "com.excilys.training.core" });
+	 
+	      JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+	      em.setJpaVendorAdapter(vendorAdapter);
+	      em.setJpaProperties(additionalProperties());
+	 
+	      return em;
+	   }
+	
+	@Bean
+	public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
+	    JpaTransactionManager transactionManager = new JpaTransactionManager();
+	    transactionManager.setEntityManagerFactory(emf);
+	 
+	    return transactionManager;
+	}
+	
+	@Bean
+	public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+	    return new PersistenceExceptionTranslationPostProcessor();
+	}
+	 
+	Properties additionalProperties() {
+	    Properties properties = new Properties();
+	    properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+	        
+	    return properties;
+	}
 
 	@Bean
 	public DbCredentials DbCredentials() {
@@ -58,11 +90,6 @@ public class PersistanceConfig {
 	@Bean
 	public HikariDataSource hikariDataSource(HikariConfig hikariConfig) {
 		return new HikariDataSource(hikariConfig);
-	}
-
-	@Bean
-	public JdbcTemplate jdbcTemplate(HikariDataSource hikariDataSource) {
-		return new JdbcTemplate(hikariDataSource);
 	}
 
 }

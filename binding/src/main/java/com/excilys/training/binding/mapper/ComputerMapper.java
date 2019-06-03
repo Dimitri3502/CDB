@@ -38,13 +38,13 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 
 		try {
 			theComputer.setName(computerDTO.getName());
-			if (!isBlank(computerDTO.getIntroducedDate())) {
-				theComputer.setIntroducedDate(
-						LocalDateTime.of(LocalDate.parse(computerDTO.getIntroducedDate()), LocalTime.of(12, 00)));
+			if (!isBlank(computerDTO.getIntroduced())) {
+				theComputer.setIntroduced(
+						LocalDateTime.of(LocalDate.parse(computerDTO.getIntroduced()), LocalTime.of(12, 00)));
 			}
-			if (!isBlank(computerDTO.getDiscontinuedDate())) {
-				theComputer.setDiscontinuedDate(
-						LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinuedDate()), LocalTime.of(12, 00)));
+			if (!isBlank(computerDTO.getDiscontinued())) {
+				theComputer.setDiscontinued(
+						LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinued()), LocalTime.of(12, 00)));
 			}
 			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
 				String companyId = computerDTO.getCompanyDTO().getId();
@@ -69,11 +69,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 		ComputerDTO theComputerDTO = new ComputerDTO();
 		theComputerDTO.setId(Long.toString(computer.getId()));
 		theComputerDTO.setName(computer.getName());
-		if (computer.getIntroducedDate() != null) {
-			theComputerDTO.setIntroducedDate(computer.getIntroducedDate().toLocalDate().toString());
+		if (computer.getIntroduced() != null) {
+			theComputerDTO.setIntroduced(computer.getIntroduced().toLocalDate().toString());
 		}
-		if (computer.getDiscontinuedDate() != null) {
-			theComputerDTO.setDiscontinuedDate(computer.getDiscontinuedDate().toLocalDate().toString());
+		if (computer.getDiscontinued() != null) {
+			theComputerDTO.setDiscontinued(computer.getDiscontinued().toLocalDate().toString());
 		}
 		CompanyDTO companyDTO = companyMapper.modelToDto(computer.getCompany());
 		theComputerDTO.setCompanyDTO(companyDTO);

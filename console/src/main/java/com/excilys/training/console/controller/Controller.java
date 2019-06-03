@@ -102,11 +102,11 @@ public class Controller {
 		}
 	}
 
-	public List<ComputerDTO> getAllComputerPagined(int limit, int offset) throws InvalidDiscontinuedDate {
-		return computerMapper.allModelToDTO(computerService.getAll(limit, offset));
+	public List<ComputerDTO> getAllComputerPagined(int page, int limit) throws InvalidDiscontinuedDate {
+		return computerMapper.allModelToDTO(computerService.getAll(page, limit));
 	}
 
-	public List<CompanyDTO> getAllCompanyPagined(int limit, int offset) throws InvalidDiscontinuedDate {
+	public List<CompanyDTO> getAllCompanyPagined(int page, int limit) throws InvalidDiscontinuedDate {
 		return companyMapper.allModelToDTO(companyService.getAll());
 	}
 

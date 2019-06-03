@@ -1,26 +1,49 @@
 package com.excilys.training.core;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * @author dimitri
  *
  */
-public class Computer extends Model {
+@Entity
+@Table(name="computer")
+public class Computer  {
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;
+	
+	@Column(name = "name")
 	private String name;
-	private LocalDateTime introducedDate;
-	private LocalDateTime discontinuedDate;
+	
+	@Column(name = "introduced")
+	private LocalDateTime introduced;
+	
+	@Column(name = "discontinued")
+	private LocalDateTime discontinued;
+	
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @ManyToOne
 	private Company company;
 
-	public Computer(Long id, String name, LocalDateTime introducedDate, LocalDateTime discontinuedDate,
+	public Computer(Long id, String name, LocalDateTime introduced, LocalDateTime discontinued,
 			Company company) {
-		super(id);
+		this.id = id;
 		this.name = name;
-		this.introducedDate = introducedDate;
-		this.discontinuedDate = discontinuedDate;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
 		this.company = company;
 	}
 
@@ -36,27 +59,11 @@ public class Computer extends Model {
 		this.name = name;
 	}
 
-	public LocalDateTime getIntroducedDate() {
-		return introducedDate;
-	}
-
-	public void setIntroducedDate(LocalDateTime introducedDate) {
-		this.introducedDate = introducedDate;
-	}
-
-	public LocalDateTime getDiscontinuedDate() {
-		return discontinuedDate;
-	}
-
-	public void setDiscontinuedDate(LocalDateTime discontinuedDate) {
-		this.discontinuedDate = discontinuedDate;
-	}
-
 	public static class Builder {
 		private Long id;
 		private String name;
-		private LocalDateTime introducedDate;
-		private LocalDateTime discontinuedDate;
+		private LocalDateTime introduced;
+		private LocalDateTime discontinued;
 		private Company company;
 
 		public Builder setId(Long id) {
@@ -70,12 +77,12 @@ public class Computer extends Model {
 		}
 
 		public Builder setIntroduced(LocalDateTime introduced) {
-			this.introducedDate = introduced;
+			this.introduced = introduced;
 			return this;
 		}
 
 		public Builder setDiscontinued(LocalDateTime discontinued) {
-			this.discontinuedDate = discontinued;
+			this.discontinued = discontinued;
 			return this;
 		}
 
@@ -92,11 +99,27 @@ public class Computer extends Model {
 			Computer computer = new Computer();
 			computer.setId(this.id);
 			computer.setName(this.name);
-			computer.setIntroducedDate(this.introducedDate);
-			computer.setDiscontinuedDate(this.discontinuedDate);
+			computer.setIntroduced(this.introduced);
+			computer.setDiscontinued(this.discontinued);
 			computer.setCompany(this.company);
 			return computer;
 		}
+	}
+
+	public LocalDateTime getIntroduced() {
+		return introduced;
+	}
+
+	public void setIntroduced(LocalDateTime introduced) {
+		this.introduced = introduced;
+	}
+
+	public LocalDateTime getDiscontinued() {
+		return discontinued;
+	}
+
+	public void setDiscontinued(LocalDateTime discontinued) {
+		this.discontinued = discontinued;
 	}
 
 	public Company getCompany() {
@@ -109,13 +132,13 @@ public class Computer extends Model {
 
 	@Override
 	public String toString() {
-		return "Computer [id = " + getId() +", name=" + name + ", introducedDate=" + introducedDate + ", discontinuedDate="
-				+ discontinuedDate + ", company=" + company + "]";
+		return "Computer [id = " + getId() +", name=" + name + ", introduced=" + introduced + ", discontinued="
+				+ discontinued + ", company=" + company + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(company, discontinuedDate, introducedDate, name);
+		return Objects.hash(company, discontinued, introduced, name);
 	}
 
 	@Override
@@ -127,8 +150,16 @@ public class Computer extends Model {
 		if (getClass() != obj.getClass())
 			return false;
 		Computer other = (Computer) obj;
-		return Objects.equals(company, other.company) && Objects.equals(discontinuedDate, other.discontinuedDate)
-				&& Objects.equals(introducedDate, other.introducedDate) && Objects.equals(name, other.name);
+		return Objects.equals(company, other.company) && Objects.equals(discontinued, other.discontinued)
+				&& Objects.equals(introduced, other.introduced) && Objects.equals(name, other.name);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
