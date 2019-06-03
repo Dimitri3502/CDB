@@ -13,17 +13,20 @@ import com.excilys.training.binding.exception.CompanyNotFoundException;
 import com.excilys.training.binding.mapper.CompanyMapper;
 import com.excilys.training.core.Company;
 import com.excilys.training.core.Computer;
-import com.excilys.training.service.CompanyService;
+import com.excilys.training.service.ICompanyService;
 import com.excilys.training.webapp.dto.ComputerDTOForm;
 
 @Component
 public class ComputerFormMapper {
-	public CompanyMapper companyMapper;
-	public CompanyService companyService;
+	public final CompanyMapper companyMapper;
+	public final ICompanyService companyService;
 
-	public ComputerFormMapper() {
+
+	public ComputerFormMapper(CompanyMapper companyMapper, ICompanyService companyService) {
+		this.companyMapper = companyMapper;
+		this.companyService = companyService;
 	}
-	
+
 	public Computer dtoFormToModel(ComputerDTOForm computerDTOForm) {
 		Computer theComputer = new Computer();
 
@@ -34,11 +37,11 @@ public class ComputerFormMapper {
 		try {
 			theComputer.setName(computerDTOForm.getComputerName());
 			if (!isBlank(computerDTOForm.getIntroduced())) {
-				theComputer.setIntroducedDate(
+				theComputer.setIntroduced(
 						LocalDateTime.of(LocalDate.parse(computerDTOForm.getIntroduced()), LocalTime.of(12, 00)));
 			}
 			if (!isBlank(computerDTOForm.getDiscontinued())) {
-				theComputer.setDiscontinuedDate(
+				theComputer.setDiscontinued(
 						LocalDateTime.of(LocalDate.parse(computerDTOForm.getDiscontinued()), LocalTime.of(12, 00)));
 			}
 			if (!isBlank(computerDTOForm.getCompanyId())) {
@@ -49,8 +52,6 @@ public class ComputerFormMapper {
 				} else {
 					theComputer.setCompany(company);
 				}
-			} else {
-				theComputer.setCompany(new Company());
 			}
 		} catch (DateTimeParseException | CompanyNotFoundException e) {
 			e.printStackTrace();
@@ -58,20 +59,24 @@ public class ComputerFormMapper {
 
 		return theComputer;
 	}
-	
+
 	public ComputerDTOForm modelToDtoForm(Computer computer) {
 		ComputerDTOForm theComputerDTOForm = new ComputerDTOForm();
 		theComputerDTOForm.setId(Long.toString(computer.getId()));
 		theComputerDTOForm.setComputerName(computer.getName());
-		if (computer.getIntroducedDate() != null) {
-			theComputerDTOForm.setIntroduced(computer.getIntroducedDate().toLocalDate().toString());
+		if (computer.getIntroduced() != null) {
+			theComputerDTOForm.setIntroduced(computer.getIntroduced().toLocalDate().toString());
 		}
-		if (computer.getDiscontinuedDate() != null) {
-			theComputerDTOForm.setDiscontinued(computer.getDiscontinuedDate().toLocalDate().toString());
+		if (computer.getDiscontinued() != null) {
+			theComputerDTOForm.setDiscontinued(computer.getDiscontinued().toLocalDate().toString());
 		}
-		theComputerDTOForm.setCompanyName(computer.getCompany().getName());
-		if (computer.getCompany().getId() != null) {
-			theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+		if (computer.getCompany() != null) {
+			if (computer.getCompany().getName() != null) {
+				theComputerDTOForm.setCompanyName(computer.getCompany().getName());
+			}
+			if (computer.getCompany().getId() != null) {
+				theComputerDTOForm.setCompanyId(computer.getCompany().getId().toString());
+			}
 		}
 		return theComputerDTOForm;
 	}

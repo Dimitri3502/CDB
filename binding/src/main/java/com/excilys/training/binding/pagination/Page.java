@@ -13,8 +13,8 @@ public class Page {
 	private int pageNumberRequest;
 	private List<Integer> pageIds; 
 	private int limit; 
-	private int offset; 
-	private String search; 
+	private int offset;
+	private String search;
 	private OrderByChamp orderBy; 
 	private OrderByDirection orderDirection;
 	private int nbPage;
@@ -22,12 +22,14 @@ public class Page {
 	
 	
 	public Page() {
-		pageIds = Arrays.asList(0, 1, 2,3,4,4,5,6,7,8,9);
+		pageIds = Arrays.asList(1, 2,3,4,4,5,6,7,8,9,10);
 		orderBy = OrderByChamp.ID;
 		orderDirection = OrderByDirection.ASC;
 		limit = 10;
 		offset = 0;
 		search = "";
+		currentPageNumber = 0;
+		pageNumberRequest = 0;
 	}
 
 	public int getLimit() {
@@ -95,7 +97,9 @@ public class Page {
 	public void setNbPage(int nbPage) {
 		this.nbPage = nbPage;
 	}
-	
-	
+
+	public String getFilter() {
+		return "%"+search+"%";
+	}
 	
 }

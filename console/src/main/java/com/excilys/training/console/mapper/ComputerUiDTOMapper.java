@@ -16,10 +16,10 @@ public class ComputerUiDTOMapper {
 		ComputerDTO computerDTO = new ComputerDTO();
 		computerDTO.setName(computerDTOUi.getName());
 		if (!isBlank(computerDTOUi.getIntroducedDate())) {
-			computerDTO.setIntroducedDate(computerDTOUi.getIntroducedDate().replace('/', '-'));
+			computerDTO.setIntroduced(computerDTOUi.getIntroducedDate().replace('/', '-'));
 		}
 		if (!isBlank(computerDTOUi.getIntroducedDate())) {
-			computerDTO.setDiscontinuedDate(computerDTOUi.getDiscontinuedDate().replace('/', '-'));
+			computerDTO.setDiscontinued(computerDTOUi.getDiscontinuedDate().replace('/', '-'));
 		}
 		CompanyDTO companyDTO = new CompanyDTO();
 		companyDTO.setId(computerDTOUi.getCompanyId());

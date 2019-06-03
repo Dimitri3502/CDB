@@ -20,11 +20,11 @@ class SQLComputer {
         if (Objects.nonNull(computer.getCompany().getId())) {
             sqlComputer.setCompanyId(computer.getCompany().getId());
         }
-        if (Objects.nonNull(computer.getIntroducedDate())) {
-            sqlComputer.setIntroduced(Timestamp.valueOf(computer.getIntroducedDate()));
+        if (Objects.nonNull(computer.getIntroduced())) {
+            sqlComputer.setIntroduced(Timestamp.valueOf(computer.getIntroduced()));
         }
-        if (Objects.nonNull(computer.getDiscontinuedDate())) {
-            sqlComputer.setDiscontinued(Timestamp.valueOf(computer.getDiscontinuedDate()));
+        if (Objects.nonNull(computer.getDiscontinued())) {
+            sqlComputer.setDiscontinued(Timestamp.valueOf(computer.getDiscontinued()));
         }
         return sqlComputer;
     }

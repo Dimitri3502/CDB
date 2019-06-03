@@ -37,9 +37,9 @@ public class ComputerDTOValidator extends Validator<ComputerDTO> {
 			errors.put("name", "Le nom ne peux pas être nul ou vide.");
 		}
 
-		if (Objects.nonNull(toValidate.getIntroducedDate()) && (Objects.nonNull(toValidate.getDiscontinuedDate()))
-				&& LocalDate.parse(toValidate.getIntroducedDate())
-						.isAfter(LocalDate.parse(toValidate.getDiscontinuedDate()))) {
+		if (Objects.nonNull(toValidate.getIntroduced()) && (Objects.nonNull(toValidate.getDiscontinued()))
+				&& LocalDate.parse(toValidate.getIntroduced())
+						.isAfter(LocalDate.parse(toValidate.getDiscontinued()))) {
 			errors.put("discontinued", "La date d'expiration ne peux pas être avant la date d'introduction.");
 		}
 

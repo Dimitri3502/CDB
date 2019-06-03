@@ -45,7 +45,7 @@ public class ComputerService implements IComputerService {
 	@Transactional
 	public long create(Computer computer) {
 		computerDAO.save(computer);
-		return 0;
+		return computer.getId();
 	};
 
 	@Override
@@ -55,7 +55,7 @@ public class ComputerService implements IComputerService {
 
 	@Override
 	public long count(String name) {
-		return computerDAO.countByName(name);
+		return computerDAO.countByNameLike(name);
 	};
 
 	@Override
@@ -103,14 +103,15 @@ public class ComputerService implements IComputerService {
 	@Override
 	public List<Computer> getAll(Page page) {
 		List<Computer> computers = new ArrayList<>();
-		String name = page.getSearch();
-		computerDAO.findAllByName(name, pageable(page)).forEach(computers::add);
+		String name = page.getFilter();
+		Pageable p = pageable(page);
+		computerDAO.findAllByNameLike(name, p).forEach(computers::add);
 		return computers;
 	}
 	private Pageable pageable(Page page) {
-		Pageable p=  PageRequest.of(page.getPageNumberRequest(), 
+		Pageable p=  PageRequest.of(page.getCurrentPageNumber(), 
 				page.getLimit(), Direction.valueOf(map(page.getOrderDirection())), map(page.getOrderBy()));
-//		PageRequest.of(0,10,Direction.ASC,"name");
+
 		return p;
 	}
 

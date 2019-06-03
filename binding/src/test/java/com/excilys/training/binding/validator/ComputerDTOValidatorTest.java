@@ -36,7 +36,7 @@ public class ComputerDTOValidatorTest {
 		ComputerDTO toValidate = new ComputerDTO();
 		toValidate.setName("name");
 		toValidate.setCompanyDTO(new CompanyDTO());
-		toValidate.setIntroducedDate("01-01-1989");
+		toValidate.setIntroduced("01-01-1989");
 //		toValidate.setDiscontinuedDate("01-01-1979");
 		assertEquals(true, ComputerDTOValidator.check(toValidate).isValid());
 	}
