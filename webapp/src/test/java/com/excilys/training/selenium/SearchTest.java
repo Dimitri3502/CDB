@@ -22,13 +22,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.excilys.training.binding.conf.BindingConfig;
 import com.excilys.training.service.IComputerService;
 import com.excilys.training.service.conf.ServiceConfig;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = ServiceConfig.class)
+@ContextConfiguration(classes = {ServiceConfig.class, BindingConfig.class})
 
 public class SearchTest {
 	private WebDriver driver;

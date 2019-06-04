@@ -19,7 +19,6 @@ import org.springframework.test.context.junit4.rules.SpringMethodRule;
 import com.excilys.training.binding.exception.ComputerNotFoundException;
 import com.excilys.training.core.Computer;
 import com.excilys.training.persistance.ComputerDAO;
-import com.excilys.training.persistance.conf.PersistanceConfig;
 import com.excilys.training.persistance.h2database.H2Config;
 import com.excilys.training.persistance.h2database.TestDatabase;
 import com.excilys.training.persistance.h2database.UTDatabase;
@@ -28,7 +27,7 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
 @RunWith(JUnitParamsRunner.class)
-@ContextConfiguration(classes = { H2Config.class, PersistanceConfig.class })
+@ContextConfiguration(classes = { H2Config.class })
 public class ComputerDAOTest {
 
 	@ClassRule
@@ -62,7 +61,7 @@ public class ComputerDAOTest {
 	}
 
 	public Object[] providePageLimit() {
-		return new Object[][] { { 0, 9 }, { 2, 10 }, { 0, 5 }, { 2, 7 } };
+		return new Object[][] {{ 2, 10 }, { 0, 5 }, { 2, 7 } };
 	}
 
 	@Test

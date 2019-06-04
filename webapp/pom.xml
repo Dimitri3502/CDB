@@ -1,30 +1,36 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                       http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>fr.dimitri</groupId>
-	<artifactId>cdb</artifactId>
-        <version>1.0</version>
-    </parent>
+	<parent>
+		<groupId>fr.dimitri</groupId>
+		<artifactId>cdb</artifactId>
+		<version>1.0</version>
+	</parent>
 
-    <artifactId>webapp</artifactId>
-    <version>${module.version}</version>
-    <packaging>war</packaging>
-    <modelVersion>4.0.0</modelVersion>
+	<artifactId>webapp</artifactId>
+	<version>${module.version}</version>
+	<packaging>war</packaging>
+	<modelVersion>4.0.0</modelVersion>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-validator -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
 
-        <dependency>
-            <groupId>fr.dimitri</groupId>
-            <artifactId>service</artifactId>
-            <version>${module.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>fr.dimitri</groupId>
-            <artifactId>binding</artifactId>
-            <version>${module.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>fr.dimitri</groupId>
+			<artifactId>service</artifactId>
+			<version>${module.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>fr.dimitri</groupId>
+			<artifactId>binding</artifactId>
+			<version>${module.version}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -32,7 +38,7 @@
 			<version>${h2database.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- https://mvnrepository.com/artifact/org.hamcrest/hamcrest-all -->
 		<dependency>
 			<groupId>org.hamcrest</groupId>
@@ -41,27 +47,18 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-			<version>${hibernate.version}</version>
-		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 			<version>${beanutils.version}</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
 			<version>${javax.validation.version}</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -69,14 +66,13 @@
 			<version>${spring.version}</version>
 		</dependency>
 
-
-		<!-- JSTL Support -->
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${javax.servlet.version}</version>
 		</dependency>
+		<!-- JSTL Support -->
+
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
@@ -90,7 +86,7 @@
 			<artifactId>selenium-java</artifactId>
 			<version>${selenium.version}</version>
 			<scope>test</scope>
- 		</dependency>
+		</dependency>
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
@@ -104,8 +100,8 @@
 			<scope>test</scope>
 		</dependency>
 
-</dependencies>
-<build>
+	</dependencies>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.tomcat.maven</groupId>
