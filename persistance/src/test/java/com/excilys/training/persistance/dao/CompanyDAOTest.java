@@ -18,7 +18,7 @@ import com.excilys.training.persistance.h2database.TestDatabase;
 import com.excilys.training.persistance.h2database.UTDatabase;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = { H2Config.class, PersistanceConfig.class })
+@ContextConfiguration(classes = { H2Config.class })
 public class CompanyDAOTest {
 
 	@Autowired

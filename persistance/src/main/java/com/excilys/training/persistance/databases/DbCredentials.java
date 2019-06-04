@@ -11,13 +11,12 @@ public class DbCredentials {
 	private String driver;
 	private String url;
 
-	public DbCredentials(String host, String user, String pass, String dbName, String port) {
+	public DbCredentials(String user, String pass, String driver, String url) {
 		super();
-		this.host = host;
 		this.user = user;
 		this.pass = pass;
-		this.dbName = dbName;
-		this.port = port;
+		this.driver = driver;
+		this.url = url;
 	}
 	public DbCredentials(ResourceBundle bundle) {
 		super();
