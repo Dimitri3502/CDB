@@ -1,6 +1,8 @@
 package com.excilys.training.webapp.controller;
 
-import static com.excilys.training.webapp.controller.CONSTANTES.*;
+import static com.excilys.training.webapp.controller.CONSTANTES.ATT_COMPUTERS;
+import static com.excilys.training.webapp.controller.CONSTANTES.ATT_TOTAL_NUMBER;
+import static com.excilys.training.webapp.controller.CONSTANTES.SELECTION;
 
 import java.io.IOException;
 import java.util.List;
@@ -9,11 +11,11 @@ import javax.servlet.ServletException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +25,7 @@ import com.excilys.training.binding.pagination.Page;
 import com.excilys.training.binding.pagination.Pagination;
 import com.excilys.training.service.IComputerService;
 
-@Controller
+@RestController
 @RequestMapping({"/dashboard", "/"})
 @SessionAttributes("page")
 public class DashboardController{

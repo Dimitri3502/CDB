@@ -1,4 +1,4 @@
-package com.excilys.training.webapp.conf;
+package com.excilys.training.webapp.security.conf;
 
 import org.springframework.security.web.context.AbstractSecurityWebApplicationInitializer;
 
