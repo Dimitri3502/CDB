@@ -33,6 +33,7 @@ import com.excilys.training.webapp.mapper.ComputerFormMapper;
 
 @RestController
 @RequestMapping("/addComputer")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class AddComputerController{
     public AddComputerController(IComputerService computerService, ICompanyService companyService,
 			CompanyMapper companyMapper, ComputerFormMapper computerFormMapper) {
@@ -69,13 +70,14 @@ public class AddComputerController{
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_USER')")
     public ModelAndView handleGet() throws Exception {
 		return new ModelAndView(VUE);
     }
 
 
 	@RequestMapping(method = RequestMethod.POST)
-	@PreAuthorize("hasAnyRole('USER')")
+	@PreAuthorize("hasRole('ROLE_USER')")
     public ModelAndView handlePost(@Valid @ModelAttribute("computerDTOForm") ComputerDTOForm computerDTOForm,
     	      BindingResult result) throws Exception {
 		

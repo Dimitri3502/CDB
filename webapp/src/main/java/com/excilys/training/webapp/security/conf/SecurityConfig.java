@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,9 +28,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/**").authenticated().anyRequest().permitAll().and()
-		.authorizeRequests().antMatchers("/secure/**").authenticated().anyRequest().hasAnyRole("ADMIN").and()
-		.formLogin().permitAll();
+		http.authorizeRequests()
+			.antMatchers(HttpMethod.POST, "/**").hasAnyRole("USER")
+			.antMatchers("/addComputer/**").hasAnyRole("USER")
+			.antMatchers("/secure/**").hasAnyRole("ADMIN")
+			.antMatchers("/**").authenticated()
+		.and().formLogin().permitAll()
+		.and().logout().permitAll();
 	}
 
 	@Autowired
@@ -37,6 +44,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.passwordEncoder(encodePWD());
 	}
 
+	@Bean
+	public RoleHierarchy roleHierarchy() {
+	  RoleHierarchyImpl r = new RoleHierarchyImpl();
+	  r.setHierarchy("ROLE_ADMIN > ROLE_USER");
+	  r.setHierarchy("ROLE_USER > ROLE_READ");
+	  return r;
+	}
 	@Bean
 	public BCryptPasswordEncoder encodePWD() {
 		return new BCryptPasswordEncoder();

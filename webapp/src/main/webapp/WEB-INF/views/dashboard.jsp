@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page import="com.excilys.training.binding.pagination.Page" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,13 +43,16 @@
 							class="btn btn-primary" />
 					</form>
 				</div>
+				<sec:authorize access="hasRole('ROLE_USER')">
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer" href="addComputer">
 						<spring:message code="string.add" />
 					</a> <a class="btn btn-default" id="editComputer" href="#"
 						onclick="$.fn.toggleEditMode();"> <spring:message
 							code="string.edit" /></a>
+							
 				</div>
+				</sec:authorize>
 			</div>
 		</div>
 
