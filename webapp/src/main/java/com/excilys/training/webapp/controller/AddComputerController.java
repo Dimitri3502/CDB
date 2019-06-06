@@ -8,12 +8,13 @@ import java.util.List;
 
 import javax.validation.Valid;
 
-import org.springframework.stereotype.Controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.excilys.training.binding.dto.CompanyDTO;
@@ -30,8 +31,9 @@ import com.excilys.training.webapp.mapper.ComputerFormMapper;
  */
 
 
-@Controller
+@RestController
 @RequestMapping("/addComputer")
+@PreAuthorize("hasAnyRole('ADMIN')")
 public class AddComputerController{
     public AddComputerController(IComputerService computerService, ICompanyService companyService,
 			CompanyMapper companyMapper, ComputerFormMapper computerFormMapper) {
@@ -68,12 +70,14 @@ public class AddComputerController{
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
+	@PreAuthorize("hasRole('ROLE_USER')")
     public ModelAndView handleGet() throws Exception {
 		return new ModelAndView(VUE);
     }
 
 
 	@RequestMapping(method = RequestMethod.POST)
+	@PreAuthorize("hasRole('ROLE_USER')")
     public ModelAndView handlePost(@Valid @ModelAttribute("computerDTOForm") ComputerDTOForm computerDTOForm,
     	      BindingResult result) throws Exception {
 		
