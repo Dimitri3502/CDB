@@ -44,7 +44,7 @@ public class Controller {
 
 	public void updateComputer(Long id, ComputerDTOUi computerDTOUi) {
 		ComputerDTO computerDTO = computerUiDTOMapper.uiToDTO(computerDTOUi);
-		computerDTO.setId(Long.toString(id));
+		computerDTO.setId(id);
 		final Validator.Result result = computerDTOValidator.check(computerDTO);
 
 		if (result.isValid()) {

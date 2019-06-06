@@ -19,7 +19,7 @@ public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 	@Override
 	public Company dtoToModel(CompanyDTO companyDTO) {
 		Company theCompany = new Company();
-		theCompany.setId(Long.parseLong(companyDTO.getId()));
+		theCompany.setId(companyDTO.getId());
 		theCompany.setName(companyDTO.getName());
 		return theCompany;
 	}
@@ -28,7 +28,7 @@ public class CompanyMapper extends Mapper<CompanyDTO, Company>{
 	public CompanyDTO modelToDto(Company company) {
 		CompanyDTO theCompanyDTO = new CompanyDTO();
 		try {
-			theCompanyDTO.setId(Long.toString(company.getId()));
+			theCompanyDTO.setId(company.getId());
 			theCompanyDTO.setName(company.getName());
 		} catch (NullPointerException e) {
 			logger.debug("company is null");

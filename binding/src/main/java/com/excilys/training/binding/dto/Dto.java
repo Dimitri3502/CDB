@@ -1,7 +1,7 @@
 package com.excilys.training.binding.dto;
 
 public abstract class Dto {
-	public Dto(String id) {
+	public Dto(Long id) {
 		super();
 		this.id = id;
 	}
@@ -10,13 +10,13 @@ public abstract class Dto {
 		super();
 	}
 
-	String id;
+	Long id;
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

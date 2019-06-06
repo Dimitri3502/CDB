@@ -47,11 +47,9 @@ public class ComputerDTOValidator extends Validator<ComputerDTO> {
 
 		try {
 			if (Objects.nonNull(companyDTO.getId())) {
-				companyService.findById(Long.parseLong(companyDTO.getId()));
+				companyService.findById(companyDTO.getId());
 				
 			}
-		} catch (NumberFormatException e) {
-			errors.put("companyId", "L'id fabriquant est mal formé");
 		} catch (CompanyNotFoundException e) {
 			// TODO Auto-generated catch block
 			errors.put("companyId", "Le fabriquant avec l'id " + companyDTO.getId() + " n'existe pas");

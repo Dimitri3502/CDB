@@ -9,7 +9,7 @@ import com.excilys.training.service.conf.ServiceConfig;
 
 
 @Configuration
-@ComponentScan(basePackages = { "com.excilys.training.webapp.mapper" })
+@ComponentScan(basePackages = { "com.excilys.training.webapp" })
 @Import({ServiceConfig.class, BindingConfig.class})
 public class WebAppConfig {
 

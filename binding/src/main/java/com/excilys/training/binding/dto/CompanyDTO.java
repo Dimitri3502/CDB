@@ -11,7 +11,7 @@ public class CompanyDTO extends Dto{
 		super();
 	}
 
-	public CompanyDTO(String id, String name) {
+	public CompanyDTO(Long id, String name) {
 		super(id);
 		this.name = name;
 	}

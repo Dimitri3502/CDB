@@ -21,7 +21,6 @@ public class ComputerFormMapper {
 	public final CompanyMapper companyMapper;
 	public final ICompanyService companyService;
 
-
 	public ComputerFormMapper(CompanyMapper companyMapper, ICompanyService companyService) {
 		this.companyMapper = companyMapper;
 		this.companyService = companyService;
@@ -30,9 +29,7 @@ public class ComputerFormMapper {
 	public Computer dtoFormToModel(ComputerDTOForm computerDTOForm) {
 		Computer theComputer = new Computer();
 
-		if (!isBlank(computerDTOForm.getId())) {
-			theComputer.setId(Long.parseLong(computerDTOForm.getId()));
-		}
+		theComputer.setId(computerDTOForm.getId());
 
 		try {
 			theComputer.setName(computerDTOForm.getComputerName());
@@ -62,7 +59,7 @@ public class ComputerFormMapper {
 
 	public ComputerDTOForm modelToDtoForm(Computer computer) {
 		ComputerDTOForm theComputerDTOForm = new ComputerDTOForm();
-		theComputerDTOForm.setId(Long.toString(computer.getId()));
+		theComputerDTOForm.setId(computer.getId());
 		theComputerDTOForm.setComputerName(computer.getName());
 		if (computer.getIntroduced() != null) {
 			theComputerDTOForm.setIntroduced(computer.getIntroduced().toLocalDate().toString());

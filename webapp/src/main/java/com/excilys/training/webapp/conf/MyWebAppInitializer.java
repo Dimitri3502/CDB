@@ -8,6 +8,8 @@ import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.excilys.training.persistance.conf.PersistanceConfig;
+import com.excilys.training.service.conf.ServiceConfig;
 import com.excilys.training.webapp.security.conf.SecurityConfig;
 
 public class MyWebAppInitializer implements WebApplicationInitializer {
@@ -16,7 +18,7 @@ public class MyWebAppInitializer implements WebApplicationInitializer {
 	public void onStartup(ServletContext container) {
 		// Create the 'root' Spring application context
 		AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-		rootContext.register(WebAppConfig.class, SecurityConfig.class);
+		rootContext.register(SecurityConfig.class, ServiceConfig.class, PersistanceConfig.class);
 
 		// Manage the lifecycle of the root application context
 		container.addListener(new ContextLoaderListener(rootContext));

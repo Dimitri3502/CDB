@@ -6,6 +6,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -20,12 +21,15 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.excilys.training.binding.conf.BindingConfig;
+import com.excilys.training.service.conf.ServiceConfig;
 import com.excilys.training.webapp.converter.StringToOrderByChampConverter;
 import com.excilys.training.webapp.converter.StringToOrderByDirectionConverter;
 
 @Configuration
-@ComponentScan(basePackages = { "com.excilys.training.webapp.controller" })
+@ComponentScan(basePackages = { "com.excilys.training.webapp" })
 @EnableWebMvc
+@Import({BindingConfig.class})
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	@Override

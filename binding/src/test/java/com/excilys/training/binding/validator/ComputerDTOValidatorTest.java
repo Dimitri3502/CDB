@@ -45,7 +45,7 @@ public class ComputerDTOValidatorTest {
 	public void testCheckIdFail() {
 		ComputerDTO toValidate = new ComputerDTO();
 		toValidate.setName("name");
-		toValidate.setCompanyDTO(new CompanyDTO("500", null));
+		toValidate.setCompanyDTO(new CompanyDTO(500L, null));
 		assertEquals(false, ComputerDTOValidator.check(toValidate).isValid());
 	}
 }

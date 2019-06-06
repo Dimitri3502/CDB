@@ -22,7 +22,7 @@ public class ComputerUiDTOMapper {
 			computerDTO.setDiscontinued(computerDTOUi.getDiscontinuedDate().replace('/', '-'));
 		}
 		CompanyDTO companyDTO = new CompanyDTO();
-		companyDTO.setId(computerDTOUi.getCompanyId());
+		companyDTO.setId(Long.parseLong(computerDTOUi.getCompanyId()));
 		computerDTO.setCompanyDTO(companyDTO);
 		return computerDTO;
 

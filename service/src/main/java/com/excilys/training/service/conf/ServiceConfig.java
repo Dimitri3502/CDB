@@ -8,8 +8,6 @@ import com.excilys.training.persistance.conf.PersistanceConfig;
 
 @Configuration
 @ComponentScan(basePackages = { "com.excilys.training.service" })
-@Import(PersistanceConfig.class)
-
 public class ServiceConfig {
 
 }

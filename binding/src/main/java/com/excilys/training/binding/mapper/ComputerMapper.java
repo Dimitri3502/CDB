@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
@@ -32,9 +33,8 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	public Computer dtoToModel(ComputerDTO computerDTO) {
 		Computer theComputer = new Computer();
 
-		if (!isBlank(computerDTO.getId())) {
-			theComputer.setId(Long.parseLong(computerDTO.getId()));
-		}
+			theComputer.setId(computerDTO.getId());
+
 
 		try {
 			theComputer.setName(computerDTO.getName());
@@ -46,11 +46,11 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 				theComputer.setDiscontinued(
 						LocalDateTime.of(LocalDate.parse(computerDTO.getDiscontinued()), LocalTime.of(12, 00)));
 			}
-			if (!isBlank(computerDTO.getCompanyDTO().getId())) {
-				String companyId = computerDTO.getCompanyDTO().getId();
-				Company company = companyService.findById(Long.parseLong(companyId));
+			if (Objects.nonNull((computerDTO.getCompanyDTO().getId()))) {
+				Long companyId = computerDTO.getCompanyDTO().getId();
+				Company company = companyService.findById(companyId);
 				if (company == null) {
-					throw new CompanyNotFoundException(Long.parseLong(companyId));
+					throw new CompanyNotFoundException(companyId);
 				} else {
 					theComputer.setCompany(company);
 				}
@@ -67,7 +67,7 @@ public class ComputerMapper extends Mapper<ComputerDTO, Computer> {
 	@Override
 	public ComputerDTO modelToDto(Computer computer) {
 		ComputerDTO theComputerDTO = new ComputerDTO();
-		theComputerDTO.setId(Long.toString(computer.getId()));
+		theComputerDTO.setId(computer.getId());
 		theComputerDTO.setName(computer.getName());
 		if (computer.getIntroduced() != null) {
 			theComputerDTO.setIntroduced(computer.getIntroduced().toLocalDate().toString());

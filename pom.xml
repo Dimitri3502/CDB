@@ -16,11 +16,14 @@
 		<module>service</module>
 		<module>console</module>
 		<module>webapp</module>
+		<module>webService</module>
 	</modules>
 
 	<!-- VERSIONS -->
 	<properties>
 		<module.version>1.0</module.version>
+		<javax.xml.bind.version>2.3.1</javax.xml.bind.version>
+		<jackson.version>2.9.9</jackson.version>
 		<spring-data-JPA.version>3.1.8.RELEASE</spring-data-JPA.version>
 		<javax-persistance.version>2.2</javax-persistance.version>
 		<hibernate-em.version>5.4.2.Final</hibernate-em.version>
@@ -72,6 +75,17 @@
 				<version>${module.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml.bind</groupId>
+				<artifactId>jaxb-api</artifactId>
+				<version>${javax.xml.bind.version}</version>
+				<scope>runtime</scope>
+			</dependency>
 			<!-- Spring -->
 			<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-rest-webmvc -->
 			<dependency>
