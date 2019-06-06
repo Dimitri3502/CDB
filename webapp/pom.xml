@@ -15,53 +15,45 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>fr.dimitri</groupId>
+			<artifactId>service</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>fr.dimitri</groupId>
+			<artifactId>binding</artifactId>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-rest-webmvc -->
 		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-rest-webmvc</artifactId>
-			<version>3.1.8.RELEASE</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>${spring.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>fr.dimitri</groupId>
-			<artifactId>service</artifactId>
-			<version>${module.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>fr.dimitri</groupId>
-			<artifactId>binding</artifactId>
-			<version>${module.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<version>${h2database.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -69,7 +61,6 @@
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
-			<version>${hamcrest.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -77,32 +68,27 @@
 		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
-			<version>${beanutils.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 		<dependency>
 			<groupId>javax.validation</groupId>
 			<artifactId>validation-api</artifactId>
-			<version>${javax.validation.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>${javax.servlet.version}</version>
 		</dependency>
 		<!-- JSTL Support -->
 
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
-			<version>${jstl.version}</version>
 		</dependency>
 
 
@@ -126,6 +112,27 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- Tests -->
+
+		<dependency>
+			<groupId>pl.pragmatists</groupId>
+			<artifactId>JUnitParams</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

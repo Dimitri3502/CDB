@@ -14,15 +14,38 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<dependencies>
+	
 		<dependency>
 			<groupId>fr.dimitri</groupId>
 			<artifactId>persistance</artifactId>
 			<version>${module.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>fr.dimitri</groupId>
 			<artifactId>binding</artifactId>
-			<version>${module.version}</version>
+		</dependency>
+		
+		<!-- Tests -->
+		
+		<dependency>
+			<groupId>pl.pragmatists</groupId>
+			<artifactId>JUnitParams</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-all</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
 		</dependency>
 	</dependencies>
 </project>
