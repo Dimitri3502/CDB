@@ -7,9 +7,11 @@ import static com.excilys.training.webapp.controller.CONSTANTES.CHAMP_ID;
 import static com.excilys.training.webapp.controller.CONSTANTES.CHAMP_INTRODUCED;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
 import com.excilys.training.binding.pagination.ENUMS.OrderByChamp;
 
+@Component
 public class StringToOrderByChampConverter implements Converter<String, OrderByChamp> {
 
     public OrderByChamp convert(String s) {

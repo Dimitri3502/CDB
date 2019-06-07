@@ -101,16 +101,24 @@ public class ComputerService implements IComputerService {
 	}
 
 	@Override
+	public org.springframework.data.domain.Page<Computer> getAll(String name, Pageable page) {
+		
+		return computerDAO.findAllByNameLikeOrCompanyNameLike(name, name, page);
+
+	}
+
+	@Override
 	public List<Computer> getAll(Page page) {
 		List<Computer> computers = new ArrayList<>();
 		String name = page.getFilter();
 		Pageable p = pageable(page);
-		computerDAO.findAllByNameLikeOrCompanyNameLike(name,name, p).forEach(computers::add);
+		computerDAO.findAllByNameLikeOrCompanyNameLike(name, name, p).forEach(computers::add);
 		return computers;
 	}
+
 	private Pageable pageable(Page page) {
-		Pageable p=  PageRequest.of(page.getCurrentPageNumber(), 
-				page.getLimit(), Direction.valueOf(map(page.getOrderDirection())), map(page.getOrderBy()));
+		Pageable p = PageRequest.of(page.getCurrentPageNumber(), page.getLimit(),
+				Direction.valueOf(map(page.getOrderDirection())), map(page.getOrderBy()));
 
 		return p;
 	}

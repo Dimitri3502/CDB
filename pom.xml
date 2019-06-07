@@ -22,6 +22,7 @@
 	<!-- VERSIONS -->
 	<properties>
 		<module.version>1.0</module.version>
+		<hateoas.version>0.25.1.RELEASE</hateoas.version>
 		<javax.xml.bind.version>2.3.1</javax.xml.bind.version>
 		<jackson.version>2.9.9</jackson.version>
 		<spring-data-JPA.version>3.1.8.RELEASE</spring-data-JPA.version>
@@ -75,6 +76,21 @@
 				<version>${module.version}</version>
 			</dependency>
 
+<!-- 		API pagination  -->
+		<!-- https://mvnrepository.com/artifact/org.springframework.hateoas/spring-hateoas -->
+		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+			<version>${hateoas.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-rest-core -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-core</artifactId>
+			<version>${spring-data-JPA.version}</version>
+		</dependency>
+		
+<!-- 		API response body  -->
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>

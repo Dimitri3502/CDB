@@ -14,25 +14,27 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<dependencies>
-	
+
 		<dependency>
 			<groupId>fr.dimitri</groupId>
 			<artifactId>persistance</artifactId>
 			<version>${module.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>fr.dimitri</groupId>
 			<artifactId>binding</artifactId>
 		</dependency>
-		
+
+
+
 		<!-- Tests -->
-		
+
 		<dependency>
 			<groupId>pl.pragmatists</groupId>
 			<artifactId>JUnitParams</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
